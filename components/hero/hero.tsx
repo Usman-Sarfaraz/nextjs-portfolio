@@ -14,16 +14,16 @@ export function Hero(): ReactNode {
     <section aria-labelledby="hero-heading" className="hero-screen relative mx-3 my-5 lg:flex lg:h-[calc(100svh-2.5rem)] lg:flex-col overflow-hidden rounded-[2rem] bg-[#afb5b6] text-[#162022] sm:mx-5 sm:rounded-[2.5rem] dark:bg-[#333b3e] dark:text-white">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_85%_50%,#e0e3e3_0%,transparent_65%)] dark:bg-[radial-gradient(ellipse_at_85%_50%,#687174_0%,transparent_65%)]" />
 
-      <header className="relative z-20 flex flex-wrap items-center justify-between gap-4 px-8 py-6 sm:px-16 lg:px-24 xl:px-32">
-        <a href="#home" className="focus-ring rounded-md text-lg font-semibold tracking-tight sm:text-xl">Usman Sarfraz<span className="opacity-50">.</span></a>
-        <nav aria-label="Primary" className="order-3 flex w-full items-center gap-6 text-sm text-current/70 sm:order-none sm:w-auto">
+      <header className="relative z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-8 py-6 sm:px-16 lg:px-24 xl:px-32">
+        <a href="#home" className="focus-ring col-start-2 row-start-1 justify-self-center whitespace-nowrap rounded-md text-lg font-semibold tracking-tight sm:text-xl">Usman Sarfraz<span className="opacity-50">.</span></a>
+        <nav aria-label="Primary" className="col-span-3 col-start-1 row-start-2 flex items-center gap-6 text-sm text-current/70 lg:col-span-1 lg:row-start-1 lg:justify-self-start">
           <a className="focus-ring rounded-md transition-opacity hover:opacity-60" href="#projects">Work</a>
           <span aria-hidden="true" className="h-4 w-px bg-current/20" />
           <a className="focus-ring rounded-md transition-opacity hover:opacity-60" href="#about">About</a>
           <span aria-hidden="true" className="h-4 w-px bg-current/20" />
           <a className="focus-ring rounded-md transition-opacity hover:opacity-60" href="#contact">Contact</a>
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="col-start-3 row-start-1 flex items-center justify-self-end gap-3">
           <NavThemeToggle />
           <a href={`mailto:${profile.email}`} className="focus-ring group hidden items-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition-all duration-300 hover:bg-[#162022] hover:text-white hover:shadow-lg motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-95 motion-reduce:transition-none sm:inline-flex">
             Let&rsquo;s talk
