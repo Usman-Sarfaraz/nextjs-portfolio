@@ -1,0 +1,25 @@
+import { ContactCard } from "@/components/contact/contact-card";
+import { AboutSection } from "@/components/about/about-section";
+import { Hero } from "@/components/hero/hero";
+import { Projects } from "@/components/projects/projects";
+import { createMetadata, siteConfig } from "@/lib/metadata";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+
+export const metadata: Metadata = createMetadata({
+  title: "Home",
+  description: `Welcome to ${siteConfig.name}. ${siteConfig.description}`,
+  path: "/",
+});
+
+export default function HomePage(): ReactNode {
+  return (
+    <main id="main-content" className="flex flex-1 flex-col gap-20 sm:gap-28">
+      <section id="home"><Hero /></section>
+      <section id="projects" className="scroll-mt-24"><Projects withHeadline viewMoreVisible /></section>
+      <AboutSection />
+      <section id="contact" className="scroll-mt-24"><ContactCard /></section>
+      <div className="h-12 sm:h-16" />
+    </main>
+  );
+}
