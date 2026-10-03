@@ -1,4 +1,5 @@
-import { Mail } from "lucide-react";
+import { profile } from "@/lib/profile";
+import { Mail, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -33,8 +34,8 @@ export function ContactCard(): ReactNode {
                   Let&rsquo;s connect
                 </h2>
                 <p className="max-w-[29ch] text-[18px] leading-[1.4] tracking-tight text-foreground/65 sm:text-[22px] mb-6">
-                  I&rsquo;m always open to discussing new projects, creative
-                  ideas, or opportunities to be part of your visions. Just reach out!
+                  Have a website to build or a frontend challenge to solve?
+                  Let&rsquo;s talk about your next project or engineering opportunity.
                 </p>
                 <ContactCardCtas />
               </div>
@@ -42,27 +43,32 @@ export function ContactCard(): ReactNode {
               <div className="border-foreground/8 flex flex-col items-center justify-center gap-6 rounded-[1.1rem] border bg-background p-6 sm:p-8">
                 <div className="flex items-center gap-3 opacity-75">
                   <SocialIcon
-                    href="mailto:hello@example.com"
+                    href={`mailto:${profile.email}`}
                     label="Email"
                     lucideIcon={Mail}
                   />
                   <SocialIcon
-                    href="https://www.linkedin.com"
+                    href={profile.linkedin}
                     label="LinkedIn"
                     imageSrc="/linkedin.svg"
                   />
                   <SocialIcon
-                    href="https://x.com"
-                    label="X"
-                    imageSrc="/x.svg"
+                    href={profile.phoneHref}
+                    label="Phone"
+                    lucideIcon={Phone}
                   />
+                </div>
+                <div className="flex flex-col items-center gap-2 text-center text-sm text-foreground/70">
+                  <a className="focus-ring break-all hover:text-foreground" href={`mailto:${profile.email}`}>{profile.email}</a>
+                  <a className="focus-ring hover:text-foreground" href={profile.phoneHref}>{profile.phone}</a>
+                  <span>{profile.location}</span>
                 </div>
                 <div className="flex flex-col items-center gap-1 text-center">
                   <p className="text-[13px] tracking-tight text-foreground/70">
-                    2026 &copy; Built with Next.js
+                    {new Date().getFullYear()} &copy; {profile.name}
                   </p>
                   <p className="text-[12px] tracking-tight text-foreground/45">
-                    By React Bits Pro
+                    Built with Next.js · React Bits template
                   </p>
                 </div>
               </div>

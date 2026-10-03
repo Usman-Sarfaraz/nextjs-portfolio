@@ -5,7 +5,9 @@ import { Check, Copy, Mail } from "lucide-react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 
-const EMAIL = "hello@example.com";
+import { profile } from "@/lib/profile";
+
+const EMAIL = profile.email;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function ContactButton(): ReactNode {
@@ -91,7 +93,7 @@ export function ContactButton(): ReactNode {
                   )}
                 </AnimatePresence>
               </span>
-              <span className="tabular-nums">{EMAIL}</span>
+              <span className="tabular-nums text-xs sm:text-sm">{EMAIL}</span>
             </motion.span>
           ) : (
             <motion.span
