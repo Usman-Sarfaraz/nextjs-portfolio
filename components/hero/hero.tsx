@@ -15,7 +15,19 @@ export function Hero(): ReactNode {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_85%_50%,#e0e3e3_0%,transparent_65%)] dark:bg-[radial-gradient(ellipse_at_85%_50%,#687174_0%,transparent_65%)]" />
 
       <header className="relative z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-8 py-6 sm:px-16 lg:px-24 xl:px-32">
-        <a href="#home" className="focus-ring col-start-2 row-start-1 justify-self-center whitespace-nowrap rounded-md text-lg font-semibold tracking-tight sm:text-xl">Usman Sarfraz<span className="opacity-50">.</span></a>
+        <a
+          href="#home"
+          className="focus-ring whitespace-nowrap px-5 py-5 text-base font-semibold tracking-tight sm:px-8 sm:text-xl"
+          style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", borderRadius: "0 0 24px 24px", backgroundColor: "var(--background)", color: "var(--foreground)", zIndex: 1 }}
+        >
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style={{ position: "absolute", top: 0, left: -20, fill: "var(--background)", pointerEvents: "none" }}>
+            <path d="M0 0H20V20C20 8.954 11.046 0 0 0Z" />
+          </svg>
+          Usman Sarfraz<span className="opacity-50">.</span>
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style={{ position: "absolute", top: 0, right: -20, fill: "var(--background)", pointerEvents: "none" }}>
+            <path d="M0 0H20C8.954 0 0 8.954 0 20Z" />
+          </svg>
+        </a>
         <nav aria-label="Primary" className="col-span-3 col-start-1 row-start-2 flex items-center gap-6 text-sm text-current/70 lg:col-span-1 lg:row-start-1 lg:justify-self-start">
           <a className="focus-ring rounded-md transition-opacity hover:opacity-60" href="#projects">Work</a>
           <span aria-hidden="true" className="h-4 w-px bg-current/20" />
