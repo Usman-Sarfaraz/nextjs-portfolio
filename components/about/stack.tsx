@@ -1,5 +1,6 @@
 "use client";
 
+import { headingFont } from "@/lib/fonts";
 import { RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
@@ -275,7 +276,7 @@ export function Stack(): ReactNode {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
-        <h3 className="text-foreground text-[15px] font-semibold tracking-tight">
+        <h3 className={`${headingFont.className} text-foreground text-[15px] font-normal tracking-tight`}>
           Stack
         </h3>
       </div>

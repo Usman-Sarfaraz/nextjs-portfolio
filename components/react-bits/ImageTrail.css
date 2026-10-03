@@ -1,0 +1,21 @@
+.rb-image-trail { position: relative; }
+.rb-image-trail-content { display: flex; flex-direction: column; gap: 5rem; }
+@media (min-width: 640px) { .rb-image-trail-content { gap: 7rem; } }
+.rb-image-trail-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 30;
+}
+.rb-trail-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 56px;
+  height: 56px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.rb-trail-icon-inner { width: 100%; height: 100%; }
+.rb-trail-icon-inner > svg { width: 100%; height: 100%; }

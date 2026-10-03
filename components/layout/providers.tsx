@@ -2,6 +2,7 @@
 
 import { ReducedMotionProvider } from "@/lib/motion";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
+import { PortfolioClickSpark } from "@/components/ui/portfolio-click-spark";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 
@@ -14,7 +15,7 @@ export function Providers({ children }: { children: ReactNode }): ReactNode {
       disableTransitionOnChange
     >
       <ReducedMotionProvider>
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll><PortfolioClickSpark>{children}</PortfolioClickSpark></SmoothScroll>
       </ReducedMotionProvider>
     </ThemeProvider>
   );

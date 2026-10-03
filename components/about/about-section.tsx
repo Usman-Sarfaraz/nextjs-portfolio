@@ -1,3 +1,4 @@
+import { headingFont } from "@/lib/fonts";
 import { Education } from "@/components/about/education";
 import { Experience } from "@/components/about/experience";
 import { Skills } from "@/components/about/skills";
@@ -12,7 +13,7 @@ export function AboutSection(): ReactNode {
       <section className="mx-auto w-full max-w-160 px-6 pt-20 pb-16 sm:px-10 sm:pt-28 sm:pb-24">
         <FadeIn delay={0.5}>
           <div className="rounded-4xl border border-foreground/5 bg-foreground/1.5 p-8 sm:p-12 dark:bg-foreground/3">
-            <h2 className="font-serif text-[1.75rem] font-medium tracking-tight text-foreground sm:text-[2rem]">
+            <h2 className={`${headingFont.className} text-[1.75rem] font-normal tracking-tight text-foreground sm:text-[2rem]`}>
               Hello! I&rsquo;m <span className="border-b border-foreground/30 pb-0.5">{profile.name}</span>.
             </h2>
             <div className="mt-8 space-y-6 text-[17px] leading-[1.7] tracking-tight text-foreground/75 sm:text-[18px]">

@@ -1,3 +1,4 @@
+import { headingFont } from "@/lib/fonts";
 import { profile } from "@/lib/profile";
 import { Mail, Phone } from "lucide-react";
 import Image from "next/image";
@@ -30,7 +31,7 @@ export function ContactCard(): ReactNode {
 
             <div className="relative grid gap-8 p-6 sm:gap-10 sm:p-7 md:grid-cols-[1.2fr_1fr] md:items-stretch md:gap-6 md:p-6">
               <div className="flex flex-col gap-5">
-                <h2 className="font-serif text-[2.25rem] font-medium leading-[1.05] tracking-tight text-foreground sm:text-[2.75rem] lg:text-[3.25rem]">
+                <h2 className={`${headingFont.className} text-[2.25rem] font-normal tracking-tight leading-[1.05] text-foreground sm:text-[2.75rem] lg:text-[3.25rem]`}>
                   Let&rsquo;s connect
                 </h2>
                 <p className="max-w-[29ch] text-[18px] leading-[1.4] tracking-tight text-foreground/65 sm:text-[22px] mb-6">

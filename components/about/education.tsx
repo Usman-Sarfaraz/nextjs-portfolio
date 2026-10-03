@@ -1,3 +1,4 @@
+import { headingFont } from "@/lib/fonts";
 import type { ReactNode } from "react";
 
 type Entry = {
@@ -20,7 +21,7 @@ const ROW_HEIGHT = 64;
 export function Education(): ReactNode {
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-foreground text-[15px] font-semibold tracking-tight">
+      <h3 className={`${headingFont.className} text-foreground text-[15px] font-normal tracking-tight`}>
         Education
       </h3>
       <div className="border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative rounded-4xl border p-2 sm:p-4">

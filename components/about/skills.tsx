@@ -1,3 +1,4 @@
+import { headingFont } from "@/lib/fonts";
 import type { ReactNode } from "react";
 
 const SKILLS = [
@@ -17,7 +18,7 @@ const SKILLS = [
 export function Skills(): ReactNode {
   return (
     <div className="flex flex-col gap-3">
-      <h3 className="text-[15px] font-semibold tracking-tight text-foreground">
+      <h3 className={`${headingFont.className} text-[15px] font-normal tracking-tight text-foreground`}>
         What I do
       </h3>
       <div className="rounded-4xl border border-foreground/5 bg-foreground/2 p-2 sm:p-4 dark:bg-foreground/5">
