@@ -18,7 +18,7 @@ export default function HomePage(): ReactNode {
   return (
     <div>
       <HeroNavigation />
-    <main id="main-content" className="flex flex-1 flex-col gap-20 sm:gap-28">
+    <main id="main-content" className="flex flex-1 flex-col gap-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Person",

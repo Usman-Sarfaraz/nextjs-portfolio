@@ -8,7 +8,7 @@ import { STACK, StackIcon } from "@/components/ui/stack-icons";
 const logos = STACK.map((name) => ({
   title: name,
   node: (
-    <span className="inline-flex items-center gap-3 whitespace-nowrap text-lg font-semibold tracking-tight text-current/80 sm:text-xl">
+    <span className="inline-flex items-center gap-2 whitespace-nowrap text-sm font-semibold tracking-tight text-current/80 sm:text-base [&>svg]:h-6 [&>svg]:w-6 [&>img]:h-6 [&>img]:w-6">
       <StackIcon name={name} />
       <span>{name}</span>
     </span>
@@ -22,8 +22,8 @@ export function StackMarquee(): ReactNode {
         logos={logos}
         speed={65}
         direction="left"
-        logoHeight={32}
-        gap={48}
+        logoHeight={24}
+        gap={36}
         hoverSpeed={0}
         scaleOnHover
         fadeOut

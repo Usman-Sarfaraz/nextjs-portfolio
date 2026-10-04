@@ -1,5 +1,6 @@
 "use client";
 
+import { TitleReveal } from "@/components/ui/title-reveal";
 import { headingFont } from "@/lib/fonts";
 import { RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -276,9 +277,7 @@ export function Stack(): ReactNode {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
-        <h3 className={`${headingFont.className} text-foreground text-[15px] font-normal tracking-tight`}>
-          Stack
-        </h3>
+        <h3 className={`${headingFont.className} text-foreground text-[15px] font-normal tracking-tight`}><TitleReveal>Stack</TitleReveal></h3>
       </div>
 
       <div className="border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative h-40 overflow-hidden rounded-4xl border sm:h-64">

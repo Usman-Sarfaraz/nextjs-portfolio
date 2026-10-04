@@ -7,6 +7,9 @@ import { FadeIn } from "@/components/ui/motion-primitives";
 import { StackMarquee } from "./stack-marquee";
 import { RotatingHeadline } from "./rotating-headline";
 import styles from "./hero.module.css";
+import { PortraitReveal } from "./portrait-reveal";
+import ShinyText from "@/components/react-bits/ShinyText";
+import { TitleReveal } from "@/components/ui/title-reveal";
 import portrait from "@/public/images/portfolio_portrait.png";
 
 export function Hero(): ReactNode {
@@ -27,9 +30,9 @@ export function Hero(): ReactNode {
             </div>
             <h1 id="hero-heading" className={`${headingFont.className} max-w-full [container-type:inline-size] text-[clamp(2.875rem,4.8vw,5.5rem)] font-normal tracking-[-0.025em] leading-[1.18] lg:text-[clamp(2.5rem,min(4.8vw,8svh),5.5rem)]`}>
               <span className="block text-[min(1em,8.7cqw)]">
-              <span className="block">Thoughtful <span className="text-emerald-800 dark:text-emerald-300">Design.</span></span>
+              <span className="block"><TitleReveal>Thoughtful <span className="text-emerald-800 dark:text-emerald-300">Design.</span></TitleReveal></span>
               <RotatingHeadline />
-              <span className="block">Websites that <span className="underline decoration-emerald-700/50 decoration-[0.04em] underline-offset-[0.14em] dark:decoration-emerald-300/60">work.</span></span>
+              <span className="block"><TitleReveal>Websites that <span className="underline decoration-emerald-700/50 decoration-[0.04em] underline-offset-[0.14em] dark:decoration-emerald-300/60"><ShinyText text="work." speed={2.5} delay={1} color="var(--work-text)" shineColor="var(--work-shine)" className={styles.shinyWork ?? ""} /></span></TitleReveal></span>
               </span>
             </h1>
             <p className="mt-6 max-w-[42ch] text-base leading-relaxed text-current/70 sm:text-lg">
@@ -46,7 +49,7 @@ export function Hero(): ReactNode {
             </div>
           </FadeIn>
 
-          <div className={`${styles.portrait} hero-screen__portrait relative mx-auto h-[440px] w-full self-center sm:h-[540px] lg:h-full lg:min-h-0 lg:max-h-[660px]`}>
+          <PortraitReveal className={`${styles.portrait} hero-screen__portrait relative mx-auto h-[440px] w-full self-center sm:h-[540px] lg:h-full lg:min-h-0 lg:max-h-[660px]`}>
             <Image
               src={portrait}
               alt={`${profile.name}, frontend developer and software engineer`}
@@ -56,7 +59,7 @@ export function Hero(): ReactNode {
               sizes="(min-width: 1024px) 46vw, calc(100vw - 48px)"
               className="object-contain object-center "
             />
-          </div>
+          </PortraitReveal>
         </div>
 
         <div className={`${styles.stack} relative z-10 flex flex-col gap-6 border-t border-current/10 py-7 sm:py-9 lg:shrink-0 lg:flex-row lg:py-5 lg:items-center lg:gap-10`}>

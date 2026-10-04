@@ -1,3 +1,4 @@
+import { TitleReveal } from "@/components/ui/title-reveal";
 import { headingFont } from "@/lib/fonts";
 import type { ReactNode } from "react";
 
@@ -21,9 +22,7 @@ const ROW_HEIGHT = 64;
 export function Education(): ReactNode {
   return (
     <div className="flex flex-col gap-3">
-      <h3 className={`${headingFont.className} text-foreground text-[15px] font-normal tracking-tight`}>
-        Education
-      </h3>
+      <h3 className={`${headingFont.className} text-foreground text-[15px] font-normal tracking-tight`}><TitleReveal>Education</TitleReveal></h3>
       <div className="border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative rounded-4xl border p-2 sm:p-4">
         <ul className="flex flex-col gap-2">
           {ENTRIES.map((entry) => (

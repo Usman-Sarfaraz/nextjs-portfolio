@@ -1,3 +1,12 @@
+.shinyWork {
+  --work-text: currentColor;
+  --work-shine: #34d399;
+}
+
+:global(.dark) .shinyWork {
+  --work-shine: #6ee7b7;
+}
+
 @media (max-width: 1023px) {
   .hero {
     margin: 0 24px;
