@@ -56,6 +56,7 @@ export function Hero(): ReactNode {
               sizes="(min-width: 1024px) 46vw, calc(100vw - 48px)"
               className="object-contain object-center "
             />
+            <div className={styles.portraitCards}>
             <div data-magnetic-card className={`${styles.floatingCard} ${styles.experienceCard}`}>
               <span className={styles.cardIcon}><BriefcaseBusiness aria-hidden="true" size={18} /></span>
               <div><p className={styles.cardTitle}>{profile.experience}</p><p className={styles.cardCaption}>of experience</p></div>
@@ -63,6 +64,7 @@ export function Hero(): ReactNode {
             <div data-magnetic-card className={`${styles.floatingCard} ${styles.developmentCard}`}>
               <span className={styles.cardIcon}><Code2 aria-hidden="true" size={18} /></span>
               <div><p className={styles.cardTitle}>Frontend developer</p><p className={styles.cardCaption}>React &amp; Vue</p></div>
+            </div>
             </div>
           </PortraitReveal>
         </div>
