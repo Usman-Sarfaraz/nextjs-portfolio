@@ -1,6 +1,6 @@
 import { headingFont } from "@/lib/fonts";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Code2 } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Code2, BriefcaseBusiness } from "lucide-react";
 import type { ReactNode } from "react";
 import { profile } from "@/lib/profile";
 import { FadeIn } from "@/components/ui/motion-primitives";
@@ -23,9 +23,6 @@ export function Hero(): ReactNode {
         <div className={`${styles.content} hero-screen__content relative grid items-center gap-8 lg:min-h-0 lg:flex-1 lg:grid-cols-[1.08fr_1fr] lg:gap-10`}>
           <FadeIn className={`${styles.copy} relative z-10 min-w-0 pt-12 pb-8 sm:pt-16 lg:flex lg:flex-col lg:justify-center lg:py-4`}>
             <div className="mb-7 flex flex-wrap items-center gap-3 text-xs sm:text-sm">
-              <span className="inline-flex items-center gap-2 rounded-lg border border-current/20 bg-white/10 px-3 py-2 font-medium">
-                <Code2 aria-hidden="true" className="h-4 w-4" />{profile.experience} of experience
-              </span>
               <span className="text-current/65">Frontend development &amp; UI design</span>
             </div>
             <h1 id="hero-heading" className={`${headingFont.className} max-w-full [container-type:inline-size] text-[clamp(2.875rem,4.8vw,5.5rem)] font-normal tracking-[-0.025em] leading-[1.18] lg:text-[clamp(2.5rem,min(4.8vw,8svh),5.5rem)]`}>
@@ -59,6 +56,14 @@ export function Hero(): ReactNode {
               sizes="(min-width: 1024px) 46vw, calc(100vw - 48px)"
               className="object-contain object-center "
             />
+            <div data-magnetic-card className={`${styles.floatingCard} ${styles.experienceCard}`}>
+              <span className={styles.cardIcon}><BriefcaseBusiness aria-hidden="true" size={18} /></span>
+              <div><p className={styles.cardTitle}>{profile.experience}</p><p className={styles.cardCaption}>of experience</p></div>
+            </div>
+            <div data-magnetic-card className={`${styles.floatingCard} ${styles.developmentCard}`}>
+              <span className={styles.cardIcon}><Code2 aria-hidden="true" size={18} /></span>
+              <div><p className={styles.cardTitle}>Frontend developer</p><p className={styles.cardCaption}>React &amp; Vue</p></div>
+            </div>
           </PortraitReveal>
         </div>
 
