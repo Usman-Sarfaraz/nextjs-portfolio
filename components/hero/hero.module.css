@@ -1,0 +1,30 @@
+@media (max-width: 1023px) {
+  .hero {
+    margin: 0 24px;
+    overflow: visible;
+    border-radius: 0;
+    background: var(--background);
+    color: var(--foreground);
+  }
+  .hero > :global([aria-hidden="true"]):first-child { display: none; }
+  .hero > :global(.hero-navigation-space) { height: 88px; }
+  .body { padding-inline: 0; }
+  .content { gap: 24px; }
+  .copy { padding-top: 24px; padding-bottom: 12px; }
+  .copy h1 > span { font-size: min(2.75rem, 9.6cqw); }
+  .copy p { font-size: 18px; line-height: 1.65; }
+  .copy > :last-child { gap: 10px; }
+  .copy > :last-child a { padding: 14px 18px; font-size: 15px; gap: 10px; }
+  .copy > :last-child a:first-child { background: var(--foreground); color: var(--background); }
+  .copy > :last-child a:last-child { background: var(--muted); border-color: var(--border); }
+  .portrait {
+    height: auto;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 24px;
+    background: radial-gradient(ellipse at 85% 50%, #e0e3e3 0%, #afb5b6 70%);
+  }
+  :global(.dark) .portrait { background: radial-gradient(ellipse at 85% 50%, #687174 0%, #333b3e 70%); }
+  .portrait img { object-fit: cover; object-position: center bottom; }
+  .stack { margin-top: 28px; }
+}

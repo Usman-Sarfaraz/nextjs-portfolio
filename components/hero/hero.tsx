@@ -3,50 +3,22 @@ import Image from "next/image";
 import { ArrowDown, ArrowUpRight, Code2 } from "lucide-react";
 import type { ReactNode } from "react";
 import { profile } from "@/lib/profile";
-import { NavThemeToggle } from "@/components/layout/nav";
 import { FadeIn } from "@/components/ui/motion-primitives";
 import { StackMarquee } from "./stack-marquee";
 import { RotatingHeadline } from "./rotating-headline";
+import styles from "./hero.module.css";
 import portrait from "@/public/images/portfolio_portrait.png";
 
 export function Hero(): ReactNode {
   return (
-    <section aria-labelledby="hero-heading" className="hero-screen relative mx-3 my-5 lg:flex lg:h-[calc(100svh-2.5rem)] lg:flex-col overflow-hidden rounded-[2rem] bg-[#afb5b6] text-[#162022] sm:mx-5 sm:rounded-[2.5rem] dark:bg-[#333b3e] dark:text-white">
+    <section aria-labelledby="hero-heading" className={`${styles.hero} hero-screen relative mx-3 my-5 lg:flex lg:h-[calc(100svh-2.5rem)] lg:flex-col overflow-hidden rounded-[2rem] bg-[#afb5b6] text-[#162022] sm:mx-5 sm:rounded-[2.5rem] dark:bg-[#333b3e] dark:text-white`}>
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_85%_50%,#e0e3e3_0%,transparent_65%)] dark:bg-[radial-gradient(ellipse_at_85%_50%,#687174_0%,transparent_65%)]" />
 
-      <header className="relative z-20 grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-8 py-6 sm:px-16 lg:px-24 xl:px-32">
-        <a
-          href="#home"
-          className="focus-ring whitespace-nowrap px-5 py-5 text-base font-semibold tracking-tight sm:px-8 sm:text-xl"
-          style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", borderRadius: "0 0 24px 24px", backgroundColor: "var(--background)", color: "var(--foreground)", zIndex: 1 }}
-        >
-          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style={{ position: "absolute", top: 0, left: -20, fill: "var(--background)", pointerEvents: "none" }}>
-            <path d="M0 0H20V20C20 8.954 11.046 0 0 0Z" />
-          </svg>
-          Usman Sarfraz<span className="opacity-50">.</span>
-          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style={{ position: "absolute", top: 0, right: -20, fill: "var(--background)", pointerEvents: "none" }}>
-            <path d="M0 0H20C8.954 0 0 8.954 0 20Z" />
-          </svg>
-        </a>
-        <nav aria-label="Primary" className="col-span-3 col-start-1 row-start-2 flex items-center gap-6 text-sm text-current/70 lg:col-span-1 lg:row-start-1 lg:justify-self-start">
-          <a className="focus-ring rounded-md transition-opacity hover:opacity-60" href="#projects">Work</a>
-          <span aria-hidden="true" className="h-4 w-px bg-current/20" />
-          <a className="focus-ring rounded-md transition-opacity hover:opacity-60" href="#about">About</a>
-          <span aria-hidden="true" className="h-4 w-px bg-current/20" />
-          <a className="focus-ring rounded-md transition-opacity hover:opacity-60" href="#contact">Contact</a>
-        </nav>
-        <div className="col-start-3 row-start-1 flex items-center justify-self-end gap-3">
-          <NavThemeToggle />
-          <a href={`mailto:${profile.email}`} className="focus-ring group hidden items-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition-all duration-300 hover:bg-[#162022] hover:text-white hover:shadow-lg motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-95 motion-reduce:transition-none sm:inline-flex">
-            Let&rsquo;s talk
-            <ArrowUpRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5 motion-reduce:transition-none" />
-          </a>
-        </div>
-      </header>
+      <div className="hero-navigation-space" aria-hidden="true" />
 
-      <div className="hero-screen__body relative w-full lg:flex lg:min-h-0 lg:flex-1 lg:flex-col px-8 sm:px-20 lg:px-32 xl:px-40 2xl:px-48">
-        <div className="hero-screen__content relative grid items-center gap-8 lg:min-h-0 lg:flex-1 lg:grid-cols-[1.08fr_1fr] lg:gap-10">
-          <FadeIn className="relative z-10 min-w-0 pt-12 pb-8 sm:pt-16 lg:flex lg:flex-col lg:justify-center lg:py-4">
+      <div className={`${styles.body} hero-screen__body relative w-full lg:flex lg:min-h-0 lg:flex-1 lg:flex-col px-8 sm:px-20 lg:px-32 xl:px-40 2xl:px-48`}>
+        <div className={`${styles.content} hero-screen__content relative grid items-center gap-8 lg:min-h-0 lg:flex-1 lg:grid-cols-[1.08fr_1fr] lg:gap-10`}>
+          <FadeIn className={`${styles.copy} relative z-10 min-w-0 pt-12 pb-8 sm:pt-16 lg:flex lg:flex-col lg:justify-center lg:py-4`}>
             <div className="mb-7 flex flex-wrap items-center gap-3 text-xs sm:text-sm">
               <span className="inline-flex items-center gap-2 rounded-lg border border-current/20 bg-white/10 px-3 py-2 font-medium">
                 <Code2 aria-hidden="true" className="h-4 w-4" />{profile.experience} of experience
@@ -74,20 +46,20 @@ export function Hero(): ReactNode {
             </div>
           </FadeIn>
 
-          <div className="hero-screen__portrait relative mx-auto h-[440px] w-full self-center sm:h-[540px] lg:h-full lg:min-h-0 lg:max-h-[660px]">
+          <div className={`${styles.portrait} hero-screen__portrait relative mx-auto h-[440px] w-full self-center sm:h-[540px] lg:h-full lg:min-h-0 lg:max-h-[660px]`}>
             <Image
               src={portrait}
               alt={`${profile.name}, frontend developer and software engineer`}
               fill
               priority
               unoptimized
-              sizes="(min-width: 1024px) 46vw, calc(100vw - 72px)"
+              sizes="(min-width: 1024px) 46vw, calc(100vw - 48px)"
               className="object-contain object-center "
             />
           </div>
         </div>
 
-        <div className="relative z-10 flex flex-col gap-6 border-t border-current/10 py-7 sm:py-9 lg:shrink-0 lg:flex-row lg:py-5 lg:items-center lg:gap-10">
+        <div className={`${styles.stack} relative z-10 flex flex-col gap-6 border-t border-current/10 py-7 sm:py-9 lg:shrink-0 lg:flex-row lg:py-5 lg:items-center lg:gap-10`}>
           <p className="shrink-0 text-base font-medium leading-snug tracking-tight text-black dark:text-white sm:text-lg lg:max-w-[22ch]">Built with a modern stack</p>
           <StackMarquee />
         </div>

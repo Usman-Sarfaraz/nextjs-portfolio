@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 
 export const STACK = ["React", "Next.js", "Vue.js", "Nuxt", "TypeScript", "Tailwind CSS", "JavaScript", "Framer Motion", "GSAP"] as const;
 export type Technology = (typeof STACK)[number];
@@ -21,9 +22,8 @@ export function StackIcon({ name }: { name: Technology }): ReactNode {
     case "Framer Motion":
       return <svg {...props}><path d="M3 4h26L16 17H3Zm0 13h13l13 13H16L3 17Z" fill="#a855f7" /><path d="M3 17h13L3 30Z" fill="#ec4899" /></svg>;
     case "GSAP":
-      return <svg {...props}><rect width="32" height="32" rx="8" fill="#0e1710" /><path d="m18 4-10 14h8l-2 10 10-15h-8Z" fill="#88ce02" /></svg>;
+      return <Image src="/gsap.svg" alt="" aria-hidden="true" width={32} height={32} className="h-8 w-8 shrink-0 rounded-lg bg-[#0e1710] p-0.5" />;
     case "Tailwind CSS":
       return <svg {...props} viewBox="0 0 24 24" className="h-8 w-8 shrink-0 text-[#087f9e] dark:text-[#38bdf8]"><path fill="currentColor" d="M12 6c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.566.89 2.289 1.624C13.666 11.818 15.026 13.2 18 13.2c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.566-.89-2.289-1.624C16.334 7.382 14.974 6 12 6ZM6 13.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.566.89 2.289 1.624C7.666 19.018 9.026 20.4 12 20.4c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.566-.89-2.289-1.624C10.334 14.582 8.974 13.2 6 13.2Z" /></svg>;
   }
 }
-

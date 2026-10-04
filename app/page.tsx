@@ -2,6 +2,7 @@ import { ContactCard } from "@/components/contact/contact-card";
 import { AboutSection } from "@/components/about/about-section";
 import { TechnologyTrail } from "@/components/ui/technology-trail";
 import { Hero } from "@/components/hero/hero";
+import { HeroNavigation } from "@/components/hero/hero-navigation";
 import { Projects } from "@/components/projects/projects";
 import { profile } from "@/lib/profile";
 import { createMetadata, siteConfig } from "@/lib/metadata";
@@ -15,6 +16,8 @@ export const metadata: Metadata = createMetadata({
 
 export default function HomePage(): ReactNode {
   return (
+    <div>
+      <HeroNavigation />
     <main id="main-content" className="flex flex-1 flex-col gap-20 sm:gap-28">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
@@ -35,5 +38,6 @@ export default function HomePage(): ReactNode {
         <div className="h-12 sm:h-16" />
       </TechnologyTrail>
     </main>
+    </div>
   );
 }

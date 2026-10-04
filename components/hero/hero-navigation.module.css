@@ -1,0 +1,41 @@
+.mobileMenu { display: none; }
+
+@media (max-width: 1023px) {
+  .anchor { top: 0; height: 0; margin-bottom: 0; }
+  .navigation,
+  .navigation[data-expanded="true"] {
+    top: 0;
+    width: 100%;
+    max-width: none;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 16px 24px;
+    background: var(--background);
+    transition: box-shadow 250ms ease;
+  }
+  .navigation[data-expanded="true"] { box-shadow: 0 1px 0 var(--border), 0 8px 24px rgb(0 0 0 / 0.08); }
+  .navigation :global(.hero-navigation__notch),
+  .navigation :global(.hero-navigation__links),
+  .navigation :global(.hero-navigation__actions) { display: none; }
+  .navigation[data-expanded] :global(.hero-navigation__brand) { grid-column: 1; grid-row: 1; margin-left: 0; font-size: 18px; }
+  .mobileMenu { display: block; grid-column: 2; grid-row: 1; position: relative; }
+}
+
+.brandText {
+  --brand-text: #065f46;
+  --brand-shine: #34d399;
+}
+
+:global(.dark) .brandText {
+  --brand-text: #6ee7b7;
+  --brand-shine: #ffffff;
+}
+
+:global(.dark) :global(.hero-navigation[data-expanded="true"]) .notch {
+  background: #202020;
+  box-shadow: inset 0 -1px 0 rgb(255 255 255 / 0.14), 0 12px 32px rgb(0 0 0 / 0.5);
+}
+
+:global(.dark) :global(.hero-navigation[data-expanded="true"]) .notch svg {
+  fill: #202020;
+}
