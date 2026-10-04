@@ -2,6 +2,8 @@
 
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
+import { useSiteRevealed } from "@/components/layout/site-loader";
+import { useReducedMotion } from "@/lib/motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -16,11 +18,13 @@ export function FadeIn({
   duration?: number;
   className?: string;
 }): ReactNode {
+  const revealed = useSiteRevealed();
+  const reducedMotion = useReducedMotion();
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration, delay, ease: EASE }}
+      animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+      transition={{ duration: reducedMotion ? 0 : duration, delay: reducedMotion ? 0 : delay, ease: EASE }}
       className={className}
     >
       {children}

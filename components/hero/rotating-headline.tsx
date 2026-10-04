@@ -3,18 +3,20 @@
 import RotatingText from "@/components/react-bits/RotatingText";
 import { useReducedMotion } from "@/lib/motion";
 import { TitleReveal } from "@/components/ui/title-reveal";
+import { useSiteRevealed } from "@/components/layout/site-loader";
 
 const texts = ["Engineering", "Components", "Interfaces", "Development"];
 
 export function RotatingHeadline() {
   const reducedMotion = useReducedMotion();
+  const revealed = useSiteRevealed();
   return (
     <span className="hero-rotating-line my-[0.1em] flex flex-nowrap items-center gap-[0.2em] whitespace-nowrap">
       <span className="shrink-0"><TitleReveal>Creative</TitleReveal></span>
       <span className="sr-only">Engineering</span>
       <span aria-hidden="true" className="inline-flex shrink-0 items-center overflow-hidden rounded-[0.16em] bg-emerald-800 px-[0.22em] py-[0.08em] text-white dark:bg-emerald-300 dark:text-[#162022]">
-        {reducedMotion ? (
-          <span>Engineering</span>
+        {!revealed || reducedMotion ? (
+          <span style={{ opacity: revealed ? 1 : 0 }}>Engineering</span>
         ) : (
           <RotatingText
             texts={texts}

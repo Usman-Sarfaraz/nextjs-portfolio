@@ -17,8 +17,8 @@ export function Experience(): ReactNode {
             </div>
           </div>
           <ul className="mt-5 list-disc space-y-3 pl-5 text-[15px] leading-relaxed text-foreground/70">
-            <li>Led frontend development for enterprise transport and training platforms supporting international clients.</li>
-            <li>Built scalable Vue and Nuxt interfaces, role-based workflows, and analytics dashboards for 15,000+ active users across 250+ organizations.</li>
+            <li>Led frontend development for web applications, working with designers and backend engineers.</li>
+            <li>Built reusable Vue and Nuxt components, role-based interfaces, and analytics dashboards.</li>
             <li>Integrated REST APIs and Socket.io, with bilingual English/Arabic interfaces and RTL support.</li>
           </ul>
         </div>

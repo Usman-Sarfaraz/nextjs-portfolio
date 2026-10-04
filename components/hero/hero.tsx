@@ -11,9 +11,11 @@ import { PortraitReveal } from "./portrait-reveal";
 import ShinyText from "@/components/react-bits/ShinyText";
 import { TitleReveal } from "@/components/ui/title-reveal";
 import portrait from "@/public/images/portfolio_portrait.png";
+import { HeroRevealSequence } from "./hero-reveal-sequence";
 
 export function Hero(): ReactNode {
   return (
+    <HeroRevealSequence>
     <section aria-labelledby="hero-heading" className={`${styles.hero} hero-screen relative mx-3 my-5 lg:flex lg:h-[calc(100svh-2.5rem)] lg:flex-col overflow-hidden rounded-[2rem] bg-[#afb5b6] text-[#162022] sm:mx-5 sm:rounded-[2.5rem] dark:bg-[#333b3e] dark:text-white`}>
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_85%_50%,#e0e3e3_0%,transparent_65%)] dark:bg-[radial-gradient(ellipse_at_85%_50%,#687174_0%,transparent_65%)]" />
 
@@ -29,7 +31,7 @@ export function Hero(): ReactNode {
               <span className="block text-[min(1em,8.7cqw)]">
               <span className="block"><TitleReveal>Thoughtful <span className="text-emerald-800 dark:text-emerald-300">Design.</span></TitleReveal></span>
               <RotatingHeadline />
-              <span className="block"><TitleReveal>Websites that <span className="underline decoration-emerald-700/50 decoration-[0.04em] underline-offset-[0.14em] dark:decoration-emerald-300/60"><ShinyText text="work." speed={2.5} delay={1} color="var(--work-text)" shineColor="var(--work-shine)" className={styles.shinyWork ?? ""} /></span></TitleReveal></span>
+              <span className="block"><TitleReveal completesHeroText>Websites that <span className="underline decoration-emerald-700/50 decoration-[0.04em] underline-offset-[0.14em] dark:decoration-emerald-300/60"><ShinyText text="work." speed={2.5} delay={1} color="var(--work-text)" shineColor="var(--work-shine)" className={styles.shinyWork ?? ""} /></span></TitleReveal></span>
               </span>
             </h1>
             <p className="mt-6 max-w-[42ch] text-base leading-relaxed text-current/70 sm:text-lg">
@@ -75,5 +77,6 @@ export function Hero(): ReactNode {
         </div>
       </div>
     </section>
+    </HeroRevealSequence>
   );
 }

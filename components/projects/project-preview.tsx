@@ -1,0 +1,89 @@
+"use client";
+
+import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import Image from "next/image";
+import { useInView } from "motion/react";
+import { ArrowUpRight, Expand, Pause, Play, X } from "lucide-react";
+import { useReducedMotion } from "@/lib/motion";
+import acrylica from "@/public/images/projects/acrylica-full.webp";
+import aiExport from "@/public/images/projects/ai-export-full.webp";
+import psiAlgebra from "@/public/images/projects/psi-algebra-full.webp";
+import cleovici from "@/public/images/projects/cleovici-full.webp";
+import styles from "./projects.module.css";
+
+const pages = { acrylica, "ai-export": aiExport, "psi-algebra": psiAlgebra, cleovici };
+export type PreviewProject = { id: keyof typeof pages; name: string; url: string };
+
+function Walkthrough({ project, paused = false }: { project: PreviewProject; paused?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref);
+  const reducedMotion = useReducedMotion();
+  return (
+    <div ref={ref} className={styles.preview} data-playing={inView && !paused && !reducedMotion}>
+      <Image src={pages[project.id]} alt={`${project.name} full website preview`} unoptimized
+        sizes="(min-width: 1024px) 70vw, 100vw" className={styles.walkthroughImage} />
+    </div>
+  );
+}
+
+function PreviewModal({ project, dismiss }: { project: PreviewProject; dismiss: () => void }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    const element = dialog.current!;
+    const previousOverflow = document.documentElement.style.overflow;
+    element.showModal();
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      element.close();
+      document.documentElement.style.overflow = previousOverflow;
+    };
+  }, []);
+  return createPortal(
+    <dialog ref={dialog} className={styles.modal} aria-labelledby="project-preview-title" data-lenis-prevent
+      onCancel={dismiss} onClick={(event) => {
+        if (event.target !== event.currentTarget) return;
+        const box = event.currentTarget.getBoundingClientRect();
+        if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dismiss();
+      }}>
+      <header className={styles.modalHeader}>
+        <h2 id="project-preview-title">{project.name}</h2>
+        <button type="button" autoFocus className={styles.iconButton} onClick={dismiss} aria-label="Close project preview"><X size={22} /></button>
+      </header>
+      <Walkthrough project={project} paused={paused} />
+      <footer className={styles.modalFooter}>
+        <button type="button" className={styles.playButton} onClick={() => setPaused(!paused)} aria-label={paused ? "Play walkthrough" : "Pause walkthrough"}>
+          {paused ? <Play size={16} /> : <Pause size={16} />} {paused ? "Play" : "Pause"}
+        </button>
+        <a href={project.url} target="_blank" rel="noopener noreferrer" className={styles.visit}>Visit website <ArrowUpRight size={18} /><span className="sr-only"> (opens in a new tab)</span></a>
+      </footer>
+    </dialog>, document.body);
+}
+
+export function ProjectPreview({ project }: { project: PreviewProject }) {
+  const [open, setOpen] = useState(false);
+  return <>
+    <button type="button" className={styles.previewButton} aria-label={`Open ${project.name} project preview`} aria-haspopup="dialog" onClick={() => setOpen(true)}>
+      <Walkthrough project={project} />
+      <span className={styles.expandBadge}><Expand size={16} aria-hidden="true" /> View project</span>
+    </button>
+    {open && <PreviewModal project={project} dismiss={() => setOpen(false)} />}
+  </>;
+}
+
+export function TiltCard({ children }: { children: ReactNode }) {
+  const reducedMotion = useReducedMotion();
+  function move(event: PointerEvent<HTMLDivElement>) {
+    if (reducedMotion || event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    event.currentTarget.style.setProperty("--tilt-x", `${-y * 5}deg`);
+    event.currentTarget.style.setProperty("--tilt-y", `${x * 5}deg`);
+  }
+  return <div className={`${styles.frame} ${styles.tiltCard}`} onPointerMove={move} onPointerLeave={(event) => {
+    event.currentTarget.style.setProperty("--tilt-x", "0deg");
+    event.currentTarget.style.setProperty("--tilt-y", "0deg");
+  }}>{children}</div>;
+}

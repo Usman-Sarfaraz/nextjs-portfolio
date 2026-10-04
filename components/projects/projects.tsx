@@ -1,82 +1,84 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { ProjectPreview, TiltCard } from "./project-preview";
+import { ArrowUpRight } from "lucide-react";
 import { TitleReveal } from "@/components/ui/title-reveal";
-import { headingFont } from "@/lib/fonts";
-import { ArrowRight, GraduationCap, Truck } from "lucide-react";
-import type { ComponentType, ReactNode } from "react";
-import { FadeIn } from "@/components/ui/motion-primitives";
+import ShinyText from "@/components/react-bits/ShinyText";
+import { useSiteRevealed } from "@/components/layout/site-loader";
+import styles from "./projects.module.css";
 
-type Project = {
-  id: string;
-  name: string;
-  category: string;
-  title: string;
-  description: string;
-  period: string;
-  highlights: readonly string[];
-  technologies: readonly string[];
-  icon: ComponentType<{ className?: string }>;
-};
-
-const PROJECTS: readonly Project[] = [
-  {
-    id: "ola-tms",
-    name: "OLA TMS",
-    category: "Training management",
-    title: "A training platform built for Oman’s logistics community.",
-    description: "Designed and led frontend architecture for the Oman Logistics Association’s training management system. Built role-based navigation, approval workflows, payments, support tickets, and analytics, with dynamic language switching and RTL support.",
-    period: "Apr 2025 – Jan 2026",
-    highlights: ["250+ organizations", "15,000+ active users", "8,000+ enrollments"],
-    technologies: ["Nuxt 4", "Vue 3", "TypeScript", "Pinia", "Tailwind CSS", "ECharts"],
-    icon: GraduationCap,
-  },
-  {
-    id: "opal-stms",
-    name: "OPAL STMS",
-    category: "Smart transport",
-    title: "Real-time visibility for transport operations.",
-    description: "Led frontend development for a Nuxt 3 migration, collaborating with a senior full-stack engineer. Built live vehicle and driver monitoring, geofencing, reporting, and bilingual English/Arabic interfaces across a 19-module system.",
-    period: "Aug 2024 – Apr 2025",
-    highlights: ["19 frontend modules", "13 reporting modules", "40% less boilerplate"],
-    technologies: ["Nuxt 3", "Vue 3", "TypeScript", "Nuxt UI", "Socket.io", "ECharts"],
-    icon: Truck,
-  },
-];
+const PROJECTS = [
+  { id: "acrylica", name: "Acrylica", category: "Branding & signage", description: "A website showcasing signage, printing, and brand production services.", url: "https://acrylica-zeta.vercel.app/" },
+  { id: "ai-export", name: "AI Export", category: "AI consulting", description: "A website introducing AI consulting services, products, and adoption programmes.", url: "https://ai-export.vercel.app/" },
+  { id: "psi-algebra", name: "PSI Algebra", category: "Privacy, security & AI", description: "A website presenting privacy, cybersecurity, and AI advisory services.", url: "https://psi-algebra.vercel.app/" },
+  { id: "cleovici", name: "Cleovici", category: "Fintech consulting", description: "A website for fintech consulting, financial services, and compliance expertise.", url: "https://cleovici.vercel.app/" },
+] as const;
 
 export type ProjectsProps = { withHeadline?: boolean };
 
-export function Projects({ withHeadline = false }: ProjectsProps): ReactNode {
+export function Projects({ withHeadline = false }: ProjectsProps) {
+  const [selected, setSelected] = useState(0);
+  const cards = useRef<HTMLDivElement>(null);
+  const revealed = useSiteRevealed();
+
+  useEffect(() => {
+    if (!revealed) return;
+    let frame = 0;
+    const update = () => {
+      const articles = Array.from(cards.current?.querySelectorAll<HTMLElement>("article") ?? []);
+      let current = 0;
+      articles.forEach((article, index) => {
+        if (article.getBoundingClientRect().top <= window.innerHeight * 0.35) current = index;
+      });
+      setSelected(current);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [revealed]);
+
   return (
-    <section className="relative w-full">
-      <div className="mx-auto w-full max-w-275 px-6 sm:px-10">
-        {withHeadline && (
-          <FadeIn className="flex flex-col items-center gap-5 pt-12 pb-10 text-center sm:pt-20 sm:pb-14">
-            <h2 className={`${headingFont.className} text-[2.5rem] font-normal tracking-tight leading-[1.05] md:text-[3rem] lg:text-[3.5rem]`}><TitleReveal>Selected work</TitleReveal></h2>
-            <p className="max-w-[38ch] text-lg leading-relaxed tracking-tight text-foreground/65 sm:text-xl">Enterprise platforms I&rsquo;ve helped design and build, making complex workflows easier to use.</p>
-          </FadeIn>
-        )}
-        <div className="grid gap-6 md:grid-cols-2 md:gap-7">
-          {PROJECTS.map((project, index) => {
-            const Icon = project.icon;
-            return (
-              <FadeIn key={project.id} delay={index * 0.06} className="h-full">
-                <article className="project-card flex h-full flex-col gap-5 rounded-3xl border border-foreground/8 bg-background p-5 sm:p-7">
-                  <header className="flex items-center gap-3">
-                    <span aria-hidden="true" className="flex h-10 w-10 items-center justify-center rounded-xl border border-foreground/10"><Icon className="h-5 w-5" /></span>
-                    <div><h3 className={`${headingFont.className} text-base font-normal tracking-tight`}><TitleReveal>{project.name}</TitleReveal></h3><p className="text-xs text-foreground/55">{project.category}</p></div>
-                  </header>
-                  <div className="flex flex-wrap gap-2 rounded-2xl border border-foreground/5 bg-foreground/3 p-4">
-                    {project.highlights.map((highlight) => <span key={highlight} className="rounded-lg bg-background px-3 py-2 text-sm font-medium">{highlight}</span>)}
-                  </div>
-                  <h4 className={`${headingFont.className} text-[22px] font-normal tracking-tight leading-tight`}><TitleReveal>{project.title}</TitleReveal></h4>
-                  <p className="text-[15px] leading-relaxed text-foreground/65">{project.description}</p>
-                  <div className="mt-auto flex flex-wrap gap-2">{project.technologies.map((technology) => <span key={technology} className="rounded-full border border-foreground/8 px-2.5 py-1 text-xs text-foreground/70">{technology}</span>)}</div>
-                  <p className="text-xs text-foreground/50">Frontend development · {project.period}</p>
-                </article>
-              </FadeIn>
-            );
-          })}
-        </div>
-        <div className="mt-12 flex justify-center">
-          <a href="#contact" className="focus-ring inline-flex items-center gap-2 rounded-xl border border-foreground/8 bg-background px-5 py-2.5 text-sm font-medium">Let&rsquo;s build something <ArrowRight aria-hidden="true" className="h-4 w-4" /></a>
+    <section className={styles.section} aria-label="Frontend projects">
+      {withHeadline && (
+        <header className={styles.header}>
+          <p className={styles.label}><span className={styles.labelText}>Work</span></p>
+          <h2 className={styles.heading}><TitleReveal><ShinyText text="Recent frontend projects" className={styles.headingShine ?? ""} speed={2.5} delay={1} color="var(--work-heading-color)" shineColor="var(--work-heading-shine)" /></TitleReveal></h2>
+        </header>
+      )}
+      <div className={styles.showcase}>
+        <nav aria-label="Project navigation" className={styles.list}>
+          {PROJECTS.map((item, index) => (
+            <a key={item.id} href={`#project-${item.id}`} aria-current={selected === index ? "location" : undefined} className={styles.tab}>
+              <span>{item.name}</span><ArrowUpRight size={16} aria-hidden="true" />
+            </a>
+          ))}
+        </nav>
+        <div ref={cards} className={styles.cards}>
+          {PROJECTS.map((project) => (
+            <article key={project.id} id={`project-${project.id}`} aria-labelledby={`title-${project.id}`} className={styles.panel}>
+              <TiltCard>
+                <ProjectPreview project={project} />
+                <div className={styles.details}>
+                  <div><p className={styles.category}>{project.category} <span>· Frontend development</span></p>
+                    <h3 id={`title-${project.id}`} className={styles.name}>{project.name}</h3>
+                    <p className={styles.description}>{project.description}</p></div>
+                  <a href={project.url} target="_blank" rel="noopener noreferrer" className={styles.visit}>
+                    Visit website <ArrowUpRight size={18} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </div>
+              </TiltCard>
+            </article>
+          ))}
         </div>
       </div>
     </section>

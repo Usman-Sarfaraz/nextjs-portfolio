@@ -1,0 +1,13 @@
+.section { --intro-accent: #065f46; --intro-shine: #34d399; background: var(--background); color: var(--foreground); padding: 64px 0 40px; }
+:global(.dark) .section { --intro-accent: #6ee7b7; --intro-shine: #ffffff; }
+.inner { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+.label { display: flex; align-items: center; gap: 14px; margin: 0 0 32px; font-size: 12px; font-weight: 500; line-height: 1.5; }
+.tag { display: inline-flex; align-items: center; gap: 14px; color: var(--foreground); font-family: var(--font-geist-sans), sans-serif; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.6; }
+.tag::before { content: ""; width: 28px; height: 1px; background: currentColor; opacity: 0.4; }
+.statement { margin: 0; font-family: var(--font-outfit), sans-serif; font-size: clamp(30px, 3.3vw, 48px); font-weight: 400; line-height: 1.35; letter-spacing: -0.035em; text-wrap: pretty; }
+@media (max-width: 767px) {
+  .section { padding: 32px 0 16px; }
+  .inner { padding: 0 24px; }
+  .label { margin-bottom: 24px; }
+  .statement { font-size: clamp(27px, 6.8vw, 40px); line-height: 1.4; }
+}

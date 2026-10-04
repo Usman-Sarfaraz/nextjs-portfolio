@@ -20,7 +20,7 @@ export function AboutSection(): ReactNode {
                 I&rsquo;m a <strong className="font-semibold text-foreground">frontend developer and software engineer</strong> based in {profile.location}, with <strong className="font-semibold text-foreground">{profile.experience} of experience</strong> turning ideas into responsive, intuitive web applications. I work with React, Next.js, Vue, Nuxt, TypeScript, and Tailwind CSS, taking interfaces from design through development.
               </p>
               <p>
-                At Bitlogicx, I&rsquo;ve led frontend development for enterprise transport and training platforms supporting <strong className="font-semibold text-foreground">15,000+ active users across 250+ organizations</strong>. My work includes role-based interfaces, approval workflows, real-time dashboards, and English/Arabic experiences with RTL support.
+                At Bitlogicx, I work on frontend development, from building reusable components to connecting interfaces with APIs. My experience includes dashboards, role-based navigation, and multilingual interfaces with RTL support.
               </p>
               <p>
                 My focus is the frontend, with additional full-stack experience working with APIs, AdonisJS, and MySQL. I care about clean architecture, thoughtful interactions, and making complex workflows feel straightforward to use.
