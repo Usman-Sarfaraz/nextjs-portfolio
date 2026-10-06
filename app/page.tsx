@@ -4,6 +4,7 @@ import { TechnologyTrail } from "@/components/ui/technology-trail";
 import { Hero } from "@/components/hero/hero";
 import { IntroSection } from "@/components/intro/intro-section";
 import { HeroNavigation } from "@/components/hero/hero-navigation";
+import { WhyMe } from "@/components/why-me/why-me";
 import { Services } from "@/components/services/services";
 import { Projects } from "@/components/projects/projects";
 import { profile } from "@/lib/profile";
@@ -37,6 +38,7 @@ export default function HomePage(): ReactNode {
         <div className="pb-4"><IntroSection /></div>
         <section id="projects" className="scroll-mt-24"><Projects withHeadline /></section>
         <Services />
+        <WhyMe />
         <AboutSection />
         <section id="contact" className="scroll-mt-24"><ContactCard /></section>
         <div className="h-12 sm:h-16" />
