@@ -1,6 +1,6 @@
 import { headingFont } from "@/lib/fonts";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Code2, BriefcaseBusiness } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Download, BriefcaseBusiness } from "lucide-react";
 import type { ReactNode } from "react";
 import { profile } from "@/lib/profile";
 import { FadeIn } from "@/components/ui/motion-primitives";
@@ -59,14 +59,14 @@ export function Hero(): ReactNode {
               className="object-contain object-center "
             />
             <div className={styles.portraitCards}>
-            <div data-magnetic-card className={`${styles.floatingCard} ${styles.experienceCard}`}>
+            <div data-magnetic-card className={`${styles.floatingCard} ${styles.developmentCard}`}>
               <span className={styles.cardIcon}><BriefcaseBusiness aria-hidden="true" size={18} /></span>
               <div><p className={styles.cardTitle}>{profile.experience}</p><p className={styles.cardCaption}>of experience</p></div>
             </div>
-            <div data-magnetic-card className={`${styles.floatingCard} ${styles.developmentCard}`}>
-              <span className={styles.cardIcon}><Code2 aria-hidden="true" size={18} /></span>
-              <div><p className={styles.cardTitle}>Frontend developer</p><p className={styles.cardCaption}>React &amp; Vue</p></div>
-            </div>
+            <a href="/resume/Usman%20Sarfraz%20Resume.pdf" download="Usman Sarfraz Resume.pdf" data-magnetic-card className={`${styles.floatingCard} ${styles.experienceCard} ${styles.resumeCard}`} aria-label="Download my resume as a PDF">
+              <span className={styles.cardIcon}><Download aria-hidden="true" size={18} /></span>
+              <div><p className={styles.cardTitle}>My Resume</p><p className={styles.cardCaption}>Download PDF</p></div>
+            </a>
             </div>
           </PortraitReveal>
         </div>
