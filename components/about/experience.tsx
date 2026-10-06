@@ -1,26 +1,22 @@
-import { TitleReveal } from "@/components/ui/title-reveal";
-import { headingFont } from "@/lib/fonts";
-import type { ReactNode } from "react";
+import { ArrowUpRight } from "lucide-react";
+import styles from "./about-section.module.css";
 
-export function Experience(): ReactNode {
+export function Experience() {
   return (
-    <div className="flex flex-col gap-3">
-      <h3 className={`${headingFont.className} text-[15px] font-normal tracking-tight text-foreground`}><TitleReveal>Experience</TitleReveal></h3>
-      <article className="rounded-4xl border border-foreground/5 bg-foreground/2 p-2 sm:p-4 dark:bg-foreground/5">
-        <div className="rounded-3xl border border-foreground/5 bg-background p-5 sm:p-6">
-          <div className="flex items-start gap-4">
-            <span aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-foreground text-lg font-semibold text-background">B</span>
-            <div>
-              <h4 className={`${headingFont.className} text-lg font-normal tracking-tight`}><TitleReveal>Bitlogicx</TitleReveal></h4>
-              <p className="mt-1 text-sm text-foreground/70">Frontend Developer · Aug 2024 – Present</p>
-              <p className="mt-1 text-sm text-foreground/55">Lahore, Pakistan</p>
-            </div>
-          </div>
-          <ul className="mt-5 list-disc space-y-3 pl-5 text-[15px] leading-relaxed text-foreground/70">
+    <div className={styles.experience}>
+      <h3 className={styles.smallHeading}>Experience</h3>
+      <article className={styles.role}>
+        <div className={styles.timeline}><span className={styles.timelineDot} /><span className={styles.period}>Aug 2024 — Present</span><span className={styles.current}>Current role</span></div>
+        <div className={styles.roleContent}>
+          <a href="https://bitlogicx.com/" target="_blank" rel="noopener noreferrer" className={styles.company}>Bitlogicx <ArrowUpRight size={20} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span></a>
+          <h4 className={styles.roleTitle}>Frontend Developer</h4>
+          <p className={styles.location}>Lahore, Pakistan</p>
+          <ul className={styles.contributions}>
             <li>Led frontend development for web applications, working with designers and backend engineers.</li>
             <li>Built reusable Vue and Nuxt components, role-based interfaces, and analytics dashboards.</li>
             <li>Integrated REST APIs and Socket.io, with bilingual English/Arabic interfaces and RTL support.</li>
           </ul>
+          <p className={styles.roleTools}>Vue · Nuxt · REST APIs · Socket.io</p>
         </div>
       </article>
     </div>

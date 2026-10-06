@@ -1,7 +1,8 @@
 "use client";
 
 import { TitleReveal } from "@/components/ui/title-reveal";
-import { headingFont } from "@/lib/fonts";
+import styles from "./about-section.module.css";
+import { useInView } from "motion/react";
 import { RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
@@ -110,8 +111,10 @@ export function Stack(): ReactNode {
   const measureRef = useRef<HTMLDivElement | null>(null);
   const chipRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [resetKey, setResetKey] = useState(0);
+  const inView = useInView(containerRef, { once: true, amount: 0.2 });
 
   useEffect(() => {
+    if (!inView) return;
     const container = containerRef.current;
     const measure = measureRef.current;
     if (!container || !measure) return;
@@ -272,15 +275,15 @@ export function Stack(): ReactNode {
       cancelled = true;
       cleanup?.();
     };
-  }, [resetKey]);
+  }, [resetKey, inView]);
 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
-        <h3 className={`${headingFont.className} text-foreground text-[15px] font-normal tracking-tight`}><TitleReveal>Stack</TitleReveal></h3>
+        <h3 className={styles.stackHeading}><TitleReveal>Stack</TitleReveal></h3>
       </div>
 
-      <div className="border-foreground/5 bg-foreground/2 dark:bg-foreground/5 relative h-40 overflow-hidden rounded-4xl border sm:h-64">
+      <div className="border-foreground/5 bg-[#e0e3e3] dark:bg-foreground/5 relative h-40 overflow-hidden rounded-4xl border sm:h-64">
         <button
           type="button"
           onClick={() => setResetKey((k) => k + 1)}

@@ -1,36 +1,20 @@
+import { Check } from "lucide-react";
 import { TitleReveal } from "@/components/ui/title-reveal";
-import { headingFont } from "@/lib/fonts";
-import type { ReactNode } from "react";
+import styles from "./about-section.module.css";
 
 const SKILLS = [
-  "React & Next.js",
-  "Vue & Nuxt",
-  "JavaScript & TypeScript",
-  "Responsive UI Development",
-  "UI Design & Implementation",
-  "REST API Integration",
-  "Real-time Dashboards",
-  "Role-based Interfaces",
-  "Internationalization & RTL",
-  "Animation & Interaction",
-  "Full-stack Integration"
+  "React & Next.js", "Vue & Nuxt", "JavaScript & TypeScript",
+  "Responsive UI development", "UI design & implementation", "REST API integration",
+  "Real-time dashboards", "Role-based interfaces", "Internationalization & RTL",
+  "Animation & interaction", "Full-stack integration",
 ];
 
-export function Skills(): ReactNode {
+export function Skills() {
   return (
-    <div className="flex flex-col gap-3">
-      <h3 className={`${headingFont.className} text-[15px] font-normal tracking-tight text-foreground`}><TitleReveal>What I do</TitleReveal></h3>
-      <div className="rounded-4xl border border-foreground/5 bg-foreground/2 p-2 sm:p-4 dark:bg-foreground/5">
-        <div className="flex flex-wrap gap-3">
-          {SKILLS.map((skill) => (
-            <span
-              key={skill}
-              className="rounded-full border border-foreground/8 bg-background px-4 py-2 text-[14px] tracking-tight text-foreground/85 sm:text-[15px]"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
+    <div className={styles.skills}>
+      <h3 className={styles.smallHeading}><TitleReveal>What I do</TitleReveal></h3>
+      <div className={styles.skillsBody}><p className={styles.skillsIntro}>Interfaces that look considered.<br /><span>Engineering that holds up.</span></p>
+        <ul className={styles.skillList}>{SKILLS.map((skill) => <li key={skill}><Check size={13} strokeWidth={1.5} aria-hidden="true" />{skill}</li>)}</ul>
       </div>
     </div>
   );
