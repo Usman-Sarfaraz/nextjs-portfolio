@@ -16,6 +16,18 @@ type Chip = {
 
 const CHIPS: Chip[] = [
   {
+    label: "Nuxt UI",
+    slug: "nuxt",
+    bg: "#007f5f",
+    fg: "#ffffff",
+  },
+  {
+    label: "shadcn/ui",
+    slug: "shadcnui",
+    bg: "#27272a",
+    fg: "#ffffff",
+  },
+  {
     "label": "React",
     "slug": "react",
     "bg": "#1FB6CB",
@@ -283,7 +295,7 @@ export function Stack(): ReactNode {
         <h3 className={styles.stackHeading}><TitleReveal>Stack</TitleReveal></h3>
       </div>
 
-      <div className="border-foreground/5 bg-[#e0e3e3] dark:bg-foreground/5 relative h-40 overflow-hidden rounded-4xl border sm:h-64">
+      <div className="border-foreground/5 bg-[#e0e3e3] dark:bg-foreground/5 relative h-48 overflow-hidden rounded-[56px_20px_56px_20px] border sm:h-72">
         <button
           type="button"
           onClick={() => setResetKey((k) => k + 1)}
