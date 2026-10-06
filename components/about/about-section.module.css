@@ -24,12 +24,12 @@
 .contributions li::before { content: ""; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; border-radius: 50%; background: var(--experience-accent); }
 .roleTools { margin: 22px 0 0; font-size: 10px; color: var(--experience-accent); line-height: 1.8; }
 .education { padding-left: 32px; border-left: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent); }
-.educationBody { position: relative; overflow: hidden; min-height: 280px; padding: 26px; border-radius: 20px 20px 56px 20px; background: color-mix(in srgb, var(--foreground) 4%, var(--background)); }
+.educationBody { position: relative; overflow: hidden; min-height: 280px; padding: 26px; border-radius: 20px 20px 56px 20px; background: #065f46; color: #f0fdf4; --experience-accent: #a7f3d0; }
 .educationIcon { color: var(--experience-accent); }
 .educationPeriod { margin: 24px 0 16px; font-size: 11px; opacity: .55; }
 .degree { position: relative; z-index: 1; margin: 0; font-family: var(--font-outfit), sans-serif; font-size: 24px; font-weight: 400; letter-spacing: -.025em; line-height: 1.3; }
-.school { position: relative; z-index: 1; margin: 16px 0 0; font-size: 12px; line-height: 1.7; opacity: .65; }
-.educationMark { position: absolute; right: 14px; bottom: -16px; font-family: var(--font-outfit), sans-serif; font-size: 84px; letter-spacing: -.085em; color: var(--experience-accent); opacity: .06; pointer-events: none; }
+.school { position: relative; z-index: 1; margin: 16px 0 0; font-size: 12px; line-height: 1.7; color: #ffffff; opacity: .9; }
+.educationMark { position: absolute; right: 14px; bottom: -16px; font-family: var(--font-outfit), sans-serif; font-size: 84px; letter-spacing: -.085em; color: var(--experience-accent); opacity: .12; pointer-events: none; }
 .expertise { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; padding-top: 32px; border-top: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent); }
 .skills { display: flex; flex-direction: column; gap: 12px; }
 .skills > h3 { margin: 0; }
