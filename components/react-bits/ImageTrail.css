@@ -1,6 +1,7 @@
 .rb-image-trail { position: relative; }
 .rb-image-trail-content { display: flex; flex-direction: column; gap: 5rem; }
 @media (min-width: 640px) { .rb-image-trail-content { gap: 7rem; } }
+@media (max-width: 767px) { .rb-image-trail-content { gap: 3rem; } }
 .rb-image-trail-layer {
   position: absolute;
   inset: 0;
@@ -12,8 +13,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   opacity: 0;
   will-change: transform, opacity;
 }

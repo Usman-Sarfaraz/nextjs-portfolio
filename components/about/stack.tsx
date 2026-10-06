@@ -295,7 +295,7 @@ export function Stack(): ReactNode {
         <h3 className={styles.stackHeading}><TitleReveal>Stack</TitleReveal></h3>
       </div>
 
-      <div className="border-foreground/5 bg-[#e0e3e3] dark:bg-foreground/5 relative h-56 overflow-hidden rounded-[56px_20px_56px_20px] border sm:h-80">
+      <div className="border-foreground/5 bg-[#e0e3e3] dark:bg-foreground/5 relative h-80 overflow-hidden rounded-[56px_20px_56px_20px] border sm:h-80">
         <button
           type="button"
           onClick={() => setResetKey((k) => k + 1)}

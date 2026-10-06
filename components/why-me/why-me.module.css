@@ -39,3 +39,5 @@
 
 .watermark { position: absolute; right: 22px; bottom: 8px; z-index: -1; pointer-events: none; user-select: none; font-family: var(--font-outfit), sans-serif; font-size: clamp(100px, 12vw, 160px); font-weight: 600; line-height: 1; letter-spacing: -.08em; color: var(--why-accent); opacity: .07; }
 @media (max-width: 767px) { .watermark { right: 18px; bottom: 10px; font-size: 120px; } }
+
+@media (max-width: 767px) { .principles { order: 1; } .manifesto { order: 2; } }

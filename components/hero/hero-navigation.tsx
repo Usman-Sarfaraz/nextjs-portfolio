@@ -9,11 +9,9 @@ import ShinyText from "@/components/react-bits/ShinyText";
 import StaggeredMenu from "@/components/react-bits/StaggeredMenu";
 
 const mobileItems = [
-  { label: "Home", link: "#home", ariaLabel: "Go to home" },
+  { label: "About", link: "#intro", ariaLabel: "About Usman" },
   { label: "Work", link: "#projects", ariaLabel: "View selected work" },
   { label: "Services", link: "#services", ariaLabel: "Explore services" },
-  { label: "About", link: "#about", ariaLabel: "About Usman" },
-  { label: "Contact", link: "#contact", ariaLabel: "Contact Usman" },
 ];
 
 export function HeroNavigation() {
@@ -39,13 +37,11 @@ export function HeroNavigation() {
           </svg>
         </div>
         <nav aria-label="Primary" className="hero-navigation__links">
+          <a className="focus-ring rounded-md hover:opacity-60" href="#intro">About</a>
+          <span aria-hidden="true" className="h-4 w-px bg-current/20" />
           <a className="focus-ring rounded-md hover:opacity-60" href="#projects">Work</a>
           <span aria-hidden="true" className="h-4 w-px bg-current/20" />
           <a className="focus-ring rounded-md hover:opacity-60" href="#services">Services</a>
-          <span aria-hidden="true" className="h-4 w-px bg-current/20" />
-          <a className="focus-ring rounded-md hover:opacity-60" href="#about">About</a>
-          <span aria-hidden="true" className="h-4 w-px bg-current/20" />
-          <a className="focus-ring rounded-md hover:opacity-60" href="#contact">Contact</a>
         </nav>
         <a href="#home" className="hero-navigation__brand focus-ring rounded-md whitespace-nowrap font-semibold tracking-tight">
           {brand}

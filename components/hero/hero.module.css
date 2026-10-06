@@ -87,7 +87,33 @@
   .developmentCard { right: max(8%, calc((100cqh - 100cqw) / 2 + 12px)); }
 }
 
-.resumeCard { text-decoration: none; cursor: pointer; }
-.resumeCard:hover { background: rgb(255 255 255 / .65); }
+.resumeCard { text-decoration: none; cursor: pointer; background: rgb(255 255 255 / .78); }
+.resumeCard:hover { background: rgb(255 255 255 / .92); }
 :global(.dark) .resumeCard:hover { background: rgb(25 32 30 / .8); }
 .resumeCard:focus-visible { outline: 2px solid #34d399; outline-offset: 4px; }
+
+@property --resume-beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.resumeCard::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 2px;
+  pointer-events: none;
+  background: conic-gradient(from var(--resume-beam-angle), transparent 0deg 270deg, #065f46 310deg, #6ee7b7 340deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: resume-border-beam 4s linear infinite;
+}
+@keyframes resume-border-beam {
+  to { --resume-beam-angle: 360deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .resumeCard::before { animation: none; }
+}
