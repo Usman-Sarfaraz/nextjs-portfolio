@@ -6,11 +6,11 @@
 .heading { margin: 0; text-align: left; font-family: var(--font-outfit), sans-serif; font-size: clamp(30px, 3vw, 42px); font-weight: 400; line-height: 1.25; letter-spacing: -.035em; }
 .heading :global(.shiny-text) { padding-bottom: .12em; margin-bottom: -.12em; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: start; gap: 80px; }
-.manifesto { position: sticky; top: 110px; padding: 34px; overflow: hidden; border-radius: 24px 24px 80px 24px; background: var(--why-surface); }
+.manifesto { position: sticky; top: 110px; padding: 34px; overflow: hidden; isolation: isolate; border-radius: 24px 24px 80px 24px; background: var(--why-surface); }
 .statement { margin: 12px 0 26px; font-family: var(--font-outfit), sans-serif; font-size: clamp(42px, 5.4vw, 72px); font-weight: 400; line-height: 1.05; letter-spacing: -.055em; }
 .statement > span { color: var(--why-accent); font-family: var(--font-fraunces), Georgia, serif; font-style: italic; letter-spacing: -.06em; }
 .manifestoCopy { margin: 0; font-size: 13px; line-height: 1.8; opacity: .75; }
-.signature { display: flex; align-items: center; gap: 12px; margin-top: 42px; padding-top: 22px; border-top: 1px solid color-mix(in srgb, var(--why-text) 12%, transparent); }
+.signature { display: flex; align-items: center; gap: 12px; margin-top: 42px; padding-top: 22px; }
 .monogram { font-family: var(--font-outfit), sans-serif; color: var(--why-accent); font-size: 30px; letter-spacing: -.08em; }
 .signature > div { display: flex; flex-direction: column; gap: 5px; font-size: 12px; }
 .signature > div > span:last-child { font-size: 10px; opacity: .7; }
@@ -36,3 +36,6 @@
 @media (max-width: 1023px) { .layout { gap: 40px; } .manifesto { padding: 26px; } .statement { font-size: 52px; } }
 @media (max-width: 767px) { .section { padding: 32px 24px; border-radius: 20px; } .header { gap: 18px; padding-bottom: 24px; margin-bottom: 20px; } .heading { text-align: left; } .layout { grid-template-columns: 1fr; gap: 34px; } .manifesto { position: relative; top: auto; padding: 28px; border-bottom-right-radius: 64px; } .statement { font-size: clamp(48px, 12vw, 68px); margin-top: 8px; } .signature { margin-top: 30px; } .principleTitle { font-size: 23px; } }
 @media (prefers-reduced-motion: reduce) { .reveal, .trigger, .toggle, .toggle svg, .experienceLink svg { transition: none; } .experienceLink:hover svg { transform: none; } }
+
+.watermark { position: absolute; right: 22px; bottom: 8px; z-index: -1; pointer-events: none; user-select: none; font-family: var(--font-outfit), sans-serif; font-size: clamp(100px, 12vw, 160px); font-weight: 600; line-height: 1; letter-spacing: -.08em; color: var(--why-accent); opacity: .07; }
+@media (max-width: 767px) { .watermark { right: 18px; bottom: 10px; font-size: 120px; } }

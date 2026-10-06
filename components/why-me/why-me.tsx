@@ -23,6 +23,7 @@ export function WhyMe() {
     <section id="why-me" aria-labelledby="why-me-title" className={styles.section}>
       <div className={styles.layout}>
         <motion.div className={styles.manifesto} initial={reducedMotion ? false : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .2 }} transition={{ duration: .8 }}>
+          <span className={styles.watermark} aria-hidden="true">US.</span>
           <p className={styles.statement}>Good work<br />starts with<br /><span>care.</span></p>
           <p className={styles.manifestoCopy}>For the product. For the people using it.<br />And for the people I’m building it with.</p>
           <div className={styles.signature}><span className={styles.monogram} aria-hidden="true">us.</span><div><span>Usman Sarfraz</span><span>Design mindset. Developer’s precision.</span></div></div>
