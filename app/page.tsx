@@ -4,6 +4,7 @@ import { TechnologyTrail } from "@/components/ui/technology-trail";
 import { Hero } from "@/components/hero/hero";
 import { IntroSection } from "@/components/intro/intro-section";
 import { HeroNavigation } from "@/components/hero/hero-navigation";
+import { Services } from "@/components/services/services";
 import { Projects } from "@/components/projects/projects";
 import { profile } from "@/lib/profile";
 import { createMetadata, siteConfig } from "@/lib/metadata";
@@ -33,8 +34,9 @@ export default function HomePage(): ReactNode {
       }).replace(/</g, "\\u003c") }} />
       <section id="home"><Hero /></section>
       <TechnologyTrail>
-        <div className="pb-16"><IntroSection /></div>
+        <div className="pb-4"><IntroSection /></div>
         <section id="projects" className="scroll-mt-24"><Projects withHeadline /></section>
+        <Services />
         <AboutSection />
         <section id="contact" className="scroll-mt-24"><ContactCard /></section>
         <div className="h-12 sm:h-16" />

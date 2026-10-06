@@ -10,6 +10,7 @@ import styles from "./projects.module.css";
 
 const PROJECTS = [
   { id: "acrylica", name: "Acrylica", category: "Branding & signage", description: "A website showcasing signage, printing, and brand production services.", url: "https://acrylica-zeta.vercel.app/" },
+  { id: "bitlogicx", name: "Bitlogicx", category: "Our company · Software & AI", description: "Our company website showcasing custom software development, AI solutions, and digital products.", url: "https://bitlogicx.com/" },
   { id: "ai-export", name: "AI Export", category: "AI consulting", description: "A website introducing AI consulting services, products, and adoption programmes.", url: "https://ai-export.vercel.app/" },
   { id: "psi-algebra", name: "PSI Algebra", category: "Privacy, security & AI", description: "A website presenting privacy, cybersecurity, and AI advisory services.", url: "https://psi-algebra.vercel.app/" },
   { id: "cleovici", name: "Cleovici", category: "Fintech consulting", description: "A website for fintech consulting, financial services, and compliance expertise.", url: "https://cleovici.vercel.app/" },
@@ -59,7 +60,7 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
         <nav aria-label="Project navigation" className={styles.list}>
           {PROJECTS.map((item, index) => (
             <a key={item.id} href={`#project-${item.id}`} aria-current={selected === index ? "location" : undefined} className={styles.tab}>
-              <span>{item.name}</span><ArrowUpRight size={16} aria-hidden="true" />
+              <ShinyText text={item.name} disabled={selected !== index} speed={2.5} delay={1} color={selected === index ? "var(--work-heading-color)" : "inherit"} shineColor="var(--work-heading-shine)" /><ArrowUpRight size={16} aria-hidden="true" />
             </a>
           ))}
         </nav>
@@ -70,7 +71,7 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
                 <ProjectPreview project={project} />
                 <div className={styles.details}>
                   <div><p className={styles.category}>{project.category} <span>· Frontend development</span></p>
-                    <h3 id={`title-${project.id}`} className={styles.name}>{project.name}</h3>
+                    <h3 id={`title-${project.id}`} className={styles.name}><ShinyText text={project.name} speed={2.5} delay={1} color="var(--work-heading-color)" shineColor="var(--work-heading-shine)" /></h3>
                     <p className={styles.description}>{project.description}</p></div>
                   <a href={project.url} target="_blank" rel="noopener noreferrer" className={styles.visit}>
                     Visit website <ArrowUpRight size={18} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span>

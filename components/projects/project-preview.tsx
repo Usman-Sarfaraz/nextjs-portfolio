@@ -2,34 +2,51 @@
 
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import Image from "next/image";
 import { useInView } from "motion/react";
 import { ArrowUpRight, Expand, Pause, Play, X } from "lucide-react";
 import { useReducedMotion } from "@/lib/motion";
-import acrylica from "@/public/images/projects/acrylica-full.webp";
-import aiExport from "@/public/images/projects/ai-export-full.webp";
-import psiAlgebra from "@/public/images/projects/psi-algebra-full.webp";
-import cleovici from "@/public/images/projects/cleovici-full.webp";
 import styles from "./projects.module.css";
 
-const pages = { acrylica, "ai-export": aiExport, "psi-algebra": psiAlgebra, cleovici };
-export type PreviewProject = { id: keyof typeof pages; name: string; url: string };
+export type PreviewProject = { id: "acrylica" | "ai-export" | "psi-algebra" | "cleovici" | "bitlogicx"; name: string; url: string };
 
-function Walkthrough({ project, paused = false }: { project: PreviewProject; paused?: boolean }) {
+function Walkthrough({ project, paused }: { project: PreviewProject; paused?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const completed = useRef(false);
   const inView = useInView(ref);
   const reducedMotion = useReducedMotion();
+  const playing = inView && !(paused ?? reducedMotion);
+
+  useEffect(() => {
+    const element = video.current;
+    if (!element) return;
+    if (!inView) completed.current = false;
+    if (playing && !completed.current) {
+      void element.play().catch(() => {
+        // Browsers can block autoplay; the expanded preview has playback controls.
+      });
+    } else {
+      element.pause();
+    }
+  }, [playing, inView]);
+
   return (
-    <div ref={ref} className={styles.preview} data-playing={inView && !paused && !reducedMotion}>
-      <Image src={pages[project.id]} alt={`${project.name} full website preview`} unoptimized
-        sizes="(min-width: 1024px) 70vw, 100vw" className={styles.walkthroughImage} />
+    <div ref={ref} className={styles.preview}>
+      <video ref={video} src={`/projects-videos/${project.id}-overview.mp4`}
+        aria-label={`${project.name} website walkthrough`} className={styles.walkthroughVideo}
+        muted playsInline preload="metadata" onEnded={(event) => {
+          completed.current = true;
+          event.currentTarget.pause();
+          event.currentTarget.currentTime = 0;
+        }} />
     </div>
   );
 }
 
 function PreviewModal({ project, dismiss }: { project: PreviewProject; dismiss: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const [paused, setPaused] = useState(false);
+  const reducedMotion = useReducedMotion();
+  const [paused, setPaused] = useState(reducedMotion);
   useEffect(() => {
     const element = dialog.current!;
     const previousOverflow = document.documentElement.style.overflow;

@@ -1,0 +1,33 @@
+.section { --services-accent: #065f46; --services-shine: #34d399; max-width: 1280px; width: 100%; margin: 0 auto; padding: 64px 40px 40px; color: var(--foreground); scroll-margin-top: 100px; }
+:global(.dark) .section { --services-accent: #6ee7b7; --services-shine: #ffffff; }
+.header { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; align-items: start; margin-bottom: 0; padding-bottom: 40px; border-bottom: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent); }
+.label { display: flex; align-items: center; gap: 14px; margin: 12px 0 0; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .6; }
+.label::before { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .4; }
+.heading { margin: 0; font-family: var(--font-outfit), sans-serif; font-size: clamp(30px, 3.6vw, 52px); font-weight: 400; line-height: 1.2; letter-spacing: -.035em; text-align: right; }
+.intro { max-width: 48ch; margin: 18px 0 0 auto; font-size: 14px; line-height: 1.7; opacity: .6; text-align: right; }
+.services { border-bottom: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent); }
+.service { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 64px; padding: 38px 0; }
+.service::before { content: ""; position: absolute; inset: 0 -16px; z-index: -1; pointer-events: none; background: #292929; opacity: 0; transform: scaleX(.96); transform-origin: left; transition: opacity 400ms, transform 550ms cubic-bezier(.22,1,.36,1); }
+.service + .service { border-top: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent); }
+.title { margin: 0; max-width: 14ch; font-family: var(--font-outfit), sans-serif; font-size: clamp(28px, 3vw, 40px); font-weight: 400; line-height: 1.2; letter-spacing: -.035em; color: var(--services-accent); transition: transform 500ms cubic-bezier(.22,1,.36,1); }
+@media (hover: hover) and (pointer: fine) {
+  .service:hover { --services-accent: #6ee7b7; --services-shine: #ffffff; }
+  .service:hover::before { opacity: 1; transform: scaleX(1); }
+  .service:hover .description { color: #dedede; }
+  .service:hover .title { transform: translateX(10px); }
+  .service:hover .capabilities li { transform: translateY(-3px); }
+}
+.content { padding-top: 3px; }
+.description { max-width: 46ch; margin: 0; font-size: 15px; line-height: 1.75; color: color-mix(in srgb, var(--foreground) 65%, transparent); transition: color 300ms; }
+.capabilities { display: flex; flex-wrap: wrap; gap: 8px 18px; list-style: none; padding: 0; margin: 22px 0 0; }
+.capabilities li { font-size: 11px; line-height: 1.6; color: var(--services-accent); transition: transform 400ms cubic-bezier(.22,1,.36,1); }
+.capabilities li:nth-child(2) { transition-delay: 50ms; }
+.capabilities li:nth-child(3) { transition-delay: 100ms; }
+.footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-top: 28px; font-size: 13px; }
+.footer p { margin: 0; opacity: .6; }
+.cta { display: inline-flex; align-items: center; gap: 10px; color: var(--services-accent); text-decoration: none; }
+.cta:hover { text-decoration: underline; text-underline-offset: 5px; }
+.cta:focus-visible { outline: 2px solid var(--services-accent); outline-offset: 6px; border-radius: 4px; }
+@media (max-width: 1023px) { .header { grid-template-columns: 190px minmax(0, 1fr); gap: 24px; } .service { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; } }
+@media (max-width: 767px) { .section { padding: 48px 24px 24px; } .header { grid-template-columns: 1fr; gap: 24px; padding-bottom: 28px; margin-bottom: 0; } .label { margin-top: 0; } .heading, .intro { text-align: left; } .intro { margin-left: 0; } .service { grid-template-columns: 1fr; gap: 18px; padding: 30px 0; } .title { max-width: none; font-size: 30px; } .footer { align-items: flex-start; flex-direction: column; gap: 14px; } }
+@media (prefers-reduced-motion: reduce) { .title, .description, .service::before, .capabilities li { transition: none; } .service:hover .title, .service:hover .capabilities li, .service::before { transform: none; } }

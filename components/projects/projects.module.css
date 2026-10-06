@@ -16,7 +16,7 @@
 .cards { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
 .panel { min-width: 0; scroll-margin-top: 120px; }
 .frame { padding: 14px; border-radius: 24px; border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent); background: color-mix(in srgb, var(--foreground) 4%, var(--background)); }
-.preview { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px; background: #162022; }
+.preview { position: relative; width: 100%; overflow: hidden; border-radius: 12px; background: #162022; }
 .image { object-fit: contain; }
 .details { display: flex; justify-content: space-between; gap: 24px; padding: 24px 10px 12px; }
 .category { margin: 0 0 8px; color: #065f46; font-size: 11px; }
@@ -49,12 +49,9 @@
 .panel { perspective: 1400px; }
 .tiltCard { transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)); transition: transform 350ms cubic-bezier(.22,1,.36,1), box-shadow 350ms; }
 .tiltCard:hover { box-shadow: 0 20px 45px -30px rgb(0 0 0 / 35%); }
-.preview { container-type: size; }
 .previewButton { display: block; position: relative; width: 100%; padding: 0; border: 0; border-radius: 12px; cursor: zoom-in; text-align: left; overflow: hidden; }
 .previewButton:focus-visible { outline: 2px solid #34d399; outline-offset: 4px; }
-.walkthroughImage { display: block; width: 100%; height: auto; max-width: none; animation: page-walkthrough 40s linear infinite alternate; animation-play-state: paused; }
-.preview[data-playing="true"] .walkthroughImage { animation-play-state: running; }
-@keyframes page-walkthrough { 0%, 8% { transform: translateY(0); } 92%, 100% { transform: translateY(calc(-100% + 100cqh)); } }
+.walkthroughVideo { display: block; width: 100%; height: auto; }
 .expandBadge { position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid rgb(255 255 255 / 25%); border-radius: 999px; background: rgb(22 32 34 / 80%); color: white; backdrop-filter: blur(12px); font-size: 12px; }
 .modal { position: fixed; inset: 0; margin: auto; width: min(1100px, calc(100vw - 48px)); max-height: 92svh; padding: 20px; border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent); border-radius: 24px; background: var(--background); color: var(--foreground); overflow: auto; box-shadow: 0 30px 100px rgb(0 0 0 / 30%); }
 .modal::backdrop { background: rgb(0 0 0 / 78%); backdrop-filter: blur(10px); }
@@ -66,4 +63,4 @@
 .playButton { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px; border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent); border-radius: 999px; font-size: 13px; cursor: pointer; }
 .iconButton:focus-visible, .playButton:focus-visible { outline: 2px solid #34d399; outline-offset: 3px; }
 @media (max-width: 767px) { .modal { width: calc(100vw - 24px); padding: 12px; border-radius: 18px; } .expandBadge { right: 10px; bottom: 10px; padding: 7px 10px; font-size: 10px; } }
-@media (prefers-reduced-motion: reduce) { .tiltCard { transform: none; transition: none; } .walkthroughImage { animation: none; } .playButton { display: none; } }
+@media (prefers-reduced-motion: reduce) { .tiltCard { transform: none; transition: none; } }
