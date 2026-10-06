@@ -7,10 +7,12 @@
 .heading { margin: 0; padding-left: 0; text-align: right; font-family: var(--font-outfit), sans-serif; font-size: clamp(30px, 3.6vw, 52px); white-space: nowrap; font-weight: 400; line-height: 1.2; letter-spacing: -0.035em; }
 .showcase { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; align-items: start; }
 .list { position: sticky; top: 120px; padding: 6px; border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent); border-radius: 16px; background: color-mix(in srgb, var(--foreground) 4%, var(--background)); }
-.tab { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; padding: 16px 14px; border: 1px solid transparent; border-radius: 10px; color: color-mix(in srgb, var(--foreground) 55%, transparent); font-family: var(--font-outfit), sans-serif; font-size: 16px; font-weight: 400; letter-spacing: -0.015em; text-align: left; text-decoration: none; cursor: pointer; transition: background 200ms, color 200ms; }
+.tab { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; padding: 16px 14px; border: 1px solid transparent; border-radius: 10px; color: color-mix(in srgb, var(--foreground) 55%, transparent); font-family: var(--font-outfit), sans-serif; font-size: 16px; font-weight: 400; letter-spacing: -0.015em; text-align: left; text-decoration: none; cursor: pointer; transition: background 200ms, color 200ms; }
+.tab::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: color-mix(in srgb, var(--work-heading-color) 18%, var(--background)); transform: scaleX(var(--project-progress, 0)); transform-origin: left; opacity: 0; transition: transform 120ms linear, opacity 250ms; }
+.tab[aria-current="location"]::before { opacity: 1; }
 .tab svg { opacity: 0; transition: opacity 200ms; }
 .tab:hover { color: var(--foreground); }
-.tab[aria-current="location"] { color: var(--foreground); background: var(--background); border-color: color-mix(in srgb, var(--foreground) 8%, transparent); }
+.tab[aria-current="location"] { color: var(--foreground); background: color-mix(in srgb, var(--work-heading-color) 4%, var(--background)); border-color: color-mix(in srgb, var(--foreground) 8%, transparent); }
 .tab[aria-current="location"] svg { opacity: 1; color: #065f46; }
 .tab:focus-visible, .panel:focus-visible, .visit:focus-visible { outline: 2px solid #34d399; outline-offset: 4px; }
 .cards { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
@@ -64,3 +66,5 @@
 .iconButton:focus-visible, .playButton:focus-visible { outline: 2px solid #34d399; outline-offset: 3px; }
 @media (max-width: 767px) { .modal { width: calc(100vw - 24px); padding: 12px; border-radius: 18px; } .expandBadge { right: 10px; bottom: 10px; padding: 7px 10px; font-size: 10px; } }
 @media (prefers-reduced-motion: reduce) { .tiltCard { transform: none; transition: none; } }
+
+@media (prefers-reduced-motion: reduce) { .tab::before { transition: none; } }

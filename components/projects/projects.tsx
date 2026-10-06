@@ -22,6 +22,8 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
   const [selected, setSelected] = useState(0);
   const cards = useRef<HTMLDivElement>(null);
   const revealed = useSiteRevealed();
+  const navigation = useRef<HTMLElement>(null);
+
 
   useEffect(() => {
     if (!revealed) return;
@@ -31,6 +33,15 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
       let current = 0;
       articles.forEach((article, index) => {
         if (article.getBoundingClientRect().top <= window.innerHeight * 0.35) current = index;
+      });
+      const threshold = window.innerHeight * 0.35;
+      articles.forEach((article, index) => {
+        const bounds = article.getBoundingClientRect();
+        const next = articles[index + 1]?.getBoundingClientRect();
+        const span = next ? next.top - bounds.top : bounds.height;
+        const progress = Math.min(1, Math.max(0, (threshold - bounds.top) / Math.max(1, span)));
+        navigation.current?.querySelector<HTMLElement>(`[data-project="${PROJECTS[index]?.id}"]`)
+          ?.style.setProperty("--project-progress", String(progress));
       });
       setSelected(current);
     };
@@ -57,9 +68,9 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
         </header>
       )}
       <div className={styles.showcase}>
-        <nav aria-label="Project navigation" className={styles.list}>
+        <nav ref={navigation} aria-label="Project navigation" className={styles.list}>
           {PROJECTS.map((item, index) => (
-            <a key={item.id} href={`#project-${item.id}`} aria-current={selected === index ? "location" : undefined} className={styles.tab}>
+            <a key={item.id} data-project={item.id} href={`#project-${item.id}`} aria-current={selected === index ? "location" : undefined} className={styles.tab}>
               <ShinyText text={item.name} disabled={selected !== index} speed={2.5} delay={1} color={selected === index ? "var(--work-heading-color)" : "inherit"} shineColor="var(--work-heading-shine)" /><ArrowUpRight size={16} aria-hidden="true" />
             </a>
           ))}
