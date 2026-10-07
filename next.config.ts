@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  distDir: ".next-template",
   productionBrowserSourceMaps: false,
   images: {
     remotePatterns: [
