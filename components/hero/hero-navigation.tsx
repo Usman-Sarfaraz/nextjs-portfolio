@@ -12,6 +12,7 @@ const mobileItems = [
   { label: "About", link: "#intro", ariaLabel: "About Usman" },
   { label: "Work", link: "#projects", ariaLabel: "View selected work" },
   { label: "Services", link: "#services", ariaLabel: "Explore services" },
+  { label: "Experience", link: "#about", ariaLabel: "View experience and expertise" },
 ];
 
 export function HeroNavigation() {
@@ -42,6 +43,8 @@ export function HeroNavigation() {
           <a className="focus-ring rounded-md hover:opacity-60" href="#projects">Work</a>
           <span aria-hidden="true" className="h-4 w-px bg-current/20" />
           <a className="focus-ring rounded-md hover:opacity-60" href="#services">Services</a>
+          <span aria-hidden="true" className="h-4 w-px bg-current/20" />
+          <a className="focus-ring rounded-md hover:opacity-60" href="#about">Experience</a>
         </nav>
         <a href="#home" className="hero-navigation__brand focus-ring rounded-md whitespace-nowrap font-semibold tracking-tight">
           {brand}
