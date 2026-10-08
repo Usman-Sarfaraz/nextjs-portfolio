@@ -41,9 +41,9 @@ export function PortraitReveal({ children, className }: { children: ReactNode; c
       className={className}
       onPointerMove={attractCards}
       onPointerLeave={(event) => resetCards(event.currentTarget)}
-      initial={reducedMotion ? false : { opacity: 0, y: 0, scale: 1 }}
-      animate={revealed && textFinished && inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 0, scale: 1 }}
-      transition={{ delay: reducedMotion ? 0 : 0.1, duration: reducedMotion ? 0 : 0.25, ease: [0.22, 1, 0.36, 1] }}
+      initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+      animate={revealed && textFinished && inView ? { opacity: 1, y: 0 } : { opacity: 0, y: reducedMotion ? 0 : 12 }}
+      transition={{ delay: reducedMotion ? 0 : 0.1, duration: reducedMotion ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>

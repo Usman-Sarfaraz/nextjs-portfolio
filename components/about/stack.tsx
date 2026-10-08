@@ -4,6 +4,7 @@ import { TitleReveal } from "@/components/ui/title-reveal";
 import styles from "./about-section.module.css";
 import { useInView } from "motion/react";
 import { RotateCcw } from "lucide-react";
+import * as Matter from "matter-js";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type Chip = {
@@ -124,7 +125,7 @@ export function Stack(): ReactNode {
   const chipRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [resetKey, setResetKey] = useState(0);
   const [readyKey, setReadyKey] = useState<number | null>(null);
-  const inView = useInView(containerRef, { once: true, amount: 0.15 });
+  const inView = useInView(containerRef, { once: true, amount: 0.01 });
 
   useEffect(() => {
     if (!inView) return;
@@ -132,12 +133,9 @@ export function Stack(): ReactNode {
     const measure = measureRef.current;
     if (!container || !measure) return;
 
-    let cancelled = false;
     let cleanup: (() => void) | undefined;
 
-    void (async () => {
-      const Matter = await import("matter-js");
-      if (cancelled) return;
+    (() => {
 
       const {
         Engine,
@@ -286,7 +284,6 @@ export function Stack(): ReactNode {
     })();
 
     return () => {
-      cancelled = true;
       cleanup?.();
     };
   }, [resetKey, inView]);
