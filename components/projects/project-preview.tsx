@@ -3,16 +3,22 @@
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useInView } from "motion/react";
-import { ArrowUpRight, Expand, Pause, Play, X } from "lucide-react";
+import { ArrowUpRight, Expand, Pause, Play, X, LoaderCircle } from "lucide-react";
 import { useReducedMotion } from "@/lib/motion";
 import styles from "./projects.module.css";
 
 export type PreviewProject = { id: "acrylica" | "ai-export" | "psi-algebra" | "cleovici" | "bitlogicx"; name: string; url: string };
 
+const previewDimensions = {"acrylica":{"width":1440,"height":708},"bitlogicx":{"width":1440,"height":708},"ai-export":{"width":1440,"height":708},"psi-algebra":{"width":1440,"height":708},"cleovici":{"width":1440,"height":708}};
+
 function Walkthrough({ project, paused }: { project: PreviewProject; paused?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const completed = useRef(false);
+  const [ready, setReady] = useState(false);
+  const [buffering, setBuffering] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const nearView = useInView(ref, { once: true, margin: "0px 0px 600px 0px" });
   const inView = useInView(ref);
   const reducedMotion = useReducedMotion();
   const playing = inView && !(paused ?? reducedMotion);
@@ -34,11 +40,23 @@ function Walkthrough({ project, paused }: { project: PreviewProject; paused?: bo
     <div ref={ref} className={styles.preview}>
       <video ref={video} src={`/projects-videos/${project.id}-overview.mp4`}
         aria-label={`${project.name} website walkthrough`} className={styles.walkthroughVideo}
-        muted playsInline preload="metadata" onEnded={(event) => {
+        width={previewDimensions[project.id].width} height={previewDimensions[project.id].height}
+        poster={`/projects-videos/${project.id}-poster.jpg`}
+        muted playsInline preload={nearView ? "auto" : "none"}
+        onLoadedData={() => setReady(true)}
+        onPlaying={() => { setReady(true); setBuffering(false); }}
+        onWaiting={() => setBuffering(true)}
+        onCanPlay={() => setBuffering(false)}
+        onError={() => setFailed(true)}
+        onEnded={(event) => {
           completed.current = true;
           event.currentTarget.pause();
           event.currentTarget.currentTime = 0;
         }} />
+      {((playing && (!ready || buffering)) || failed) && <span className={styles.videoStatus} role="status">
+        {!failed && <LoaderCircle size={14} className={styles.videoSpinner} aria-hidden="true" />}
+        {failed ? "Video unavailable · Visit website" : "Loading preview"}
+      </span>}
     </div>
   );
 }

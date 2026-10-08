@@ -68,3 +68,8 @@
 @media (prefers-reduced-motion: reduce) { .tiltCard { transform: none; transition: none; } }
 
 @media (prefers-reduced-motion: reduce) { .tab::before { transition: none; } }
+
+.videoStatus { position: absolute; left: 14px; top: 14px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: rgba(22,32,34,.85); color: #fff; font-size: 11px; pointer-events: none; }
+.videoSpinner { animation: preview-spin 1s linear infinite; }
+@keyframes preview-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .videoSpinner { animation: none; } }

@@ -54,7 +54,7 @@ export function Hero(): ReactNode {
               alt={`${profile.name}, frontend developer and software engineer`}
               fill
               priority
-              unoptimized
+              placeholder="blur"
               sizes="(min-width: 1024px) 46vw, calc(100vw - 48px)"
               className="object-contain object-center "
             />

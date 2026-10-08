@@ -123,7 +123,8 @@ export function Stack(): ReactNode {
   const measureRef = useRef<HTMLDivElement | null>(null);
   const chipRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [resetKey, setResetKey] = useState(0);
-  const inView = useInView(containerRef, { once: true, amount: 0.2 });
+  const [readyKey, setReadyKey] = useState<number | null>(null);
+  const inView = useInView(containerRef, { once: true, amount: 0.15 });
 
   useEffect(() => {
     if (!inView) return;
@@ -193,7 +194,7 @@ export function Stack(): ReactNode {
         const minX = WALL_PAD + halfW + 4;
         const maxX = width - WALL_PAD - halfW - 4;
         const x = minX + Math.random() * Math.max(1, maxX - minX);
-        const y = -80 - i * 60 - Math.random() * 120;
+        const y = -30 - i * 28;
         const body = Bodies.rectangle(x, y, w, h, {
           chamfer: { radius: CHIP_RADIUS },
           restitution: 0.35,
@@ -250,7 +251,8 @@ export function Stack(): ReactNode {
         }
         raf = requestAnimationFrame(tick);
       };
-      raf = requestAnimationFrame(tick);
+      tick();
+      setReadyKey(resetKey);
 
       const onResize = (): void => {
         const newW = container.clientWidth;
@@ -312,7 +314,8 @@ export function Stack(): ReactNode {
         <div
           ref={measureRef}
           aria-hidden="true"
-          className="pointer-events-none invisible absolute top-0 left-0 flex flex-wrap gap-2"
+          className="pointer-events-none absolute top-0 left-0 flex flex-wrap gap-2 p-4 pr-14"
+          style={{ visibility: readyKey === resetKey ? "hidden" : "visible" }}
         >
           {CHIPS.map((chip) => (
             <ChipPill key={`m-${chip.label}`} chip={chip} />
@@ -322,7 +325,7 @@ export function Stack(): ReactNode {
         <div
           ref={containerRef}
           className="absolute inset-0 cursor-grab select-none"
-          style={{ touchAction: "none" }}
+          style={{ touchAction: "none", visibility: readyKey === resetKey ? "visible" : "hidden" }}
         >
           {CHIPS.map((chip, i) => (
             <div
