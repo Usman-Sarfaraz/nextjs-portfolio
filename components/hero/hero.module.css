@@ -117,3 +117,8 @@
 @media (prefers-reduced-motion: reduce) {
   .resumeCard::before { animation: none; }
 }
+
+.eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+.eyebrowLine { width: 32px; height: 1px; background: currentColor; }
+.designWord { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
+@media (max-width: 767px) { .eyebrow { font-size: 9px; gap: 10px; } .eyebrowLine { width: 20px; } }

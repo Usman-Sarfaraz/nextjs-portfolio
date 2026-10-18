@@ -1,10 +1,12 @@
 "use client";
 
+import ShinyText from "@/components/react-bits/ShinyText";
 import { useEffect, useRef, useState } from "react";
 import { ProjectPreview, TiltCard } from "./project-preview";
 import { ArrowUpRight } from "lucide-react";
 import { TitleReveal } from "@/components/ui/title-reveal";
-import ShinyText from "@/components/react-bits/ShinyText";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/lib/motion";
 import { useSiteRevealed } from "@/components/layout/site-loader";
 import styles from "./projects.module.css";
 
@@ -20,9 +22,9 @@ export type ProjectsProps = { withHeadline?: boolean };
 
 export function Projects({ withHeadline = false }: ProjectsProps) {
   const [selected, setSelected] = useState(0);
+  const reducedMotion = useReducedMotion();
   const cards = useRef<HTMLDivElement>(null);
   const revealed = useSiteRevealed();
-  const navigation = useRef<HTMLElement>(null);
 
 
   useEffect(() => {
@@ -33,15 +35,6 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
       let current = 0;
       articles.forEach((article, index) => {
         if (article.getBoundingClientRect().top <= window.innerHeight * 0.35) current = index;
-      });
-      const threshold = window.innerHeight * 0.35;
-      articles.forEach((article, index) => {
-        const bounds = article.getBoundingClientRect();
-        const next = articles[index + 1]?.getBoundingClientRect();
-        const span = next ? next.top - bounds.top : bounds.height;
-        const progress = Math.min(1, Math.max(0, (threshold - bounds.top) / Math.max(1, span)));
-        navigation.current?.querySelector<HTMLElement>(`[data-project="${PROJECTS[index]?.id}"]`)
-          ?.style.setProperty("--project-progress", String(progress));
       });
       setSelected(current);
     };
@@ -63,33 +56,34 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
     <section className={styles.section} aria-label="Frontend projects">
       {withHeadline && (
         <header className={styles.header}>
-          <p className={styles.label}><span className={styles.labelText}>Work</span></p>
-          <h2 className={styles.heading}><TitleReveal><ShinyText text="Recent frontend projects" className={styles.headingShine ?? ""} speed={2.5} delay={1} color="var(--work-heading-color)" shineColor="var(--work-heading-shine)" /></TitleReveal></h2>
+          <div className={styles.sectionMeta}><p className={`section-label ${styles.label}`}>01 / Selected work</p><span>Design in the details. Development at the core.</span></div>
+          <div className={styles.headingRow}><h2 className={styles.heading}><TitleReveal>A few things<br />I’ve <em><ShinyText text="built." speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" /></em></TitleReveal></h2><p className={styles.headingNote}>Real websites. Thoughtful interfaces.<br />Explore the work, then see it in action.</p></div>
         </header>
       )}
       <div className={styles.showcase}>
-        <nav ref={navigation} aria-label="Project navigation" className={styles.list}>
+        <nav aria-label="Project navigation" className={styles.list}>
           {PROJECTS.map((item, index) => (
             <a key={item.id} data-project={item.id} href={`#project-${item.id}`} aria-current={selected === index ? "location" : undefined} className={styles.tab}>
-              <ShinyText text={item.name} disabled={selected !== index} speed={2.5} delay={1} color={selected === index ? "var(--work-heading-color)" : "inherit"} shineColor="var(--work-heading-shine)" /><ArrowUpRight size={16} aria-hidden="true" />
+              <span className={styles.tabNumber}>0{index + 1}</span><span>{item.name}</span><ArrowUpRight size={16} aria-hidden="true" />
             </a>
           ))}
         </nav>
         <div ref={cards} className={styles.cards}>
-          {PROJECTS.map((project) => (
-            <article key={project.id} id={`project-${project.id}`} aria-labelledby={`title-${project.id}`} className={styles.panel}>
+          {PROJECTS.map((project, index) => (
+            <motion.article key={project.id} id={`project-${project.id}`} aria-labelledby={`title-${project.id}`} className={styles.panel}
+              initial={reducedMotion ? false : { opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.12 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
               <TiltCard>
                 <ProjectPreview project={project} />
                 <div className={styles.details}>
-                  <div><p className={styles.category}>{project.category} <span>· Frontend development</span></p>
-                    <h3 id={`title-${project.id}`} className={styles.name}><ShinyText text={project.name} speed={2.5} delay={1} color="var(--work-heading-color)" shineColor="var(--work-heading-shine)" /></h3>
+                  <div><p className={styles.category}><span>0{index + 1}</span> {project.category}</p>
+                    <h3 id={`title-${project.id}`} className={styles.name}>{project.name}</h3>
                     <p className={styles.description}>{project.description}</p></div>
                   <a href={project.url} target="_blank" rel="noopener noreferrer" className={styles.visit}>
                     Visit website <ArrowUpRight size={18} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </div>
               </TiltCard>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>

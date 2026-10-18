@@ -1,9 +1,9 @@
 "use client";
 
+import ShinyText from "@/components/react-bits/ShinyText";
 import { useEffect, useRef, type CSSProperties } from "react";
 import { useReducedMotion } from "@/lib/motion";
 import { ArrowUpRight } from "lucide-react";
-import ShinyText from "@/components/react-bits/ShinyText";
 import { TitleReveal } from "@/components/ui/title-reveal";
 import styles from "./services.module.css";
 
@@ -108,10 +108,10 @@ export function Services() {
   return (
     <section id="services" aria-labelledby="services-title" className={styles.section}>
       <header className={styles.header}>
-        <p className={styles.label}>Services</p>
+        <p className={`section-label ${styles.label}`}>02 / What I do</p>
         <div>
           <h2 id="services-title" className={styles.heading}>
-            <TitleReveal><ShinyText text="From idea to experience" speed={2.5} delay={1} color="var(--services-accent)" shineColor="var(--services-shine)" /></TitleReveal>
+            <TitleReveal>From first idea.<br /><em><ShinyText text="To the final detail." speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" /></em></TitleReveal>
           </h2>
           <p className={styles.intro}>Design, development, and the details in between. I help bring your next digital product to life.</p>
         </div>
@@ -121,9 +121,9 @@ export function Services() {
           <div key={type} data-stack-item className={styles.stackItem} style={{ "--stack-index": index } as CSSProperties}>
           <article className={styles.service} aria-labelledby={`service-${type}`}>
             <div className={styles.identity}>
-              <p className={styles.eyebrow}>{eyebrow}</p>
+              <p className={styles.eyebrow}><span className={styles.serviceNumber}>0{index + 1}</span>{eyebrow}</p>
               <h3 id={`service-${type}`} className={styles.title}>
-                <ShinyText text={lead} className={styles.titleShine ?? ""} speed={2.5} delay={1} color="var(--services-accent)" shineColor="var(--services-shine)" />
+                <span className={styles.titleLead}>{lead}</span>
                 <span className={styles.titleDetail}>{detail}</span>
               </h3>
             </div>

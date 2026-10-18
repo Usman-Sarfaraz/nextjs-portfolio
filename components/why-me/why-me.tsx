@@ -1,9 +1,9 @@
 "use client";
 
+import ShinyText from "@/components/react-bits/ShinyText";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, Plus } from "lucide-react";
-import ShinyText from "@/components/react-bits/ShinyText";
 import { TitleReveal } from "@/components/ui/title-reveal";
 import { useReducedMotion } from "@/lib/motion";
 import styles from "./why-me.module.css";
@@ -16,7 +16,7 @@ const principles = [
 ] as const;
 
 export function WhyMe() {
-  const [active, setActive] = useState<string | null>("details");
+  const [active, setActive] = useState<string | null>(null);
   const reducedMotion = useReducedMotion();
 
   return (
@@ -24,21 +24,21 @@ export function WhyMe() {
       <div className={styles.layout}>
         <motion.div className={styles.manifesto} initial={reducedMotion ? false : { opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .2 }} transition={{ duration: .8 }}>
           <span className={styles.watermark} aria-hidden="true">US.</span>
-          <p className={styles.statement}>Good work<br />starts with<br /><span>care.</span></p>
+          <p className={styles.statement}>Precision in<br /><span><ShinyText text="practice." speed={2.5} delay={1} color="var(--why-accent)" shineColor="#ffffff" className="heading-shine" /></span></p>
           <p className={styles.manifestoCopy}>For the product. For the people using it.<br />And for the people I’m building it with.</p>
           <div className={styles.signature}><span className={styles.monogram} aria-hidden="true">us.</span><div><span>Usman Sarfraz</span><span>Design mindset. Developer’s precision.</span></div></div>
         </motion.div>
         <div className={styles.principles}>
       <header className={styles.header}>
-        <p className={styles.label}>Why me</p>
-        <h2 id="why-me-title" className={styles.heading}><TitleReveal><ShinyText text="Why work with me" speed={2.5} delay={1} color="var(--why-accent)" shineColor="var(--why-shine)" /></TitleReveal></h2>
+        <p className={`section-label ${styles.label}`}>03 / The way I work</p>
+        <h2 id="why-me-title" className={styles.heading}><TitleReveal>A thoughtful process.<br />From start to finish.</TitleReveal></h2>
       </header>
 
           {principles.map((item, index) => {
             const expanded = active === item.id;
             return (
               <motion.article key={item.id} className={styles.principle} data-expanded={expanded} initial={reducedMotion ? false : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .2 }} transition={{ duration: .6, delay: reducedMotion ? 0 : index * .06 }}>
-                <h3 className={styles.principleTitle}><button type="button" aria-expanded={expanded} aria-controls={`why-${item.id}`} onClick={() => setActive(expanded ? null : item.id)} className={styles.trigger}><span>{item.title}</span><span className={styles.toggle}><Plus size={18} strokeWidth={1.5} aria-hidden="true" /></span></button></h3>
+                <h3 className={styles.principleTitle}><button type="button" aria-expanded={expanded} aria-controls={`why-${item.id}`} onClick={() => setActive(expanded ? null : item.id)} className={styles.trigger}><span className={styles.principleText}>{item.title}</span><span className={styles.toggle}><Plus size={18} strokeWidth={1.5} aria-hidden="true" /></span></button></h3>
                 <p className={styles.summary}>{item.summary}</p>
                 <div id={`why-${item.id}`} className={styles.reveal} inert={!expanded} aria-hidden={!expanded}><div className={styles.revealInner}><p className={styles.description}>{item.description}</p><p className={styles.note}>{item.note}</p></div></div>
               </motion.article>

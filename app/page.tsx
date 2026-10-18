@@ -29,7 +29,7 @@ export default function HomePage(): ReactNode {
         alternateName: siteConfig.name,
         jobTitle: "Frontend Developer & UI Engineer",
         description: siteConfig.description,
-        sameAs: [profile.linkedin],
+        sameAs: [profile.linkedin, profile.github, profile.instagram],
         knowsAbout: ["Frontend Development", "UI Development", "React", "Next.js", "Vue", "Nuxt", "TypeScript"],
         ...(siteConfig.url ? { url: siteConfig.url, image: new URL("/images/portfolio_portrait.png", siteConfig.url).toString() } : {}),
       }).replace(/</g, "\\u003c") }} />
@@ -41,7 +41,6 @@ export default function HomePage(): ReactNode {
         <WhyMe />
         <AboutSection />
         <section id="contact" className="scroll-mt-24"><ContactCard /></section>
-        <div className="h-12 sm:h-16" />
       </TechnologyTrail>
     </main>
     </div>

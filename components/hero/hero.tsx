@@ -21,21 +21,21 @@ export function Hero(): ReactNode {
 
       <div className="hero-navigation-space" aria-hidden="true" />
 
-      <div className={`${styles.body} hero-screen__body relative w-full lg:flex lg:min-h-0 lg:flex-1 lg:flex-col px-8 sm:px-20 lg:px-32 xl:px-40 2xl:px-48`}>
+      <div className={`${styles.body} hero-screen__body relative w-full lg:flex lg:min-h-0 lg:flex-1 lg:flex-col px-8 sm:px-12 lg:px-28 xl:px-32 2xl:px-36`}>
         <div className={`${styles.content} hero-screen__content relative grid items-center gap-8 lg:min-h-0 lg:flex-1 lg:grid-cols-[1.08fr_1fr] lg:gap-10`}>
           <FadeIn className={`${styles.copy} relative z-10 min-w-0 pt-12 pb-8 sm:pt-16 lg:flex lg:flex-col lg:justify-center lg:py-4`}>
-            <div className="mb-7 flex flex-wrap items-center gap-3 text-xs sm:text-sm">
-              <span className="text-current/65">Frontend development &amp; UI design</span>
+            <div className={styles.eyebrow}>
+              <span className={styles.eyebrowLine} aria-hidden="true" /><span>Frontend development &amp; UI design</span>
             </div>
             <h1 id="hero-heading" className={`${headingFont.className} max-w-full [container-type:inline-size] text-[clamp(2.875rem,4.8vw,5.5rem)] font-normal tracking-[-0.025em] leading-[1.18] lg:text-[clamp(2.5rem,min(4.8vw,8svh),5.5rem)]`}>
               <span className="block text-[min(1em,8.7cqw)]">
-              <span className="block"><TitleReveal>Thoughtful <span className="text-emerald-800 dark:text-emerald-300">Design.</span></TitleReveal></span>
+              <span className="block"><TitleReveal>Thoughtful <span className={`${styles.designWord} text-emerald-800 dark:text-emerald-300`}>Design.</span></TitleReveal></span>
               <RotatingHeadline />
               <span className="block"><TitleReveal completesHeroText>Websites that <span className="underline decoration-emerald-700/50 decoration-[0.04em] underline-offset-[0.14em] dark:decoration-emerald-300/60"><ShinyText text="work." speed={2.5} delay={1} color="var(--work-text)" shineColor="var(--work-shine)" className={styles.shinyWork ?? ""} /></span></TitleReveal></span>
               </span>
             </h1>
             <p className="mt-6 max-w-[42ch] text-base leading-relaxed text-current/70 sm:text-lg">
-              I&rsquo;m {profile.shortName}, a frontend developer crafting fast, intuitive web experiences with thoughtful design and clean code.
+              I&rsquo;m {profile.shortName}. I bring design and development together to build websites that feel as good as they work.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a href={`mailto:${profile.email}`} className="focus-ring group inline-flex items-center gap-4 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition-all duration-300 hover:bg-[#162022] hover:text-white hover:shadow-xl motion-safe:hover:-translate-y-1 motion-safe:active:scale-95 motion-reduce:transition-none sm:text-base">
