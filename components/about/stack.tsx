@@ -85,6 +85,7 @@ const CHIPS: Chip[] = [
   {
     "label": "Framer Motion",
     "slug": "framer",
+    "iconUrl": "/framer-motion.svg",
     "bg": "#673ac2",
     "fg": "#ffffff"
   },

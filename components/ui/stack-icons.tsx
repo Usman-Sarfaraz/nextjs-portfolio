@@ -20,7 +20,7 @@ export function StackIcon({ name }: { name: Technology }): ReactNode {
     case "JavaScript":
       return <svg {...props}><rect width="32" height="32" rx="5" fill="#f7df1e" /><text x="29" y="26" textAnchor="end" fill="#171717" fontSize="18" fontFamily="Arial, sans-serif" fontWeight="700">JS</text></svg>;
     case "Framer Motion":
-      return <svg {...props}><path d="M3 4h26L16 17H3Zm0 13h13l13 13H16L3 17Z" fill="#a855f7" /><path d="M3 17h13L3 30Z" fill="#ec4899" /></svg>;
+      return <Image src="/framer-motion.svg" alt="" aria-hidden="true" width={32} height={32} className="h-8 w-8 shrink-0" />;
     case "GSAP":
       return <Image src="/gsap.svg" alt="" aria-hidden="true" width={32} height={32} className="h-8 w-8 shrink-0 rounded-lg bg-[#0e1710] p-0.5" />;
     case "Tailwind CSS":
