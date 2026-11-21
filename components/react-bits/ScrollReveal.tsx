@@ -14,9 +14,11 @@ type ScrollRevealProps = {
   baseOpacity?: number;
   blurStrength?: number;
   highlights?: string[];
+  /** When set, only this many words are lit at once: words light up as you scroll, then fade back behind the reader. */
+  spotlight?: number;
 };
 
-export default function ScrollReveal({ children, className, baseOpacity = 0.2, blurStrength = 2, highlights = [] }: ScrollRevealProps) {
+export default function ScrollReveal({ children, className, baseOpacity = 0.2, blurStrength = 2, highlights = [], spotlight }: ScrollRevealProps) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reducedMotion = useReducedMotion();
   const revealed = useSiteRevealed();
@@ -31,6 +33,18 @@ export default function ScrollReveal({ children, className, baseOpacity = 0.2, b
     const context = gsap.context(() => {
       const words = ref.current!.querySelectorAll("[data-reveal-word]");
       gsap.set(words, { opacity: baseOpacity, filter: `blur(${blurStrength}px)` });
+      if (spotlight) {
+        const timeline = gsap.timeline({
+          defaults: { ease: "none", duration: 1 },
+          scrollTrigger: { trigger: ref.current, start: "top 75%", end: "bottom 40%", scrub: 0.5, invalidateOnRefresh: true },
+        });
+        words.forEach((word, index) => {
+          timeline.to(word, { opacity: 1, filter: "blur(0px)" }, index);
+          // The final phrase stays lit once the reader reaches the end.
+          if (index + spotlight < words.length) timeline.to(word, { opacity: baseOpacity }, index + spotlight);
+        });
+        return;
+      }
       gsap.to(words,
         {
           opacity: 1,
@@ -48,7 +62,7 @@ export default function ScrollReveal({ children, className, baseOpacity = 0.2, b
     }, ref);
     ScrollTrigger.refresh();
     return () => context.revert();
-  }, [revealed, reducedMotion, baseOpacity, blurStrength, children]);
+  }, [revealed, reducedMotion, baseOpacity, blurStrength, children, spotlight]);
 
   return (
     <p ref={ref} className={className}>

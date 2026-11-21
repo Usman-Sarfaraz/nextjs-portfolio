@@ -22,7 +22,7 @@ for (const reducedMotion of [false, true]) {
     };
     new Function("require", "module", "exports", outputText)(load, compiledModule, compiledModule.exports);
     const html = renderToStaticMarkup(createElement(compiledModule.exports.FooterWordmark));
-    assert.match(html, /aria-label="Usman Sarfraz — back to home"/);
+    assert.match(html, /aria-label="Usman Sarfraz, back to home"/);
     assert.equal(html.replace(/<[^>]+>/g, ""), "usmansarfraz.");
     assert.doesNotMatch(html, /translateY\([^)]*%\)|opacity:0/, "the name must remain visible before the scroll reveal runs");
   });

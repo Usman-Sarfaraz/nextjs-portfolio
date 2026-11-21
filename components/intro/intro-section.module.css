@@ -1,16 +1,133 @@
-.section { background: var(--background); color: var(--foreground); padding: 96px 0 48px; scroll-margin-top: 112px; }
-.inner { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
-.aside { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 40px; padding-block: 8px; }
-.label { margin: 0; }
-.experience { margin: 0; color: var(--text-secondary); font-size: 12px; line-height: 1.6; }
-.experience > span { display: block; margin-bottom: 12px; color: var(--accent); font-family: var(--font-heading); font-size: 72px; line-height: 1; letter-spacing: -.06em; }
-.heading { margin: 0 0 32px; font-family: var(--font-heading); font-size: var(--section-heading-size); font-weight: 400; line-height: var(--section-heading-leading); letter-spacing: var(--section-heading-tracking); }
-.heading em { font-family: var(--font-serif); font-weight: 400; color: var(--accent); }
-.statement { max-width: 48ch; margin: 0; font-size: clamp(18px, 1.9vw, 26px); line-height: 1.65; letter-spacing: -.015em; }
-.workLink { display: inline-flex; align-items: center; justify-content: space-between; gap: 48px; min-height: 44px; margin-top: 28px; border-bottom: 1px solid var(--section-rule); color: var(--accent); font-size: 13px; text-decoration: none; }
+.section { background: var(--background); color: var(--foreground); padding: 112px 0 0; scroll-margin-top: 112px; }
+.inner { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; display: grid; grid-template-columns: minmax(0, 1fr); }
+
+/* The portrait stays pinned while the story scrolls past it. */
+/* A full-height sticky column keeps the card centred vertically on screen while the text scrolls. */
+.portraitColumn { position: sticky; top: 0; display: flex; align-items: center; height: 100svh; min-width: 0; margin-top: -112px; } /* Pull up over the section padding so the centre lines up with the screen. */
+.copy { min-width: 0; }
+.statement {
+  --intro-accent: var(--accent);
+  --intro-shine: var(--accent-shine);
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 4.4vw, 68px);
+  line-height: 1.22;
+  letter-spacing: -.03em;
+}
+
+.workLink { display: inline-flex; align-items: center; justify-content: space-between; gap: 48px; min-height: 44px; margin-top: 36px; border-bottom: 1px solid var(--section-rule); color: var(--accent); font-size: 13px; text-decoration: none; }
 .workLink svg { transition: transform 300ms; }
 .workLink:hover svg { transform: translate(3px, 3px); }
 .workLink:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
-@media (max-width: 1023px) { .inner { padding-inline: 32px; gap: 32px; } }
-@media (max-width: 767px) { .section { padding: 64px 0 32px; } .inner { padding-inline: 24px; grid-template-columns: 1fr; gap: 32px; } .aside { flex-wrap: wrap; flex-direction: row; align-items: center; gap: 16px; } .experience { display: flex; align-items: center; gap: 10px; font-size: 10px; } .experience > span { font-size: 40px; margin-bottom: 0; }  .statement { font-size: 18px; } }
-@media (prefers-reduced-motion: reduce) { .workLink svg { transition: none; } .workLink:hover svg { transform: none; } }
+
+/* ---- Split portrait ---------------------------------------------------- */
+.split {
+  --split: 50%;
+  --blueprint: #065f46;
+  --blueprint-ink: #d1fae5;
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #0d1714;
+  isolation: isolate;
+  touch-action: pan-y;
+}
+
+.buildView, .blueprintView { position: absolute; inset: 0; }
+.buildPhoto { object-fit: cover; object-position: center top; }
+
+.blueprintView {
+  background: var(--blueprint);
+  color: var(--blueprint-ink);
+  clip-path: inset(0 calc(100% - var(--split)) 0 0);
+}
+
+/* Grey photo under a translucent emerald layer: a duotone that renders in every browser (no blend modes). */
+.blueprintPhoto { object-fit: cover; object-position: center top; filter: grayscale(1) contrast(1.15) brightness(1.05); }
+.blueprintTint { position: absolute; inset: 0; background: var(--blueprint); opacity: .62; }
+
+.guides { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--blueprint-ink); stroke-width: 1; stroke-dasharray: 4 5; vector-effect: non-scaling-stroke; opacity: .7; }
+.guides rect { stroke-dasharray: none; stroke-width: 1.5; }
+.guides circle { fill: var(--blueprint-ink); stroke: none; }
+
+.measureX, .measureY { position: absolute; padding: 2px 6px; border-radius: 4px; background: var(--blueprint-ink); color: var(--blueprint); font-size: 11px; font-variant-numeric: tabular-nums; line-height: 1.4; }
+.measureX { left: 47.2%; top: 15.95%; transform: translate(-50%, -130%); }
+.measureY { left: 35.9%; top: 35.9%; transform: translate(-50%, -50%); }
+
+
+
+.code {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  margin: 0;
+  padding: 12px 16px 12px 10px;
+  max-width: calc(50% - 30px);
+  overflow: hidden;
+  border-radius: 12px;
+  background: #0b1210;
+  box-shadow: 0 12px 28px -12px rgb(0 0 0 / 60%);
+  color: #cbd5d1;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.code code { display: block; }
+.codeLine { display: block; white-space: pre; }
+.lineNo { display: inline-block; width: 2ch; margin-right: 12px; text-align: right; color: #4b5d57; user-select: none; }
+.tok_k { color: #c4b5fd; }
+.tok_v { color: #ffffff; }
+.tok_p { color: #7dd3fc; }
+.tok_s { color: #6ee7b7; }
+.tok_x { color: #94a3a0; }
+
+/* Hand-placed stickers, slightly tilted, instead of tidy labels. */
+.stickerDesign, .stickerDev {
+  position: absolute;
+  top: 20px;
+  z-index: 1;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 0 6px 14px -8px rgb(0 0 0 / 50%);
+}
+
+.stickerDesign { left: 20px; background: #d1fae5; color: #065f46; font-family: var(--font-serif); font-style: italic; transform: rotate(-4deg); }
+.stickerDev { right: 20px; background: #0b1210; color: #a7f3d0; font-family: var(--font-mono); transform: rotate(3deg); }
+
+.handle { position: absolute; top: 0; bottom: 0; left: var(--split); width: 2px; margin-left: -1px; background: #ffffff; pointer-events: none; z-index: 2; }
+.knob { position: absolute; top: 50%; left: 50%; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #ffffff; color: #065f46; transform: translate(-50%, -50%); box-shadow: 0 6px 18px -6px rgb(0 0 0 / 45%); transition: transform 200ms; }
+.split:hover .knob { transform: translate(-50%, -50%) scale(1.06); }
+.split:has(.range:focus-visible) .knob { outline: 3px solid #6ee7b7; outline-offset: 3px; }
+
+.range { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; appearance: none; }
+
+@media (max-width: 1023px) {
+  .inner { padding-inline: 32px; grid-template-columns: 1fr; gap: 48px; }
+  .portraitColumn { position: static; display: block; height: auto; margin-top: 0; }
+  .copy { padding: 0; }
+  .split { margin-inline: auto; }
+}
+
+@media (max-width: 767px) {
+  .section { padding: 64px 0 0; }
+  .inner { padding-inline: 24px; }
+  .statement { font-size: 30px; }
+  .split { border-radius: 24px; }
+  .code { right: 12px; bottom: 12px; max-width: calc(50% - 20px); font-size: 9.5px; padding: 8px 10px 8px 6px; }
+  .lineNo { margin-right: 8px; }
+  .stickerDesign { top: 14px; left: 14px; font-size: 12px; }
+  .stickerDev { top: 14px; right: 14px; font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workLink svg, .knob { transition: none; }
+  .workLink:hover svg { transform: none; }
+}

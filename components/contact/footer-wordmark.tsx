@@ -11,7 +11,7 @@ export function FooterWordmark() {
   const inView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <a ref={ref} href="#home" aria-label="Usman Sarfraz — back to home" className={styles.footerSignature}>
+    <a ref={ref} href="#home" aria-label="Usman Sarfraz, back to home" className={styles.footerSignature}>
       {["usman", "sarfraz."].map((word, wordIndex) => (
         <span key={word} className={styles.signatureWord} aria-hidden="true">
           {Array.from(word).map((letter, index) => (

@@ -35,7 +35,7 @@ export default function HomePage(): ReactNode {
       }).replace(/</g, "\\u003c") }} />
       <section id="home"><Hero /></section>
       <TechnologyTrail>
-        <div className="pb-4"><IntroSection /></div>
+        <IntroSection />
         <section id="projects" className="scroll-mt-24"><Projects withHeadline /></section>
         <Services />
         <WhyMe />

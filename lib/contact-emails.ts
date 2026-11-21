@@ -77,7 +77,7 @@ export function contactEmails(data: ContactSubmission, inbox: string) {
     client: {
       to: [data.email],
       reply_to: inbox,
-      subject: "Thanks for reaching out — Usman Sarfraz",
+      subject: "Thanks for reaching out, from Usman Sarfraz",
       html: clientHtml,
       attachments,
       text: `Thanks for reaching out.\n\nYour enquiry about ${data.service} has reached my inbox. I'll review it and get back to you personally.\n\nHave something to add? Reply to this email.\n\nBest,\nUsman Sarfraz\n\n${socialText}`,
