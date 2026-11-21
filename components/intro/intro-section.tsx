@@ -21,7 +21,7 @@ export function IntroSection() {
           {/* Kept for screen readers and the section label; the statement carries the section visually. */}
           <h2 id="intro-heading" className="sr-only">Design mindset. Developer’s precision.</h2>
           {/* A moving spotlight: words light up as you scroll and fade back behind you; key phrases shine; chips pop in. */}
-          <ScrollReveal className={styles.statement ?? ""} baseOpacity={0.16} blurStrength={0} spotlight={20} highlights={["how it feels,", "design and code", "people enjoy using."]} media={MEDIA}>
+          <ScrollReveal className={styles.statement ?? ""} baseOpacity={0.16} blurStrength={0} spotlight={36} highlights={["how it feels,", "design and code", "people enjoy using."]} media={MEDIA}>
             {"I believe a great website is more than how it looks. It’s about how it feels, how fast it responds and how clearly it works. I bring design and code together, sweating the small details so every interaction feels intentional. I build interfaces people enjoy using."}
           </ScrollReveal>
 
