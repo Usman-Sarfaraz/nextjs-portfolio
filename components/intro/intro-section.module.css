@@ -1,11 +1,14 @@
-.section { position: relative; overflow: hidden; background: var(--background); color: var(--foreground); padding: 112px 0 0; scroll-margin-top: 112px; }
+/* The text block pins near the middle of the screen while the spacer below supplies scroll distance.
+   On release the block sits at the section's bottom edge, so no empty stage is left behind. */
+.section { position: relative; padding-top: 96px; background: var(--background); color: var(--foreground); scroll-margin-top: 0; }
 
-.inner { position: relative; z-index: 1; width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; display: grid; grid-template-columns: minmax(0, 1fr); }
+.inner { position: sticky; top: max(104px, calc(50svh - 330px)); z-index: 1; width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; display: grid; grid-template-columns: minmax(0, 1fr); }
 
 /* The portrait stays pinned while the story scrolls past it. */
 /* A full-height sticky column keeps the card centred vertically on screen while the text scrolls. */
 .portraitColumn { position: sticky; top: 0; display: flex; align-items: center; height: 100svh; min-width: 0; margin-top: -112px; } /* Pull up over the section padding so the centre lines up with the screen. */
 .copy { min-width: 0; }
+.scrollSpace { height: 130svh; }
 .statement {
   --intro-accent: var(--accent);
   --intro-shine: var(--accent-shine);
@@ -148,7 +151,9 @@
 }
 
 @media (max-width: 767px) {
-  .section { padding: 64px 0 0; }
+  .section { padding-top: 64px; }
+  .inner { top: 96px; }
+  .scrollSpace { height: 110svh; }
   .inner { padding-inline: 24px; }
   .statement { font-size: 30px; }
   .split { border-radius: 24px; }
@@ -159,6 +164,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .scrollSpace { display: none; }
+  .inner { position: relative; top: 0; }
   .workLink svg, .knob { transition: none; }
   .workLink:hover svg { transform: none; }
 }

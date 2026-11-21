@@ -16,18 +16,20 @@ const MEDIA = {
 export function IntroSection() {
   return (
     <section id="intro" aria-labelledby="intro-heading" className={styles.section}>
-      <div className={styles.inner}>
+      <div className={styles.inner} data-pin-stage>
         <div className={styles.copy}>
           {/* Kept for screen readers and the section label; the statement carries the section visually. */}
           <h2 id="intro-heading" className="sr-only">Design mindset. Developer’s precision.</h2>
-          {/* A moving spotlight: words light up as you scroll and fade back behind you; key phrases shine; chips pop in. */}
-          <ScrollReveal className={styles.statement ?? ""} baseOpacity={0.16} blurStrength={0} spotlight={36} highlights={["how it feels,", "design and code", "people enjoy using."]} media={MEDIA}>
+          {/* The section stays pinned while scrolling drives the spotlight; key phrases shine; chips pop in. */}
+          <ScrollReveal className={styles.statement ?? ""} baseOpacity={0.16} blurStrength={0} spotlight={36} pinned highlights={["how it feels,", "design and code", "people enjoy using."]} media={MEDIA}>
             {"I believe a great website is more than how it looks. It’s about how it feels, how fast it responds and how clearly it works. I bring design and code together, sweating the small details so every interaction feels intentional. I build interfaces people enjoy using."}
           </ScrollReveal>
 
           <a href="#projects" className={styles.workLink}>Explore selected work <ArrowDownRight size={20} aria-hidden="true" /></a>
         </div>
       </div>
+      {/* Scroll distance for the pinned reading; the stage above stays put while this passes. */}
+      <div className={styles.scrollSpace} aria-hidden="true" />
     </section>
   );
 }

@@ -18,9 +18,11 @@ type ScrollRevealProps = {
   spotlight?: number;
   /** Inline media placed right after the first occurrence of each word; it pops in as that word is reached. */
   media?: Record<string, ReactNode>;
+  /** For sticky layouts: reveal starts as the text enters view and ends when the enclosing <section> releases, finishing with every word lit. */
+  pinned?: boolean;
 };
 
-export default function ScrollReveal({ children, className, baseOpacity = 0.2, blurStrength = 2, highlights = [], spotlight, media = {} }: ScrollRevealProps) {
+export default function ScrollReveal({ children, className, baseOpacity = 0.2, blurStrength = 2, highlights = [], spotlight, media = {}, pinned = false }: ScrollRevealProps) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reducedMotion = useReducedMotion();
   const revealed = useSiteRevealed();
@@ -40,13 +42,30 @@ export default function ScrollReveal({ children, className, baseOpacity = 0.2, b
       if (spotlight) {
         const timeline = gsap.timeline({
           defaults: { ease: "none", duration: 1 },
-          scrollTrigger: { trigger: ref.current, start: "top 75%", end: "bottom 40%", scrub: 0.5, invalidateOnRefresh: true },
+          // Pinned: start revealing as the text comes into view, finish when its sticky section releases.
+          scrollTrigger: pinned
+            ? {
+                trigger: ref.current,
+                start: "top bottom",
+                endTrigger: ref.current!.closest("section") ?? ref.current,
+                // Finish exactly when the sticky stage starts moving again: section bottom = stage top + stage height.
+                end: () => {
+                  const stage = ref.current?.closest<HTMLElement>("[data-pin-stage]");
+                  if (!stage) return "bottom bottom";
+                  return `bottom ${(parseFloat(getComputedStyle(stage).top) || 0) + stage.offsetHeight}px`;
+                },
+                scrub: 0.5,
+                invalidateOnRefresh: true,
+              }
+            : { trigger: ref.current, start: "top 75%", end: "bottom 40%", scrub: 0.5, invalidateOnRefresh: true },
         });
         words.forEach((word, index) => {
           timeline.to(word, { opacity: 1, filter: "blur(0px)" }, index);
           // The final phrase stays lit once the reader reaches the end.
           if (index + spotlight < words.length) timeline.to(word, { opacity: baseOpacity }, index + spotlight);
         });
+        // Pinned: the whole paragraph comes fully into view before the section releases.
+        if (pinned) timeline.to(words, { opacity: 1, duration: 3 }, words.length + 1);
         // Chips pop in with their word and stay, so the sentence keeps its pictures.
         chips.forEach((chip) => {
           timeline.to(chip, { scale: 1, ease: "back.out(2.2)", duration: 1.2 }, Number(chip.dataset.revealChip));
@@ -70,7 +89,7 @@ export default function ScrollReveal({ children, className, baseOpacity = 0.2, b
     }, ref);
     ScrollTrigger.refresh();
     return () => context.revert();
-  }, [revealed, reducedMotion, baseOpacity, blurStrength, children, spotlight]);
+  }, [revealed, reducedMotion, baseOpacity, blurStrength, children, spotlight, pinned]);
 
   return (
     <p ref={ref} className={className}>
