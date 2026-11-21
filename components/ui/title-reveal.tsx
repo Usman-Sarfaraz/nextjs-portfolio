@@ -20,7 +20,7 @@ export function TitleReveal({ children, completesHeroText = false }: { children:
       initial={reducedMotion ? false : { opacity: 0, y: 20 }}
       animate={revealed && inView ? { opacity: 1, y: 0 } : { opacity: 0, y: reducedMotion ? 0 : 20 }}
       onAnimationComplete={() => { if (completesHeroText && revealed && inView) finishText(); }}
-      transition={{ duration: reducedMotion ? 0 : 1.05, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: reducedMotion ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.span>

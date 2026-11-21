@@ -1,57 +1,68 @@
 .loader {
+  /* The loader stays white with deep emerald in both themes, by request. */
+  --loader-paper: #ffffff;
+  --loader-ink: #065f46;
+  --loader-ink-soft: #3f7f69;
+
   position: fixed;
   inset: 0;
   z-index: 1000;
   overflow: hidden;
-  background: #162022;
-  color: #d1fae5;
-  font-family: var(--font-outfit), var(--font-geist-sans), sans-serif;
-  will-change: transform;
+  font-family: var(--font-heading);
+  pointer-events: none;
 }
 
-.header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  min-height: 84px;
-  padding: 22px 32px;
-  border-bottom: 1px solid rgb(110 231 183 / 25%);
-  background: #162022;
-}
-
-.fill {
+.sheet {
   position: absolute;
   inset: 0;
-  background: #065f46;
-  transform: scaleX(0);
-  transform-origin: left center;
+  display: grid;
+  place-items: center;
+  background: var(--loader-paper);
+  color: var(--loader-ink);
+  /* --iris is the radius of the hole the exit opens; below zero keeps the sheet solid. */
+  --iris: -1vmax;
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent var(--iris), #000 calc(var(--iris) + 1px));
+  mask: radial-gradient(circle at 50% 50%, transparent var(--iris), #000 calc(var(--iris) + 1px));
 }
 
-.name, .discipline { position: relative; z-index: 1; }
-.name { font-size: clamp(20px, 2vw, 30px); letter-spacing: -0.05em; white-space: nowrap; }
-.discipline { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+/* All greetings share one grid cell so each swap stays centred without layout shift. */
+.stage {
+  display: grid;
+  place-items: center;
+}
 
-.counter {
-  position: absolute;
-  right: 12vw;
-  bottom: 5vh;
-  display: flex;
-  align-items: baseline;
-  gap: 0.06em;
-  font-size: clamp(130px, 23vw, 400px);
+.greeting {
+  grid-area: 1 / 1;
+  font-size: clamp(48px, 8vw, 120px);
   font-weight: 400;
-  line-height: 0.85;
-  letter-spacing: -0.08em;
-  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
 }
 
-.percent { font-size: 0.14em; letter-spacing: -0.03em; color: #6ee7b7; }
-.content:not([hidden]) { display: contents; }
+.greeting[dir="rtl"] { letter-spacing: 0; }
+
+.meta {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 15px;
+  color: var(--loader-ink-soft);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meta { opacity: 1; }
+}
+
+.content { display: contents; }
 
 @media (max-width: 767px) {
-  .header { min-height: 76px; padding: 20px 24px; }
-  .discipline { max-width: 110px; font-size: 9px; line-height: 1.6; text-align: right; }
-  .counter { right: 24px; bottom: max(40px, env(safe-area-inset-bottom)); font-size: clamp(130px, 35vw, 260px); }
+  .meta { left: 20px; right: 20px; bottom: max(24px, env(safe-area-inset-bottom)); font-size: 14px; }
 }

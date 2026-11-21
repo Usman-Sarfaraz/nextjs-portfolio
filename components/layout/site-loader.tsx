@@ -2,17 +2,29 @@
 
 import gsap from "gsap";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { profile } from "@/lib/profile";
 import styles from "./site-loader.module.css";
 
 const SiteRevealedContext = createContext(true);
 export function useSiteRevealed() { return useContext(SiteRevealedContext); }
 
+// Ends on Urdu "Salaam", a greeting from home.
+const GREETINGS = [
+  { text: "Hello", lang: "en" },
+  { text: "你好", lang: "zh" },
+  { text: "Hola", lang: "es" },
+  { text: "مرحبا", lang: "ar", dir: "rtl" },
+  { text: "Bonjour", lang: "fr" },
+  { text: "Olá", lang: "pt" },
+  { text: "سلام", lang: "ur", dir: "rtl" },
+] as const;
+
 export function SiteLoader({ children }: { children: ReactNode }) {
   const overlay = useRef<HTMLDivElement>(null);
-  const number = useRef<HTMLSpanElement>(null);
-  const fill = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
+  const sheet = useRef<HTMLDivElement>(null);
   const [finished, setFinished] = useState(false);
+  // Flips partway through the iris so the hero starts animating while the circle is still opening.
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -30,36 +42,53 @@ export function SiteLoader({ children }: { children: ReactNode }) {
     // Keep the introduction bounded even if a third-party resource never finishes.
     const assets = Promise.race([
       Promise.all([loaded, document.fonts.ready]),
-      new Promise<void>((resolve) => { timeout = setTimeout(resolve, 2800); }),
+      new Promise<void>((resolve) => { timeout = setTimeout(resolve, 2000); }),
     ]);
-    const progress = { value: 0 };
-    const update = () => {
-      if (number.current) number.current.textContent = String(Math.round(progress.value));
-      gsap.set(fill.current, { scaleX: progress.value / 100 });
-    };
+
+    let frame = 0;
+
     const context = gsap.context(() => {
-      const intro = gsap.timeline();
-      intro.to(progress, {
-        value: 90,
-        duration: reducedMotion ? 0 : 1.8,
-        ease: "power2.out",
-        onUpdate: update,
-      });
+      const words = gsap.utils.toArray<HTMLElement>("[data-greeting]");
+      const intro = gsap.timeline({ paused: true });
+      // Start after the first paint so the site's initial layout, behind the opaque sheet, never stalls the greetings.
+      frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => intro.play()); });
+
+      if (reducedMotion) {
+        gsap.set(words.slice(0, 1), { autoAlpha: 1 });
+      } else {
+        intro.fromTo("[data-meta]", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: "power2.out" }, 0);
+        // "Hello" eases in and lingers; the rest snap past like a quick hello around the world.
+        intro.fromTo(words.slice(0, 1),
+          { autoAlpha: 0, yPercent: 30, filter: "blur(8px)" },
+          { autoAlpha: 1, yPercent: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 0.05);
+        let at = 0.05 + 0.45 + 0.3;
+        for (let index = 1; index < words.length; index += 1) {
+          intro.set(words.slice(index - 1, index), { autoAlpha: 0 }, at);
+          intro.fromTo(words.slice(index, index + 1), { autoAlpha: 0, yPercent: 18 }, { autoAlpha: 1, yPercent: 0, duration: 0.12, ease: "expo.out" }, at);
+          at += 0.13;
+        }
+        intro.to({}, { duration: 0.15 }, at);
+      }
+
       intro.call(() => {
         void assets.then(() => {
           if (cancelled) return;
           context.add(() => {
-            gsap.timeline()
-              .to(progress, { value: 100, duration: reducedMotion ? 0 : 0.4, ease: "power1.inOut", onUpdate: update })
-              .to({}, { duration: reducedMotion ? 0 : 0.25 })
-              .call(() => setReady(true))
-              .to(overlay.current, reducedMotion
-                ? { opacity: 0, duration: 0.15 }
-                : { yPercent: -100, duration: 1.05, ease: "power4.inOut" })
-              .call(() => {
-                root.style.overflow = previousOverflow;
-                setFinished(true);
-              });
+            const done = () => {
+              root.style.overflow = previousOverflow;
+              setRevealed(true);
+              setFinished(true);
+            };
+            if (reducedMotion) {
+              gsap.to(overlay.current, { autoAlpha: 0, duration: 0.2, onComplete: done });
+              return;
+            }
+            gsap.timeline({ onComplete: done })
+              .to("[data-stage]", { scale: 0.9, autoAlpha: 0, filter: "blur(8px)", duration: 0.35, ease: "power2.in" }, 0)
+              .to("[data-meta]", { autoAlpha: 0, duration: 0.3, ease: "power2.in" }, 0)
+              // Iris: a hole opens from the centre of the sheet until the site fills the screen.
+              .to(sheet.current, { "--iris": "80vmax", duration: 1.35, ease: "power3.inOut" }, 0.1)
+              .call(() => setRevealed(true), [], 0.7);
           });
         });
       });
@@ -67,6 +96,7 @@ export function SiteLoader({ children }: { children: ReactNode }) {
 
     return () => {
       cancelled = true;
+      cancelAnimationFrame(frame);
       clearTimeout(timeout);
       window.removeEventListener("load", completeLoad!);
       context.revert();
@@ -78,18 +108,29 @@ export function SiteLoader({ children }: { children: ReactNode }) {
     <>
       {!finished && (
         <div ref={overlay} className={styles.loader} data-site-loader data-lenis-prevent role="status" aria-label="Loading portfolio">
-          <div className={styles.header} aria-hidden="true">
-            <div ref={fill} className={styles.fill} />
-            <span className={styles.name}>Usman Sarfraz.</span>
-            <span className={styles.discipline}>Frontend development · UI design</span>
-          </div>
-          <div className={styles.counter} aria-hidden="true">
-            <span ref={number}>0</span><span className={styles.percent}>%</span>
+          <div ref={sheet} className={styles.sheet} aria-hidden="true">
+            <div className={styles.stage} data-stage>
+              {GREETINGS.map((greeting) => (
+                <span
+                  key={greeting.lang}
+                  className={styles.greeting}
+                  lang={greeting.lang}
+                  dir={"dir" in greeting ? greeting.dir : undefined}
+                  data-greeting
+                >
+                  {greeting.text}
+                </span>
+              ))}
+            </div>
+            <div className={styles.meta} data-meta>
+              <span>{profile.name}</span>
+              <span>{profile.location}</span>
+            </div>
           </div>
         </div>
       )}
-      <SiteRevealedContext.Provider value={finished}>
-        <div data-site-content hidden={!ready} inert={!finished} className={styles.content}>{children}</div>
+      <SiteRevealedContext.Provider value={revealed}>
+        <div data-site-content inert={!finished} className={styles.content}>{children}</div>
       </SiteRevealedContext.Provider>
       <noscript><style>{"[data-site-loader]{display:none!important}[data-site-content]{display:contents!important}"}</style></noscript>
     </>

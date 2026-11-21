@@ -4,7 +4,7 @@ import { TitleReveal } from "@/components/ui/title-reveal";
 import styles from "./about-section.module.css";
 import { useInView } from "motion/react";
 import { RotateCcw } from "lucide-react";
-import * as Matter from "matter-js";
+import type { Body as MatterBody } from "matter-js";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type Chip = {
@@ -115,7 +115,7 @@ const WALL_PAD = 16;
 
 type ChipState = {
   chip: Chip;
-  body: Matter.Body;
+  body: MatterBody;
   width: number;
   height: number;
 };
@@ -135,8 +135,11 @@ export function Stack(): ReactNode {
     if (!container || !measure) return;
 
     let cleanup: (() => void) | undefined;
+    let cancelled = false;
 
-    (() => {
+    // Load the physics engine only once the box is on screen, keeping it out of the first page load.
+    void import("matter-js").then((Matter) => {
+      if (cancelled) return;
 
       const {
         Engine,
@@ -282,9 +285,10 @@ export function Stack(): ReactNode {
         World.clear(world, false);
         Engine.clear(engine);
       };
-    })();
+    });
 
     return () => {
+      cancelled = true;
       cleanup?.();
     };
   }, [resetKey, inView]);
