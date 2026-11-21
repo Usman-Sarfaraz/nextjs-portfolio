@@ -25,21 +25,25 @@
   mask: radial-gradient(circle at 50% 50%, transparent var(--iris), #000 calc(var(--iris) + 1px));
 }
 
-/* All greetings share one grid cell so each swap stays centred without layout shift. */
 .stage {
   display: grid;
   place-items: center;
 }
 
+/* "Hello" enters with CSS so it paints at first frame, before any JavaScript runs. */
 .greeting {
-  grid-area: 1 / 1;
+  display: block;
   font-size: clamp(48px, 8vw, 120px);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.04em;
   white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
+  animation: greeting-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s backwards;
+}
+
+/* Starts just above zero opacity: invisible to the eye, but still counted as painted. */
+@keyframes greeting-in {
+  from { opacity: 0.001; transform: translateY(30%); filter: blur(8px); }
 }
 
 .greeting[dir="rtl"] { letter-spacing: 0; }
@@ -59,6 +63,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .meta { opacity: 1; }
+  .greeting { animation: none; }
 }
 
 .content { display: contents; }

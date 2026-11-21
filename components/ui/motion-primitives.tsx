@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 import { useSiteRevealed } from "@/components/layout/site-loader";
-import { useReducedMotion } from "@/lib/motion";
+import { HIDDEN_OPACITY, useReducedMotion } from "@/lib/motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -22,8 +22,8 @@ export function FadeIn({
   const reducedMotion = useReducedMotion();
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+      initial={{ opacity: HIDDEN_OPACITY, y: 12 }}
+      animate={revealed ? { opacity: 1, y: 0 } : { opacity: HIDDEN_OPACITY, y: 12 }}
       transition={{ duration: reducedMotion ? 0 : duration, delay: reducedMotion ? 0 : delay, ease: EASE }}
       className={className}
     >

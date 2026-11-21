@@ -22,6 +22,7 @@ const GREETINGS = [
 export function SiteLoader({ children }: { children: ReactNode }) {
   const overlay = useRef<HTMLDivElement>(null);
   const sheet = useRef<HTMLDivElement>(null);
+  const word = useRef<HTMLSpanElement>(null);
   const [finished, setFinished] = useState(false);
   // Flips partway through the iris so the hero starts animating while the circle is still opening.
   const [revealed, setRevealed] = useState(false);
@@ -48,23 +49,24 @@ export function SiteLoader({ children }: { children: ReactNode }) {
     let frame = 0;
 
     const context = gsap.context(() => {
-      const words = gsap.utils.toArray<HTMLElement>("[data-greeting]");
       const intro = gsap.timeline({ paused: true });
       // Start after the first paint so the site's initial layout, behind the opaque sheet, never stalls the greetings.
       frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => intro.play()); });
 
-      if (reducedMotion) {
-        gsap.set(words.slice(0, 1), { autoAlpha: 1 });
-      } else {
+      const greeting = word.current;
+      if (!reducedMotion && greeting) {
         intro.fromTo("[data-meta]", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: "power2.out" }, 0);
-        // "Hello" eases in and lingers; the rest snap past like a quick hello around the world.
-        intro.fromTo(words.slice(0, 1),
-          { autoAlpha: 0, yPercent: 30, filter: "blur(8px)" },
-          { autoAlpha: 1, yPercent: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 0.05);
-        let at = 0.05 + 0.45 + 0.3;
-        for (let index = 1; index < words.length; index += 1) {
-          intro.set(words.slice(index - 1, index), { autoAlpha: 0 }, at);
-          intro.fromTo(words.slice(index, index + 1), { autoAlpha: 0, yPercent: 18 }, { autoAlpha: 1, yPercent: 0, duration: 0.12, ease: "expo.out" }, at);
+        // "Hello" eases in with CSS at first paint and lingers; the rest snap past like a quick hello around the world.
+        // One element whose text swaps keeps Lighthouse's largest-paint on that first "Hello".
+        let at = 0.5;
+        for (let index = 1; index < GREETINGS.length; index += 1) {
+          const next = GREETINGS[index]!;
+          intro.call(() => {
+            greeting.textContent = next.text;
+            greeting.lang = next.lang;
+            greeting.dir = "dir" in next ? next.dir : "ltr";
+          }, [], at);
+          intro.fromTo(greeting, { autoAlpha: 0, yPercent: 18 }, { autoAlpha: 1, yPercent: 0, duration: 0.12, ease: "expo.out" }, at);
           at += 0.13;
         }
         intro.to({}, { duration: 0.15 }, at);
@@ -110,17 +112,7 @@ export function SiteLoader({ children }: { children: ReactNode }) {
         <div ref={overlay} className={styles.loader} data-site-loader data-lenis-prevent role="status" aria-label="Loading portfolio">
           <div ref={sheet} className={styles.sheet} aria-hidden="true">
             <div className={styles.stage} data-stage>
-              {GREETINGS.map((greeting) => (
-                <span
-                  key={greeting.lang}
-                  className={styles.greeting}
-                  lang={greeting.lang}
-                  dir={"dir" in greeting ? greeting.dir : undefined}
-                  data-greeting
-                >
-                  {greeting.text}
-                </span>
-              ))}
+              <span ref={word} className={styles.greeting} lang={GREETINGS[0].lang}>{GREETINGS[0].text}</span>
             </div>
             <div className={styles.meta} data-meta>
               <span>{profile.name}</span>

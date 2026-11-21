@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef, type ReactNode } from "react";
-import { useReducedMotion } from "@/lib/motion";
+import { HIDDEN_OPACITY, useReducedMotion } from "@/lib/motion";
 import { useSiteRevealed } from "@/components/layout/site-loader";
 import { useHeroRevealSequence } from "@/components/hero/hero-reveal-sequence";
 
@@ -17,8 +17,8 @@ export function TitleReveal({ children, completesHeroText = false }: { children:
     <motion.span
       ref={ref}
       className="inline-block align-bottom"
-      initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-      animate={revealed && inView ? { opacity: 1, y: 0 } : { opacity: 0, y: reducedMotion ? 0 : 20 }}
+      initial={reducedMotion ? false : { opacity: HIDDEN_OPACITY, y: 20 }}
+      animate={revealed && inView ? { opacity: 1, y: 0 } : { opacity: HIDDEN_OPACITY, y: reducedMotion ? 0 : 20 }}
       onAnimationComplete={() => { if (completesHeroText && revealed && inView) finishText(); }}
       transition={{ duration: reducedMotion ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
     >

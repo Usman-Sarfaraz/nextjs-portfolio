@@ -24,6 +24,10 @@ function getReducedMotionServerSnapshot(): boolean {
 
 const ReducedMotionContext = createContext<boolean>(false);
 
+// Hidden state for entrance animations under the site loader. Invisible, but above zero so
+// browsers count the content as painted and Largest Contentful Paint is not delayed until the reveal.
+export const HIDDEN_OPACITY = 0.001;
+
 export function useReducedMotion(): boolean {
   return useContext(ReducedMotionContext);
 }

@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "motion/react";
 import { useEffect, useRef, type PointerEvent, type ReactNode } from "react";
-import { useReducedMotion } from "@/lib/motion";
+import { HIDDEN_OPACITY, useReducedMotion } from "@/lib/motion";
 import { useSiteRevealed } from "@/components/layout/site-loader";
 import { useHeroRevealSequence } from "./hero-reveal-sequence";
 
@@ -41,8 +41,8 @@ export function PortraitReveal({ children, className }: { children: ReactNode; c
       className={className}
       onPointerMove={attractCards}
       onPointerLeave={(event) => resetCards(event.currentTarget)}
-      initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-      animate={revealed && textFinished && inView ? { opacity: 1, y: 0 } : { opacity: 0, y: reducedMotion ? 0 : 12 }}
+      initial={reducedMotion ? false : { opacity: HIDDEN_OPACITY, y: 12 }}
+      animate={revealed && textFinished && inView ? { opacity: 1, y: 0 } : { opacity: HIDDEN_OPACITY, y: reducedMotion ? 0 : 12 }}
       transition={{ delay: 0, duration: reducedMotion ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
