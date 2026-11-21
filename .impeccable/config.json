@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-11-21T16:51:57.303Z",
+        "reason": "Claude: lib/contact-emails.ts is an HTML email template; most email clients block web fonts, so the Arial/Helvetica system stack is the deliberate, domain-appropriate choice"
+      }
+    ]
+  }
+}

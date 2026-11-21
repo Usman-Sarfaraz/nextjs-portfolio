@@ -1,5 +1,6 @@
-.section { background: var(--background); color: var(--foreground); padding: 112px 0 0; scroll-margin-top: 112px; }
-.inner { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; display: grid; grid-template-columns: minmax(0, 1fr); }
+.section { position: relative; overflow: hidden; background: var(--background); color: var(--foreground); padding: 112px 0 0; scroll-margin-top: 112px; }
+
+.inner { position: relative; z-index: 1; width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; display: grid; grid-template-columns: minmax(0, 1fr); }
 
 /* The portrait stays pinned while the story scrolls past it. */
 /* A full-height sticky column keeps the card centred vertically on screen while the text scrolls. */
@@ -13,6 +14,36 @@
   font-size: clamp(32px, 4.4vw, 68px);
   line-height: 1.22;
   letter-spacing: -.03em;
+}
+
+/* ---- Inline media chips ------------------------------------------------- */
+/* Each chip is a flex box inside a middle-aligned wrapper, so all of them centre on the lowercase letters. */
+.chip { position: relative; display: flex; align-items: center; justify-content: center; height: .8em; margin: 0 .04em; overflow: hidden; border-radius: 999px; transform: translateY(-.03em); }
+.chipImage { object-fit: cover; }
+/* Same cut-out portrait and grey as the hero card, zoomed in on the face. */
+.chipPortrait { width: .8em; background: #afb5b6; }
+:global(.dark) .chipPortrait { background: #333b3e; }
+.chipPortrait .chipImage { transform: scale(2); transform-origin: 47% 24%; }
+.chipCode { padding: 0 .76em; background: #0b1210; color: #6ee7b7; font-family: var(--font-mono); font-size: .42em; height: 1.9em; letter-spacing: 0; line-height: 1; }
+
+/* A switch that flips on and off on its own. */
+.chipToggle { width: 1.5em; padding: 0 .1em; justify-content: flex-start; background: var(--accent); }
+.toggleThumb { width: .6em; height: .6em; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 2px rgb(0 0 0 / 25%); animation: toggle-flip 2.8s cubic-bezier(.65, 0, .35, 1) infinite; }
+@keyframes toggle-flip { 0%, 40% { transform: translateX(.7em); } 50%, 90% { transform: translateX(0); } 100% { transform: translateX(.7em); } }
+.chipToggle:has(.toggleThumb) { animation: toggle-track 2.8s cubic-bezier(.65, 0, .35, 1) infinite; }
+@keyframes toggle-track { 0%, 40% { background: var(--accent); } 50%, 90% { background: var(--section-rule); } 100% { background: var(--accent); } }
+
+.chipCheck { width: .8em; background: var(--accent); color: var(--background); }
+.chipCheck svg { width: .48em; height: .48em; }
+
+/* A cursor that nudges forward, as if pointing at the detail. */
+.chipCursor { width: 1.2em; background: color-mix(in srgb, var(--accent) 16%, var(--background)); color: var(--accent); }
+.chipCursor svg { width: .46em; height: .46em; animation: cursor-nudge 2.2s ease-in-out infinite; }
+@keyframes cursor-nudge { 0%, 100% { transform: translate(-.06em, .04em); } 50% { transform: translate(.08em, -.06em); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .toggleThumb, .chipToggle:has(.toggleThumb), .chipCursor svg { animation: none; }
+  .toggleThumb { transform: translateX(.7em); }
 }
 
 .workLink { display: inline-flex; align-items: center; justify-content: space-between; gap: 48px; min-height: 44px; margin-top: 36px; border-bottom: 1px solid var(--section-rule); color: var(--accent); font-size: 13px; text-decoration: none; }
