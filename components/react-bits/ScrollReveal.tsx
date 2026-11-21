@@ -64,7 +64,6 @@ export default function ScrollReveal({ children, className, baseOpacity = 0.2, b
           // The final phrase stays lit once the reader reaches the end.
           if (index + spotlight < words.length) timeline.to(word, { opacity: baseOpacity }, index + spotlight);
         });
-        if (pinned) setTimeout(() => console.log("[reveal-debug]", timeline.scrollTrigger?.start, timeline.scrollTrigger?.end, timeline.duration()), 500);
         // Pinned: the whole paragraph comes fully into view before the section releases.
         if (pinned) timeline.to(words, { opacity: 1, duration: 3 }, words.length + 1);
         // Chips pop in with their word and stay, so the sentence keeps its pictures.
