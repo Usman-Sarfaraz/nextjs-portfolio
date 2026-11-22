@@ -18,7 +18,7 @@ type ScrollRevealProps = {
   spotlight?: number;
   /** Inline media placed right after the first occurrence of each word; it pops in as that word is reached. */
   media?: Record<string, ReactNode>;
-  /** For sticky layouts: reveal starts as the text enters view and ends when the enclosing <section> releases, finishing with every word lit. */
+  /** For sticky layouts: reveal starts as the text enters view and ends when the sticky stage releases; revealed words stay lit. */
   pinned?: boolean;
 };
 
@@ -62,10 +62,11 @@ export default function ScrollReveal({ children, className, baseOpacity = 0.2, b
         words.forEach((word, index) => {
           timeline.to(word, { opacity: 1, filter: "blur(0px)" }, index);
           // The final phrase stays lit once the reader reaches the end.
-          if (index + spotlight < words.length) timeline.to(word, { opacity: baseOpacity }, index + spotlight);
+          // Pinned reading keeps every revealed word lit; otherwise earlier words fade back behind the reader.
+          if (!pinned && index + spotlight < words.length) timeline.to(word, { opacity: baseOpacity }, index + spotlight);
         });
-        // Pinned: the whole paragraph comes fully into view before the section releases.
-        if (pinned) timeline.to(words, { opacity: 1, duration: 3 }, words.length + 1);
+        // Pinned: a short hold with the full paragraph lit before the section releases.
+        if (pinned) timeline.to({}, { duration: 3 }, words.length);
         // Chips pop in with their word and stay, so the sentence keeps its pictures.
         chips.forEach((chip) => {
           timeline.to(chip, { scale: 1, ease: "back.out(2.2)", duration: 1.2 }, Number(chip.dataset.revealChip));
