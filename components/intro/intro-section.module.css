@@ -1,6 +1,7 @@
+/* No own background: the section shows the page background, so no separately painted panel shows as a seam. */
 /* The text block pins near the middle of the screen while the spacer below supplies scroll distance.
    On release the block sits at the section's bottom edge, so no empty stage is left behind. */
-.section { position: relative; padding-top: 96px; background: var(--background); color: var(--foreground); scroll-margin-top: 0; }
+.section { position: relative; padding-top: 96px; color: var(--foreground); scroll-margin-top: 0; }
 
 .inner { position: sticky; top: max(104px, calc(50svh - 330px)); z-index: 1; width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; display: grid; grid-template-columns: minmax(0, 1fr); }
 
