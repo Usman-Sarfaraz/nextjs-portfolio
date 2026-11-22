@@ -14,7 +14,7 @@
 
 /* Dark theme: the page's near-black with the mint accent, so the loader matches the site behind it. */
 :global(.dark) .loader {
-  --loader-paper: #0a0a0a;
+  --loader-paper: #000000;
   --loader-ink: #6ee7b7;
   --loader-ink-soft: #8fb5a6;
 }
