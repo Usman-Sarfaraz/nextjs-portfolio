@@ -66,7 +66,8 @@ export function SiteLoader({ children }: { children: ReactNode }) {
             greeting.lang = next.lang;
             greeting.dir = "dir" in next ? next.dir : "ltr";
           }, [], at);
-          intro.fromTo(greeting, { autoAlpha: 0, yPercent: 18 }, { autoAlpha: 1, yPercent: 0, duration: 0.12, ease: "expo.out" }, at);
+          // immediateRender: false, or GSAP hides "Hello" the moment the timeline is built, leaving a blank gap.
+          intro.fromTo(greeting, { autoAlpha: 0, yPercent: 18 }, { autoAlpha: 1, yPercent: 0, duration: 0.12, ease: "expo.out", immediateRender: false }, at);
           at += 0.13;
         }
         intro.to({}, { duration: 0.15 }, at);
