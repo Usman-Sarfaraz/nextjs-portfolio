@@ -15,6 +15,8 @@
 
 .service { --row-text: var(--foreground); --row-muted: var(--services-muted); position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 64px; padding: 40px; border: 1px solid var(--section-rule); }
 .service::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: #292929; border-radius: inherit; clip-path: inset(0 100% 0 0); opacity: 0; transition: clip-path 600ms cubic-bezier(.22,1,.36,1), opacity 300ms; }
+/* Dark theme: an emerald-black hover fill instead of neutral grey, so the wide cards stay on-theme. */
+:global(.dark) .service::before { background: #16231e; }
 .identity { align-self: start; transition: transform 600ms cubic-bezier(.22,1,.36,1); }
 .eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; color: var(--row-muted); font-family: var(--font-geist-mono), monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; transition: color 300ms; }
 .serviceNumber { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; margin-right: 8px; border: 1px solid currentColor; border-radius: 50%; font-family: var(--font-mono); font-size: 11px; color: var(--row-text); }

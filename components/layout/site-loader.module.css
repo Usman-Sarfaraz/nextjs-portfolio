@@ -1,5 +1,5 @@
 .loader {
-  /* The loader stays white with deep emerald in both themes, by request. */
+  /* Light theme: white with deep emerald. */
   --loader-paper: #ffffff;
   --loader-ink: #065f46;
   --loader-ink-soft: #3f7f69;
@@ -10,6 +10,13 @@
   overflow: hidden;
   font-family: var(--font-heading);
   pointer-events: none;
+}
+
+/* Dark theme: the page's near-black with the mint accent, so the loader matches the site behind it. */
+:global(.dark) .loader {
+  --loader-paper: #0a0a0a;
+  --loader-ink: #6ee7b7;
+  --loader-ink-soft: #8fb5a6;
 }
 
 .sheet {

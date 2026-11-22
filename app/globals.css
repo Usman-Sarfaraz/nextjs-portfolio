@@ -54,8 +54,10 @@
   --font-heading: var(--font-heading);
 }
 
+/* Paint the page colour on the root too, so the canvas outside <body> and every section match exactly. */
 html {
   color-scheme: light;
+  background-color: var(--background);
 }
 
 html.dark {
