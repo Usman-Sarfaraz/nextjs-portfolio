@@ -1,4 +1,4 @@
-import { ArrowDownRight, Check, MousePointer2 } from "lucide-react";
+import { Check, MousePointer2 } from "lucide-react";
 import Image from "next/image";
 import ScrollReveal from "@/components/react-bits/ScrollReveal";
 import portrait from "@/public/images/portfolio_portrait.png";
@@ -25,7 +25,6 @@ export function IntroSection() {
             {"I believe a great website is more than how it looks. It’s about how it feels, how fast it responds and how clearly it works. I bring design and code together, sweating the small details so every interaction feels intentional. I build interfaces people enjoy using."}
           </ScrollReveal>
 
-          <a href="#projects" className={styles.workLink}>Explore selected work <ArrowDownRight size={20} aria-hidden="true" /></a>
         </div>
       </div>
       {/* Scroll distance for the pinned reading; the stage above stays put while this passes. */}

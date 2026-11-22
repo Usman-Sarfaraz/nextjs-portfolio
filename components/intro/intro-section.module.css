@@ -49,10 +49,6 @@
   .toggleThumb { transform: translateX(.7em); }
 }
 
-.workLink { display: inline-flex; align-items: center; justify-content: space-between; gap: 48px; min-height: 44px; margin-top: 36px; border-bottom: 1px solid var(--section-rule); color: var(--accent); font-size: 13px; text-decoration: none; }
-.workLink svg { transition: transform 300ms; }
-.workLink:hover svg { transform: translate(3px, 3px); }
-.workLink:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
 
 /* ---- Split portrait ---------------------------------------------------- */
 .split {
@@ -166,6 +162,5 @@
 @media (prefers-reduced-motion: reduce) {
   .scrollSpace { display: none; }
   .inner { position: relative; top: 0; }
-  .workLink svg, .knob { transition: none; }
-  .workLink:hover svg { transform: none; }
+  .knob { transition: none; }
 }
