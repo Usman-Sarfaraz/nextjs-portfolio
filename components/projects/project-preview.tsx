@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useInView } from "motion/react";
-import { ArrowUpRight, Expand, Pause, Play, X, LoaderCircle } from "lucide-react";
+import { ArrowUpRight, Expand, Pause, Play, X, LoaderCircle, Lock } from "lucide-react";
 import { useReducedMotion } from "@/lib/motion";
 import styles from "./projects.module.css";
 
@@ -100,6 +100,11 @@ export function ProjectPreview({ project }: { project: PreviewProject }) {
   const [open, setOpen] = useState(false);
   return <>
     <button type="button" className={styles.previewButton} aria-label={`Open ${project.name} project preview`} aria-haspopup="dialog" onClick={() => setOpen(true)}>
+      {/* Browser window frame: traffic lights and the site's address, like a real screenshot. */}
+      <span className={styles.chrome} aria-hidden="true">
+        <span className={styles.lights}><span /><span /><span /></span>
+        <span className={styles.address}><Lock size={11} /><span>{new URL(project.url).hostname}</span></span>
+      </span>
       <Walkthrough project={project} />
       <span className={styles.expandBadge}><Expand size={16} aria-hidden="true" /> View project</span>
     </button>
