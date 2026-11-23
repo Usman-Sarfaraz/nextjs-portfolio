@@ -102,7 +102,7 @@
 @media (max-width: 1023px) {
   .stage { padding: 104px 32px 48px; }
   /* Narrower screens: the active description sits under the words. */
-  .body { grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
+  .body { grid-template-columns: minmax(0, 1fr); align-content: end; row-gap: 20px; }
   .lines { max-width: 40ch; padding: 0; }
   .line { font-size: 15px; }
   .word { font-size: clamp(40px, min(12vw, 11svh), 110px); }
