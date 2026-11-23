@@ -28,7 +28,7 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
       {withHeadline && (
         <header className={styles.header}>
           <div className={styles.headingRow}>
-            <h2 className={styles.heading}><TitleReveal>Selected <em><ShinyText text="work." speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" /></em></TitleReveal></h2>
+            <h2 className={styles.heading}><TitleReveal>Shipped <em><ShinyText text="work." speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" /></em></TitleReveal></h2>
             <div className={styles.headingAside}>
               <p className={styles.count}><span>{String(PROJECTS.length).padStart(2, "0")}</span> live projects</p>
               <p className={styles.headingNote}>Real websites. Thoughtful interfaces.<br />Explore the work, then see it in action.</p>
