@@ -11,6 +11,8 @@ const MEDIA = {
   "works.": <span className={`${styles.chip} ${styles.chipCheck}`}><Check strokeWidth={3} /></span>,
   code: <span className={`${styles.chip} ${styles.chipCode}`}>{"</>"}</span>,
   details: <span className={`${styles.chip} ${styles.chipCursor}`}><MousePointer2 strokeWidth={2.2} /></span>,
+  // The closing full stop is an emerald circle that later grows into the next section.
+  to: <span className={styles.periodDot} data-grow-dot />,
 };
 
 export function IntroSection() {
@@ -21,14 +23,15 @@ export function IntroSection() {
           {/* Kept for screen readers and the section label; the statement carries the section visually. */}
           <h2 id="intro-heading" className="sr-only">Design mindset. Developer’s precision.</h2>
           {/* The section stays pinned while scrolling drives the spotlight; key phrases shine; chips pop in. */}
-          <ScrollReveal className={styles.statement ?? ""} baseOpacity={0.16} blurStrength={0} spotlight={36} pinned highlights={["how it feels,", "design and code", "people enjoy using."]} media={MEDIA}>
-            {"I believe a great website is more than how it looks. It’s about how it feels, how fast it responds and how clearly it works. I bring design and code together, sweating the small details so every interaction feels intentional. I build interfaces people enjoy using."}
+          <ScrollReveal className={styles.statement ?? ""} baseOpacity={0.16} blurStrength={0} spotlight={36} pinned highlights={["how it feels,", "design and code", "people enjoy using"]} media={MEDIA} tightMedia={["to"]}>
+            {"I believe a great website is more than how it looks. It’s about how it feels, how fast it responds and how clearly it works. I bring design and code together, sweating the small details so every interaction feels intentional. I build interfaces people enjoy using and returning to"}
           </ScrollReveal>
 
         </div>
       </div>
-      {/* Scroll distance for the pinned reading; the stage above stays put while this passes. */}
-      <div className={styles.scrollSpace} aria-hidden="true" />
+      {/* Pinned scroll distance: first the words reveal, then the closing dot grows to fill the screen. */}
+      <div className={styles.readSpace} data-reveal-end aria-hidden="true" />
+      <div className={styles.growSpace} data-grow-space aria-hidden="true" />
     </section>
   );
 }

@@ -1,15 +1,16 @@
-/* No own background: the section shows the page background, so no separately painted panel shows as a seam. */
-/* The text block pins near the middle of the screen while the spacer below supplies scroll distance.
-   On release the block sits at the section's bottom edge, so no empty stage is left behind. */
-.section { position: relative; padding-top: 96px; color: var(--foreground); scroll-margin-top: 0; }
+/* A full-screen sticky stage holds the statement while the reading and the dot growth play out.
+   The stage paints the page colour because the layers section waits underneath its last screen. */
+.section { position: relative; z-index: 2; color: var(--foreground); scroll-margin-top: 0; }
 
-.inner { position: sticky; top: max(104px, calc(50svh - 330px)); z-index: 1; width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; display: grid; grid-template-columns: minmax(0, 1fr); }
+/* Full-bleed pinned screen; the side padding keeps the text inside the 1440px content column. */
+.inner { position: sticky; top: 0; z-index: 1; height: 100svh; align-content: center; background: var(--background); width: 100%; padding: 0 max(64px, calc((100% - 1440px) / 2 + 64px)); display: grid; grid-template-columns: minmax(0, 1fr); }
 
 /* The portrait stays pinned while the story scrolls past it. */
 /* A full-height sticky column keeps the card centred vertically on screen while the text scrolls. */
 .portraitColumn { position: sticky; top: 0; display: flex; align-items: center; height: 100svh; min-width: 0; margin-top: -112px; } /* Pull up over the section padding so the centre lines up with the screen. */
 .copy { min-width: 0; }
-.scrollSpace { height: 130svh; }
+.readSpace { height: 130svh; }
+.growSpace { height: 70svh; }
 .statement {
   --intro-accent: var(--accent);
   --intro-shine: var(--accent-shine);
@@ -18,7 +19,12 @@
   font-size: clamp(32px, 4.4vw, 68px);
   line-height: 1.22;
   letter-spacing: -.03em;
+  /* A fixed measure in em keeps the same line breaks on every desktop width, so the closing dot lands mid-screen. */
+  max-width: 19.2em;
 }
+
+/* The closing full stop: an emerald circle on the baseline, which grows into the layers section. */
+.periodDot { display: block; width: .19em; height: .19em; margin-left: .04em; border-radius: 50%; background: var(--accent); }
 
 /* ---- Inline media chips ------------------------------------------------- */
 /* Each chip is a flex box inside a middle-aligned wrapper, so all of them centre on the lowercase letters. */
@@ -149,8 +155,8 @@
 
 @media (max-width: 767px) {
   .section { padding-top: 64px; }
-  .inner { top: 96px; }
-  .scrollSpace { height: 110svh; }
+  .readSpace { height: 110svh; }
+  .growSpace { height: 60svh; }
   .inner { padding-inline: 24px; }
   .statement { font-size: 30px; }
   .split { border-radius: 24px; }
@@ -161,7 +167,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scrollSpace { display: none; }
-  .inner { position: relative; top: 0; }
+  .readSpace, .growSpace { display: none; }
+  .inner { position: relative; height: auto; padding-top: 112px; background: none; }
   .knob { transition: none; }
 }

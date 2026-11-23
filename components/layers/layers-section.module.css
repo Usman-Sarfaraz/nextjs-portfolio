@@ -1,0 +1,134 @@
+/* Tall section, sticky full-screen stage: scrolling through it lights the layers one by one. */
+.section {
+  --layers-bg: #071a14;
+  --layers-ink: #ecfdf5;
+  --layers-dim: rgb(236 253 245 / 14%);
+  --layers-muted: rgb(236 253 245 / 62%);
+  --layers-accent: #6ee7b7;
+  position: relative;
+  z-index: 1;
+  /* Sits under the intro's last pinned screen, so it is already in place when the dot finishes growing. */
+  margin-top: -100svh;
+  height: 400svh;
+  background: var(--layers-bg);
+  color: var(--layers-ink);
+}
+
+.growDot { position: fixed; inset: 0; z-index: 40; visibility: hidden; pointer-events: none; clip-path: circle(0 at 50% 50%); }
+
+.stage {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 120px 64px 64px;
+  overflow: hidden;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--layers-muted);
+}
+
+.labelDot { flex: none; width: 8px; height: 8px; background: var(--layers-accent); }
+
+/* Words sit low on the screen; the descriptions keep their own column on the right. */
+.body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
+  align-items: end;
+  column-gap: 48px;
+  padding-top: 40px;
+}
+
+.list { margin: 0; padding: 0; list-style: none; min-width: 0; }
+
+/* Sized by width and height together, so all four words always fit the screen without overlapping. */
+.word {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-heading);
+  font-size: clamp(40px, min(8.6vw, 13svh), 148px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.05em;
+  white-space: nowrap;
+  color: var(--layers-dim);
+  transition: color 450ms cubic-bezier(.22, 1, .36, 1);
+}
+
+/* The closing emerald full stop appears on the last layer once it is lit. */
+.wordDot {
+  display: none;
+  width: .17em;
+  height: .17em;
+  margin-left: .04em;
+  border-radius: 50%;
+  background: var(--layers-accent);
+}
+
+.item[data-on] .word { color: var(--layers-ink); }
+.item[data-last][data-on] .wordDot { display: block; }
+
+/* All descriptions share one cell; only the active one shows. */
+.lines { display: grid; align-items: end; padding-bottom: .5em; }
+
+.line {
+  grid-area: 1 / 1;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--layers-ink);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 450ms ease, transform 450ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.line[data-on] { opacity: 1; transform: none; }
+
+@media (max-width: 1023px) {
+  .stage { padding: 104px 32px 48px; }
+  /* Narrower screens: the active description sits under the words. */
+  .body { grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
+  .lines { max-width: 40ch; padding: 0; }
+  .line { font-size: 15px; }
+  .word { font-size: clamp(40px, min(12vw, 11svh), 110px); }
+}
+
+@media (max-width: 767px) {
+  .section { height: 340svh; }
+  .stage { padding: 96px 24px 40px; }
+  .label { font-size: 11px; line-height: 1.5; }
+  .word { font-size: clamp(36px, min(13.5vw, 9svh), 72px); }
+}
+
+/* Entrance after the circle covers the screen: label, then each layer rises in turn, then the description. */
+.label, .item, .lines { opacity: 0; transform: translateY(28px); transition: opacity 700ms ease, transform 900ms cubic-bezier(.22, 1, .36, 1); }
+.item { transition-delay: calc(140ms + var(--i, 0) * 110ms); }
+.lines { transition-delay: 620ms; }
+.section[data-entered] .label, .section[data-entered] .item, .section[data-entered] .lines { opacity: 1; transform: none; }
+
+/* Reduced motion: no pin; every layer is lit and every description listed. */
+@media (prefers-reduced-motion: reduce) {
+  .label, .item, .lines { opacity: 1; transform: none; transition: none; }
+  .section { height: auto; margin-top: 0; }
+  .stage { position: relative; height: auto; padding-top: 160px; }
+  .body { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
+  .word { color: var(--layers-ink); transition: none; }
+  .lines { display: flex; flex-direction: column; gap: 12px; }
+  .line { opacity: 1; transform: none; transition: none; }
+  .item[data-last] .wordDot { display: block; }
+}

@@ -3,6 +3,7 @@ import { AboutSection } from "@/components/about/about-section";
 import { TechnologyTrail } from "@/components/ui/technology-trail";
 import { Hero } from "@/components/hero/hero";
 import { IntroSection } from "@/components/intro/intro-section";
+import { LayersSection } from "@/components/layers/layers-section";
 import { HeroNavigation } from "@/components/hero/hero-navigation";
 import { WhyMe } from "@/components/why-me/why-me";
 import { Services } from "@/components/services/services";
@@ -35,7 +36,8 @@ export default function HomePage(): ReactNode {
       }).replace(/</g, "\\u003c") }} />
       <section id="home"><Hero /></section>
       <TechnologyTrail>
-        <IntroSection />
+        {/* One block, no gap: the layers section overlaps the intro's final pinned screen. */}
+        <div><IntroSection /><LayersSection /></div>
         <section id="projects" className="scroll-mt-24"><Projects withHeadline /></section>
         <Services />
         <WhyMe />

@@ -18,11 +18,13 @@ type ScrollRevealProps = {
   spotlight?: number;
   /** Inline media placed right after the first occurrence of each word; it pops in as that word is reached. */
   media?: Record<string, ReactNode>;
+  /** Words whose media sits flush against them (no space, on the baseline), such as a custom full stop. */
+  tightMedia?: string[];
   /** For sticky layouts: reveal starts as the text enters view and ends when the sticky stage releases; revealed words stay lit. */
   pinned?: boolean;
 };
 
-export default function ScrollReveal({ children, className, baseOpacity = 0.2, blurStrength = 2, highlights = [], spotlight, media = {}, pinned = false }: ScrollRevealProps) {
+export default function ScrollReveal({ children, className, baseOpacity = 0.2, blurStrength = 2, highlights = [], spotlight, media = {}, tightMedia = [], pinned = false }: ScrollRevealProps) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reducedMotion = useReducedMotion();
   const revealed = useSiteRevealed();
@@ -50,6 +52,14 @@ export default function ScrollReveal({ children, className, baseOpacity = 0.2, b
                 endTrigger: ref.current!.closest("section") ?? ref.current,
                 // Finish exactly when the sticky stage starts moving again: section bottom = stage top + stage height.
                 end: () => {
+                  // An explicit marker ends the reading early, leaving the rest of the pin for what follows.
+                  const marker = ref.current?.closest("section")?.querySelector<HTMLElement>("[data-reveal-end]");
+                  if (marker) {
+                    const markerBottom = marker.getBoundingClientRect().bottom + scrollY;
+                    const sectionBottom = (ref.current!.closest("section") as HTMLElement).getBoundingClientRect().bottom + scrollY;
+                    const delta = Math.round(markerBottom - sectionBottom);
+                    return `bottom${delta < 0 ? "-=" : "+="}${Math.abs(delta)} bottom`;
+                  }
                   const stage = ref.current?.closest<HTMLElement>("[data-pin-stage]");
                   if (!stage) return "bottom bottom";
                   return `bottom ${(parseFloat(getComputedStyle(stage).top) || 0) + stage.offsetHeight}px`;
@@ -104,13 +114,16 @@ export default function ScrollReveal({ children, className, baseOpacity = 0.2, b
           const highlighted = highlightedRanges.some(({ start, end }) => match.index >= start && match.index < end);
           const chip = media[word] && !placed.has(word) ? media[word] : null;
           if (chip) placed.add(word);
+          const tight = Boolean(chip) && tightMedia.includes(word);
           return <Fragment key={match.index}>
             <span data-reveal-word style={{ display: "inline-block" }}>
               {highlighted
                 ? <ShinyText text={word} speed={2.5} delay={1} color="var(--intro-accent)" shineColor="var(--intro-shine)" />
                 : word}
+              {/* Tight media lives inside the word so the line can never break between them. */}
+              {tight && <span data-reveal-chip={wordIndex} aria-hidden="true" style={{ display: "inline-block" }}>{chip}</span>}
             </span>
-            {chip && <> <span data-reveal-chip={wordIndex} aria-hidden="true" style={{ display: "inline-block", verticalAlign: "middle" }}>{chip}</span></>}
+            {chip && !tight && <> <span data-reveal-chip={wordIndex} aria-hidden="true" style={{ display: "inline-block", verticalAlign: "middle" }}>{chip}</span></>}
           </Fragment>;
         });
       })()}
