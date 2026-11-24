@@ -6,9 +6,10 @@ import { ArrowUpRight } from "lucide-react";
 import ShinyText from "@/components/react-bits/ShinyText";
 import { useEffect, useRef, type ReactNode } from "react";
 import { useReducedMotion } from "@/lib/motion";
+import { PocketBook } from "./pocket-book";
 import styles from "./journey.module.css";
 
-type Chapter = {
+export type Chapter = {
   id: string;
   year: string;
   label: string;
@@ -21,7 +22,7 @@ type Chapter = {
   cta?: { label: string; href: string };
 };
 
-const CHAPTERS: Chapter[] = [
+export const CHAPTERS: Chapter[] = [
   {
     id: "study",
     year: "2019",
@@ -103,7 +104,7 @@ function DetailPage({ chapter }: { chapter: Chapter }) {
   );
 }
 
-function Cover() {
+export function Cover() {
   return (
     <div className={styles.cover}>
       <div className={styles.coverFrame}>
@@ -187,7 +188,10 @@ export function Journey() {
         </div>
       </div>
 
-      {/* Phones, short screens and reduced motion: the same spreads, laid flat. */}
+      {/* Phones and short screens: a one-page pocket book you swipe through. */}
+      {!reducedMotion && <PocketBook />}
+
+      {/* Reduced motion: the same spreads, laid flat. */}
       <ol className={styles.flat}>
         {CHAPTERS.map((chapter) => (
           <li key={chapter.id} className={styles.flatSpread}>

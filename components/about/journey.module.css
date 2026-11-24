@@ -94,9 +94,27 @@
 .flat .page { height: auto; min-height: 260px; }
 .flat .left, .flat .right { border-radius: 0; box-shadow: none; }
 
+/* ---- Pocket book (phones and short screens) ---- */
+.pocket { display: none; flex-direction: column; align-items: center; gap: 16px; overflow: hidden; padding: 4px 0 24px; }
+.pocketBook { position: relative; width: min(100%, 460px); perspective: 1600px; touch-action: pan-y; user-select: none; }
+.pocketLeaf { position: absolute; inset: 0; transform-origin: left center; transform-style: preserve-3d; }
+.pocketFront, .pocketBack { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 4px 14px 14px 4px; overflow: hidden; box-shadow: inset 10px 0 16px -12px rgb(0 0 0 / 30%), 0 18px 40px -24px rgb(0 0 0 / 45%); }
+.pocketFront > * { height: 100%; }
+.pocketBack { transform: rotateY(180deg); background: linear-gradient(90deg, var(--paper-edge), var(--paper)); }
+.pocketPage { justify-content: flex-start; height: auto; min-height: 100%; padding: 26px 24px 24px; border-radius: 0; }
+.pocketPage .year { margin-bottom: 18px; font-size: clamp(64px, 20vw, 96px); }
+.pocketPage .yearPlace { margin-top: 6px; }
+.pocketControls { display: flex; align-items: center; gap: 18px; }
+.pocketButton { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--section-rule); border-radius: 50%; background: var(--background); color: var(--foreground); cursor: pointer; transition: opacity 200ms, border-color 200ms; }
+.pocketButton:disabled { opacity: .35; cursor: default; }
+.pocketButton:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.pocketDots { display: flex; gap: 8px; }
+.pocketDots span { width: 7px; height: 7px; border-radius: 999px; background: var(--section-rule); transition: width 400ms cubic-bezier(.22, 1, .36, 1), background 300ms; }
+.pocketDots span[data-on] { width: 24px; background: var(--accent); }
+
 @media (max-width: 899px), (max-height: 639px) {
   .rail { display: none; }
-  .flat { display: block; }
+  .pocket { display: flex; }
 }
 @media (max-width: 640px) {
   .flatSpread { grid-template-columns: minmax(0, 1fr); }

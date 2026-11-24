@@ -154,10 +154,12 @@
 }
 
 @media (max-width: 767px) {
-  .section { padding-top: 64px; }
+  /* Phones: the pinned stage starts below the navbar and centres the statement in the space that is
+     actually visible, so it pins centred from the first moment and the gap after the hero stays small. */
+  .section { padding-top: 0; }
   .readSpace { height: 110svh; }
   .growSpace { height: 60svh; }
-  .inner { padding-inline: 24px; }
+  .inner { padding-inline: 24px; top: 76px; height: calc(100svh - 76px); }
   .statement { font-size: 30px; }
   .split { border-radius: 24px; }
   .code { right: 12px; bottom: 12px; max-width: calc(50% - 20px); font-size: 9.5px; padding: 8px 10px 8px 6px; }
