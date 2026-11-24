@@ -7,15 +7,18 @@ import { useEffect, useRef, useState, type FocusEvent } from "react";
 import { ProjectPreview } from "./project-preview";
 import { ArrowUpRight } from "lucide-react";
 import { TitleReveal } from "@/components/ui/title-reveal";
+import { SectionHeader } from "@/components/ui/section-header";
 import { useReducedMotion } from "@/lib/motion";
 import styles from "./projects.module.css";
 
+const STACK = ["Nuxt", "Tailwind CSS", "GSAP", "Nuxt UI"] as const;
+
 const PROJECTS = [
-  { id: "acrylica", name: "Acrylica", category: "Branding & signage", description: "A website showcasing signage, printing, and brand production services.", url: "https://acrylica-zeta.vercel.app/" },
-  { id: "bitlogicx", name: "Bitlogicx", category: "Our company · Software & AI", description: "Our company website showcasing custom software development, AI solutions, and digital products.", url: "https://bitlogicx.com/" },
-  { id: "ai-export", name: "AI Export", category: "AI consulting", description: "A website introducing AI consulting services, products, and adoption programmes.", url: "https://ai-export.vercel.app/" },
-  { id: "psi-algebra", name: "PSI Algebra", category: "Privacy, security & AI", description: "A website presenting privacy, cybersecurity, and AI advisory services.", url: "https://psi-algebra.vercel.app/" },
-  { id: "cleovici", name: "Cleovici", category: "Fintech consulting", description: "A website for fintech consulting, financial services, and compliance expertise.", url: "https://cleovici.vercel.app/" },
+  { id: "acrylica", role: "Frontend", stack: STACK, name: "Acrylica", category: "Branding & signage", description: "A website showcasing signage, printing, and brand production services.", url: "https://acrylica-zeta.vercel.app/" },
+  { id: "bitlogicx", role: "Full stack", stack: STACK, name: "Bitlogicx", category: "Our company · Software & AI", description: "Our company website showcasing custom software development, AI solutions, and digital products.", url: "https://bitlogicx.com/" },
+  { id: "ai-export", role: "Frontend", stack: STACK, name: "AI Export", category: "AI consulting", description: "A website introducing AI consulting services, products, and adoption programmes.", url: "https://ai-export.vercel.app/" },
+  { id: "psi-algebra", role: "Frontend", stack: STACK, name: "PSI Algebra", category: "Privacy, security & AI", description: "A website presenting privacy, cybersecurity, and AI advisory services.", url: "https://psi-algebra.vercel.app/" },
+  { id: "cleovici", role: "Frontend", stack: STACK, name: "Cleovici", category: "Fintech consulting", description: "A website for fintech consulting, financial services, and compliance expertise.", url: "https://cleovici.vercel.app/" },
 ] as const;
 
 // The gallery pins and slides only where there is room for it; elsewhere CSS shows a list.
@@ -114,15 +117,12 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
   return (
     <section className={styles.section} aria-label="Frontend projects">
       {withHeadline && (
-        <header className={styles.header}>
-          <div className={styles.headingRow}>
-            <h2 className={styles.heading}><TitleReveal>Shipped <em><ShinyText text="work." speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" /></em></TitleReveal></h2>
-            <div className={styles.headingAside}>
-              <p className={styles.count}><span>{String(PROJECTS.length).padStart(2, "0")}</span> live projects</p>
-              <p className={styles.headingNote}>Real websites. Thoughtful interfaces.<br />Explore the work, then see it in action.</p>
-            </div>
-          </div>
-        </header>
+        <SectionHeader
+          title={<TitleReveal>Shipped <em><ShinyText text="work." speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" /></em></TitleReveal>}
+          count={PROJECTS.length}
+          countLabel="live projects"
+          note={<>Real websites. Thoughtful interfaces.<br />Explore the work, then see it in action.</>}
+        />
       )}
       <div ref={rail} className={styles.rail}>
         <div className={styles.stage}>
@@ -132,9 +132,12 @@ export function Projects({ withHeadline = false }: ProjectsProps) {
                 <ProjectPreview project={project} />
                 <div className={styles.meta}>
                   <div>
-                    <p className={styles.category}>{project.category}</p>
+                    <p className={styles.category}>{project.category}<span className={styles.role}>{project.role}</span></p>
                     <h3 id={`title-${project.id}`} className={styles.name}>{project.name}</h3>
                     <p className={styles.description}>{project.description}</p>
+                    <ul className={styles.tags} aria-label={`${project.name} tech stack`}>
+                      {project.stack.map((tool) => <li key={tool}>{tool}</li>)}
+                    </ul>
                   </div>
                   <a href={project.url} target="_blank" rel="noopener noreferrer" className={styles.visit}>
                     Visit website <ArrowUpRight size={18} aria-hidden="true" /><span className="sr-only"> (opens in a new tab)</span>

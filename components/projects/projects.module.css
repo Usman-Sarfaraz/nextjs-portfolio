@@ -1,15 +1,6 @@
 .section { --work-heading-color: var(--accent); --project-card-bg: #e9eeeb; --project-card-border: #ced8d1; width: 100%; max-width: 1440px; margin: 0 auto; padding: 64px 64px 0; color: var(--foreground); }
 :global(.dark) .section { --project-card-bg: #18221d; --project-card-border: #34483c; }
 .visit:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
-/* One oversized title with the details tucked to its side; a fine rule closes the header. */
-.header { margin-bottom: 0; border-bottom: 1px solid var(--section-rule); }
-.headingRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 48px; padding: 0 0 36px; }
-.heading { margin: 0; font-family: var(--font-heading); font-size: clamp(56px, 9vw, 150px); font-weight: 400; line-height: .92; letter-spacing: -.055em; white-space: nowrap; }
-.heading em { font-family: var(--font-serif); font-weight: 400; color: var(--accent); }
-.headingAside { display: flex; flex-direction: column; gap: 14px; padding-bottom: .9vw; }
-.count { margin: 0; font-size: 14px; color: var(--text-secondary); }
-.count span { margin-right: 6px; font-family: var(--font-heading); font-size: 32px; letter-spacing: -.04em; color: var(--accent); vertical-align: -3px; }
-.headingNote { margin: 0; color: var(--text-secondary); font-size: 14px; line-height: 1.7; }
 .preview { position: relative; width: 100%; overflow: hidden; background: var(--surface); }
 .visit { display: inline-flex; align-items: center; flex-shrink: 0; gap: 8px; min-height: 44px; color: var(--foreground); font-size: 12px; text-decoration: none; }
 .visit svg { transition: transform 250ms; }
@@ -20,9 +11,8 @@
 .walkthroughVideo { display: block; width: 100%; height: auto; transition: transform 900ms cubic-bezier(.22,1,.36,1); }
 .expandBadge { position: absolute; right: 20px; bottom: 20px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 12px 16px; border-radius: 999px; background: #fff; color: #162022; font-size: 12px; transition: background 250ms, transform 350ms; }
 @media (hover: hover) and (pointer: fine) { .previewButton:hover .walkthroughVideo { transform: scale(1.025); } .previewButton:hover .expandBadge { background: #a7f3d0; transform: translateY(-4px); } }
-@media (max-width: 1023px) { .section { padding: 48px 32px 0; } .headingNote { max-width: none; } }
-@media (max-width: 1100px) { .headingRow { grid-template-columns: minmax(0, 1fr); gap: 24px; } .headingAside { flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 32px; padding-bottom: 0; } }
-@media (max-width: 767px) { .section { padding: 32px 24px; } .heading { white-space: normal; font-size: clamp(56px, 18vw, 96px); line-height: .95; } .headingAside { flex-direction: column; align-items: flex-start; } }
+@media (max-width: 1023px) { .section { padding: 48px 32px 0; } }
+@media (max-width: 767px) { .section { padding: 32px 24px; } }
 @media (prefers-reduced-motion: reduce) { .walkthroughVideo, .expandBadge, .visit svg { transition: none; } .previewButton:hover .walkthroughVideo, .previewButton:hover .expandBadge, .visit:hover svg { transform: none; } }
 
 .modal { position: fixed; inset: 0; margin: auto; width: min(1100px, calc(100vw - 48px)); max-height: 92svh; padding: 20px; border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent); border-radius: 24px; background: var(--background); color: var(--foreground); overflow: auto; box-shadow: 0 30px 100px rgb(0 0 0 / 30%); }
@@ -50,7 +40,7 @@
 .stage { position: sticky; top: 0; display: flex; align-items: center; height: 100svh; padding: 88px 0 64px; overflow: hidden; }
 .track {
   /* Width follows the screen height so a card and its text always fit, but never shrinks past 400px. */
-  --panel-w: max(400px, min(58vw, 920px, calc((100svh - 420px) * 2.03)));
+  --panel-w: max(400px, min(58vw, 920px, calc((100svh - 450px) * 2.03)));
   display: flex;
   align-items: flex-start;
   gap: clamp(32px, 4vw, 72px);
@@ -66,11 +56,18 @@
 .name { margin: 0; font-family: var(--font-heading); font-size: clamp(30px, 3.2vw, 52px); font-weight: 400; line-height: 1; letter-spacing: -.045em; }
 .description { max-width: 46ch; margin: 8px 0 0; font-size: 15px; line-height: 1.6; color: var(--text-secondary); }
 .meta .visit { font-size: 13px; }
+/* Role sits beside the category as an outlined pill; the stack follows the description as quiet tags. */
+.category { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.role { padding: 3px 9px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius: 999px; font-size: 11px; line-height: 1.3; color: var(--accent); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+.tags li { padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, var(--foreground) 6%, transparent); font-size: 12px; line-height: 1.4; color: var(--text-secondary); }
 /* Narrow cards: the link drops under the description instead of squeezing it. */
 @container (max-width: 600px) {
   .meta { grid-template-columns: minmax(0, 1fr); gap: 4px; padding-top: 14px; }
   .name { font-size: clamp(28px, 9cqi, 40px); }
   .description { font-size: 14px; }
+  .tags { margin-top: 10px; }
+  .tags li { font-size: 11px; padding: 3px 8px; }
   .meta .visit { min-height: 36px; }
   .expandBadge { right: 12px; bottom: 12px; min-height: 36px; padding: 8px 12px; font-size: 11px; }
 }
@@ -92,7 +89,7 @@
 .dot[data-on] { width: 40px; background: var(--accent); }
 
 @media (max-width: 1023px) {
-  .track { --panel-w: max(400px, min(70vw, calc((100svh - 400px) * 2.03))); padding-inline: 32px; }
+  .track { --panel-w: max(400px, min(70vw, calc((100svh - 430px) * 2.03))); padding-inline: 32px; }
   .endPanel { width: min(60vw, 520px); }
 }
 

@@ -19,6 +19,9 @@ const GREETINGS = [
   { text: "سلام", lang: "ur", dir: "rtl" },
 ] as const;
 
+// Set once the full greeting has played; later page loads in the same tab get a short version.
+const SEEN_KEY = "site-loader-seen";
+
 export function SiteLoader({ children }: { children: ReactNode }) {
   const overlay = useRef<HTMLDivElement>(null);
   const sheet = useRef<HTMLDivElement>(null);
@@ -29,6 +32,9 @@ export function SiteLoader({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Storage can throw in private windows or when site data is blocked; treat that as a first visit.
+    let returning = false;
+    try { returning = sessionStorage.getItem(SEEN_KEY) === "1"; } catch { /* first visit */ }
     const root = document.documentElement;
     const previousOverflow = root.style.overflow;
     root.style.overflow = "hidden";
@@ -43,7 +49,7 @@ export function SiteLoader({ children }: { children: ReactNode }) {
     // Keep the introduction bounded even if a third-party resource never finishes.
     const assets = Promise.race([
       Promise.all([loaded, document.fonts.ready]),
-      new Promise<void>((resolve) => { timeout = setTimeout(resolve, 2000); }),
+      new Promise<void>((resolve) => { timeout = setTimeout(resolve, returning ? 600 : 2000); }),
     ]);
 
     let frame = 0;
@@ -54,7 +60,10 @@ export function SiteLoader({ children }: { children: ReactNode }) {
       frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => intro.play()); });
 
       const greeting = word.current;
-      if (!reducedMotion && greeting) {
+      if (returning && !reducedMotion) {
+        // Returning visitor: a brief "Hello", then straight into the iris.
+        intro.to({}, { duration: 0.35 }, 0);
+      } else if (!reducedMotion && greeting) {
         intro.fromTo("[data-meta]", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: "power2.out" }, 0);
         // "Hello" eases in with CSS at first paint and lingers; the rest snap past like a quick hello around the world.
         // One element whose text swaps keeps Lighthouse's largest-paint on that first "Hello".
@@ -78,6 +87,7 @@ export function SiteLoader({ children }: { children: ReactNode }) {
           if (cancelled) return;
           context.add(() => {
             const done = () => {
+              try { sessionStorage.setItem(SEEN_KEY, "1"); } catch { /* storage unavailable */ }
               root.style.overflow = previousOverflow;
               setRevealed(true);
               setFinished(true);
@@ -90,8 +100,8 @@ export function SiteLoader({ children }: { children: ReactNode }) {
               .to("[data-stage]", { scale: 0.9, autoAlpha: 0, filter: "blur(8px)", duration: 0.35, ease: "power2.in" }, 0)
               .to("[data-meta]", { autoAlpha: 0, duration: 0.3, ease: "power2.in" }, 0)
               // Iris: a hole opens from the centre of the sheet until the site fills the screen.
-              .to(sheet.current, { "--iris": "80vmax", duration: 1.35, ease: "power3.inOut" }, 0.1)
-              .call(() => setRevealed(true), [], 0.7);
+              .to(sheet.current, { "--iris": "80vmax", duration: returning ? 0.85 : 1.35, ease: "power3.inOut" }, 0.1)
+              .call(() => setRevealed(true), [], returning ? 0.4 : 0.7);
           });
         });
       });
