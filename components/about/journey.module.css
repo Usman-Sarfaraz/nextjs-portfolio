@@ -1,0 +1,111 @@
+/* ---- The book (desktop) ------------------------------------------------------------------------------ */
+.journey {
+  --paper: #fbfaf6;
+  --paper-edge: #ece9df;
+  --ink: #162022;
+  --ink-soft: #5b6560;
+  --cloth: #065f46;
+  --foil: #a7f3d0;
+  margin-top: 8px;
+}
+:global(.dark) .journey { --paper: #111613; --paper-edge: #1c2420; --ink: #eef3ef; --ink-soft: #a3ada7; }
+
+/* The rail's height is the scroll distance for three page turns; the stage stays pinned meanwhile. */
+.rail { position: relative; height: 200svh; }
+.stage { position: sticky; top: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; height: 100svh; padding-top: 72px; perspective: 2400px; }
+
+.book {
+  --w: min(1040px, 90vw, calc((100svh - 230px) * 1.55));
+  --page-w: calc(var(--w) / 2);
+  --page-h: calc(var(--page-w) * 1.29);
+  --shift: 1;
+  position: relative;
+  width: var(--w);
+  height: var(--page-h);
+  transform-style: preserve-3d;
+  /* Closed, the cover is centred; open, the spine is. */
+  transform: translateX(calc(var(--shift) * var(--w) * -.25)) rotateX(6deg);
+}
+
+/* The last spread's right page lies underneath every leaf. */
+.base { position: absolute; top: 0; left: 50%; width: var(--page-w); height: 100%; }
+
+.leaf { position: absolute; top: 0; left: 50%; width: var(--page-w); height: 100%; transform-origin: left center; transform-style: preserve-3d; will-change: transform; }
+.face { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.back { transform: rotateY(180deg); }
+.shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgb(0 0 0 / 18%), transparent 40%); opacity: calc(var(--lift, 0) * .9); }
+.back .shade { background: linear-gradient(270deg, rgb(0 0 0 / 18%), transparent 40%); }
+
+/* ---- Pages ---- */
+.page { position: relative; display: flex; flex-direction: column; height: 100%; padding: clamp(24px, 3vw, 44px); background: var(--paper); color: var(--ink); }
+/* A soft gutter shadow along the spine. */
+.left { border-radius: 10px 0 0 10px; box-shadow: inset -26px 0 30px -24px rgb(0 0 0 / 22%); }
+.right { border-radius: 0 10px 10px 0; box-shadow: inset 26px 0 30px -24px rgb(0 0 0 / 22%); }
+.base .right { box-shadow: inset 26px 0 30px -24px rgb(0 0 0 / 22%), 0 30px 60px -30px rgb(0 0 0 / 35%); }
+.running { margin: 0; font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.right .running { text-align: right; }
+
+.yearBlock { margin-top: auto; }
+.yearLabel { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; color: var(--accent); }
+.year { margin: 6px 0 0; font-family: var(--font-heading); font-size: clamp(72px, 9vw, 150px); font-weight: 400; line-height: .9; letter-spacing: -.06em; color: var(--ink); }
+.yearWord { font-family: var(--font-serif); font-style: italic; color: var(--accent); }
+/* The shine paints the text through its own box, so give italic overhangs room or they get clipped. */
+.year :global(.heading-shine) { display: inline-block; padding: 0 .34em .08em 0; margin: 0 -.34em -.08em 0; }
+.yearPlace { margin: 14px 0 0; font-size: 13px; color: var(--ink-soft); }
+
+.detail { margin-top: auto; }
+.kicker { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; color: var(--accent); }
+.title { margin: 12px 0 0; font-family: var(--font-heading); font-size: clamp(22px, 2vw, 30px); font-weight: 400; line-height: 1.15; letter-spacing: -.03em; }
+.titleLink { color: inherit; text-decoration: none; background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 1px no-repeat; transition: background-size 500ms cubic-bezier(.22, 1, .36, 1), color 300ms; }
+.titleLink svg { display: inline; vertical-align: -2px; }
+.titleLink:hover { color: var(--accent); background-size: 100% 1px; }
+.titleLink:focus-visible, .cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.points { display: flex; flex-direction: column; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+.points li { position: relative; padding-left: 16px; font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); }
+.points li::before { content: ""; position: absolute; left: 0; top: .75em; width: 6px; height: 1px; background: var(--accent); }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 0; padding: 0; list-style: none; }
+.tools li { padding: 4px 10px; border: 1px solid var(--paper-edge); border-radius: 999px; font-size: 12px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 10px; font-size: 14px; color: var(--accent); text-decoration: none; }
+
+/* ---- Cover: emerald cloth with a foil-stamped title ---- */
+.cover {
+  height: 100%;
+  padding: 18px;
+  border-radius: 4px 12px 12px 4px;
+  background:
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 3%) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 5%) 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, #0a7a5a, var(--cloth) 55%, #04412f);
+  box-shadow: inset 10px 0 18px -8px rgb(0 0 0 / 40%), 0 30px 60px -30px rgb(0 0 0 / 45%);
+  color: var(--foil);
+}
+.coverFrame { display: flex; flex-direction: column; height: 100%; padding: clamp(22px, 2.6vw, 36px); border: 1px solid rgb(167 243 208 / 35%); border-radius: 6px; }
+.coverEyebrow, .coverFoot { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
+.coverFoot { margin-top: auto; }
+.coverTitle { margin: auto 0 0; font-family: var(--font-heading); font-size: clamp(54px, 6vw, 96px); font-weight: 400; line-height: .92; letter-spacing: -.05em; color: #ecfdf5; }
+.coverTitle span { display: block; font-family: var(--font-serif); font-style: italic; color: var(--foil); }
+
+.hint { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--text-secondary); }
+
+/* ---- Flat fallback: hidden while the book is in use ---- */
+.flat { display: none; margin: 0; padding: 0; list-style: none; }
+.flatSpread { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); overflow: hidden; border: 1px solid var(--section-rule); border-radius: 12px; }
+.flatSpread + .flatSpread { margin-top: 16px; }
+.flat .page { height: auto; min-height: 260px; }
+.flat .left, .flat .right { border-radius: 0; box-shadow: none; }
+
+@media (max-width: 899px), (max-height: 639px) {
+  .rail { display: none; }
+  .flat { display: block; }
+}
+@media (max-width: 640px) {
+  .flatSpread { grid-template-columns: minmax(0, 1fr); }
+  .flat .page { min-height: 0; padding: 24px; }
+  .flat .left { padding-bottom: 8px; }
+  .flat .year { font-size: 72px; }
+  .flat .left .running, .flat .right .running { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rail { display: none; }
+  .flat { display: block; }
+}
