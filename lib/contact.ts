@@ -1,9 +1,13 @@
 export const CONTACT_SERVICES = [
   "Frontend development",
-  "UI design & development",
+  "UI & motion engineering",
   "Backend development",
   "Something else",
 ] as const;
+
+// Fired by "Let's build something" links so the contact form can pre-select that service.
+export const SELECT_SERVICE_EVENT = "contact:select-service";
+
 export type ContactSubmission = {
   name: string;
   email: string;

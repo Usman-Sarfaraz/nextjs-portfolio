@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowUpRight, ChevronDown, Check, Send } from "lucide-react";
-import { CONTACT_SERVICES } from "@/lib/contact";
+import { CONTACT_SERVICES, SELECT_SERVICE_EVENT } from "@/lib/contact";
 import styles from "./contact.module.css";
 
 const SERVICES = [...CONTACT_SERVICES];
@@ -19,6 +19,17 @@ export function ContactForm() {
   const [error, setError] = useState(false);
   const picker = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
+  // A service panel's "Let's build something" link pre-selects that service here.
+  useEffect(() => {
+    const select = (event: Event) => {
+      const value = (event as CustomEvent<string>).detail;
+      if (!SERVICES.some((item) => item === value)) return;
+      setService(value);
+      setError(false);
+    };
+    window.addEventListener(SELECT_SERVICE_EVENT, select);
+    return () => window.removeEventListener(SELECT_SERVICE_EVENT, select);
+  }, []);
   useEffect(() => {
     if (!open) return;
     const dismiss = (event: PointerEvent) => {
