@@ -51,7 +51,20 @@ export function SmoothScroll({
 
       e.preventDefault();
       window.history.pushState(null, "", href);
-      lenis.scrollTo(element as HTMLElement, { offset: -100 });
+      // Land the section's content (not its padding) just under the floating navbar.
+      // Sections carry their own top padding, so subtract it from the navbar clearance.
+      const section = element as HTMLElement;
+      const padding = Math.max(
+        parseFloat(getComputedStyle(section).paddingTop) || 0,
+        section.firstElementChild ? parseFloat(getComputedStyle(section.firstElementChild).paddingTop) || 0 : 0,
+      );
+      const clearance = window.innerWidth < 768 ? 88 : 112;
+      // Lenis also honours the section's scroll-margin-top (kept for no-JS anchor jumps), so cancel it out here.
+      const scrollMargin = parseFloat(getComputedStyle(section).scrollMarginTop) || 0;
+      if (href === "#home") lenis.scrollTo(0);
+      // A pinned full-screen stage centres its own content, so it should simply fill the screen.
+      else if (section.querySelector("[data-pin-stage]")) lenis.scrollTo(section, { offset: scrollMargin });
+      else lenis.scrollTo(section, { offset: Math.min(0, padding - clearance) + scrollMargin });
     }
 
     document.addEventListener("click", handleAnchorClick);
