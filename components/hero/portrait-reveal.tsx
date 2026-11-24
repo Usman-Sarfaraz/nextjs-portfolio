@@ -4,13 +4,11 @@ import { motion, useInView } from "motion/react";
 import { useEffect, useRef, type PointerEvent, type ReactNode } from "react";
 import { HIDDEN_OPACITY, useReducedMotion } from "@/lib/motion";
 import { useSiteRevealed } from "@/components/layout/site-loader";
-import { useHeroRevealSequence } from "./hero-reveal-sequence";
 
 export function PortraitReveal({ children, className }: { children: ReactNode; className: string }) {
   const reducedMotion = useReducedMotion();
   const root = useRef<HTMLDivElement>(null);
   const revealed = useSiteRevealed();
-  const { textFinished } = useHeroRevealSequence();
   const inView = useInView(root, { once: true, amount: 0.15 });
 
   const resetCards = (element: HTMLDivElement | null) => {
@@ -42,7 +40,8 @@ export function PortraitReveal({ children, className }: { children: ReactNode; c
       onPointerMove={attractCards}
       onPointerLeave={(event) => resetCards(event.currentTarget)}
       initial={reducedMotion ? false : { opacity: HIDDEN_OPACITY, y: 12 }}
-      animate={revealed && textFinished && inView ? { opacity: 1, y: 0 } : { opacity: HIDDEN_OPACITY, y: reducedMotion ? 0 : 12 }}
+      // Fades in alongside the headline rather than after it: the portrait is the largest thing on screen, so showing it early helps load speed (LCP).
+      animate={revealed && inView ? { opacity: 1, y: 0 } : { opacity: HIDDEN_OPACITY, y: reducedMotion ? 0 : 12 }}
       transition={{ delay: 0, duration: reducedMotion ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}

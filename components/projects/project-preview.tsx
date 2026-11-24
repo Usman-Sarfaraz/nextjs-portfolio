@@ -41,7 +41,8 @@ function Walkthrough({ project, paused }: { project: PreviewProject; paused?: bo
       <video ref={video} src={`/projects-videos/${project.id}-overview.mp4`}
         aria-label={`${project.name} website walkthrough`} className={styles.walkthroughVideo}
         width={previewDimensions[project.id].width} height={previewDimensions[project.id].height}
-        poster={`/projects-videos/${project.id}-poster.jpg`}
+        // The cover image only loads once the card is near the screen, and as a small WebP (about 70% lighter).
+        poster={nearView ? `/projects-videos/${project.id}-poster.webp` : undefined}
         muted playsInline preload={nearView ? "auto" : "none"}
         onLoadedData={() => setReady(true)}
         onPlaying={() => { setReady(true); setBuffering(false); }}
