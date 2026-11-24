@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ArrowUpRight, ChevronDown, Check, Send } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Check } from "lucide-react";
 import { CONTACT_SERVICES, SELECT_SERVICE_EVENT } from "@/lib/contact";
 import styles from "./contact.module.css";
 
@@ -112,159 +112,136 @@ export function ContactForm() {
       aria-busy={sending}
     >
       <fieldset disabled={sending} className={styles.formFields}>
-        <div className={styles.formHeading}>
-          <div>
-            <span className={styles.formEyebrow}>Your next project</span>
-            <span>Tell me a little about it.</span>
+        <legend className="sr-only">Tell me about your project</legend>
+        {/* Clear labels above each field, with the site's underline style: the line draws emerald on focus. */}
+        <div className={styles.lineGrid}>
+          <div className={styles.lineField}>
+            <label htmlFor="contact-name" className={styles.lineLabel}>Your name</label>
+            <input id="contact-name" name="name" autoComplete="name" placeholder="How should I call you?" required maxLength={100} className={styles.lineInput} />
           </div>
-          <span className={styles.formHeadingIcon}>
-            <Send size={20} strokeWidth={1.5} aria-hidden="true" />
-          </span>
-        </div>
-        <div className={styles.fields}>
-          <div className={styles.field}>
-            <label htmlFor="contact-name">Your name</label>
-            <input
-              id="contact-name"
-              name="name"
-              autoComplete="name"
-              placeholder="How should I call you?"
-              required
-              maxLength={100}
-            />
+          <div className={styles.lineField}>
+            <label htmlFor="contact-email" className={styles.lineLabel}>Email address</label>
+            <input id="contact-email" name="email" type="email" autoComplete="email" placeholder="you@company.com" required maxLength={254} className={styles.lineInput} />
           </div>
-          <div className={styles.field}>
-            <label htmlFor="contact-email">Email address</label>
-            <input
-              id="contact-email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              placeholder="you@company.com"
-              required
-              maxLength={254}
-            />
-          </div>
-        </div>
-        <div className={styles.field}>
-          <label id="contact-service-label" htmlFor="contact-service">
-            What can I help with?
-          </label>
-          <input type="hidden" name="service" value={service} />
-          <div ref={picker} className={styles.picker}>
-            <button
-              ref={trigger}
-              id="contact-service"
-              type="button"
-              role="combobox"
-              aria-haspopup="listbox"
-              aria-expanded={open}
-              aria-controls="service-options"
-              aria-labelledby="contact-service-label contact-service-value"
-              aria-activedescendant={
-                open ? `service-option-${cursor}` : undefined
-              }
-              aria-invalid={error}
-              aria-describedby={error ? "service-error" : undefined}
-              className={styles.pickerTrigger}
-              onClick={() => {
-                setCursor(
-                  Math.max(
-                    0,
-                    SERVICES.findIndex((item) => item === service)
-                  )
-                );
-                setOpen(!open);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-                  event.preventDefault();
-                  setOpen(true);
-                  setCursor((current) =>
-                    !open
-                      ? Math.max(
-                          0,
-                          SERVICES.findIndex((item) => item === service)
-                        )
-                      : (current +
-                          (event.key === "ArrowDown" ? 1 : -1) +
-                          SERVICES.length) %
-                        SERVICES.length
-                  );
-                } else if (event.key === "Escape" || event.key === "Tab") {
-                  setOpen(false);
-                } else if (
-                  open &&
-                  (event.key === "Enter" || event.key === " ")
-                ) {
-                  event.preventDefault();
-                  choose(SERVICES[cursor] ?? "");
-                } else if (
-                  open &&
-                  (event.key === "Home" || event.key === "End")
-                ) {
-                  event.preventDefault();
-                  setCursor(event.key === "Home" ? 0 : SERVICES.length - 1);
+          <div className={`${styles.lineField} ${styles.lineWide}`}>
+            <span id="contact-service-label" className={styles.lineLabel}>What can I help with?</span>
+            <input type="hidden" name="service" value={service} />
+          <div ref={picker} className={`${styles.picker} ${styles.linePicker}`}>
+              <button
+                ref={trigger}
+                id="contact-service"
+                type="button"
+                role="combobox"
+                aria-haspopup="listbox"
+                aria-expanded={open}
+                aria-controls="service-options"
+                aria-labelledby="contact-service-label contact-service-value"
+                aria-activedescendant={
+                  open ? `service-option-${cursor}` : undefined
                 }
-              }}
-            >
-              <span
-                id="contact-service-value"
-                className={service ? undefined : styles.pickerPlaceholder}
+                aria-invalid={error}
+                aria-describedby={error ? "service-error" : undefined}
+                className={styles.pickerTrigger}
+                onClick={() => {
+                  setCursor(
+                    Math.max(
+                      0,
+                      SERVICES.findIndex((item) => item === service)
+                    )
+                  );
+                  setOpen(!open);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                    event.preventDefault();
+                    setOpen(true);
+                    setCursor((current) =>
+                      !open
+                        ? Math.max(
+                            0,
+                            SERVICES.findIndex((item) => item === service)
+                          )
+                        : (current +
+                            (event.key === "ArrowDown" ? 1 : -1) +
+                            SERVICES.length) %
+                          SERVICES.length
+                    );
+                  } else if (event.key === "Escape" || event.key === "Tab") {
+                    setOpen(false);
+                  } else if (
+                    open &&
+                    (event.key === "Enter" || event.key === " ")
+                  ) {
+                    event.preventDefault();
+                    choose(SERVICES[cursor] ?? "");
+                  } else if (
+                    open &&
+                    (event.key === "Home" || event.key === "End")
+                  ) {
+                    event.preventDefault();
+                    setCursor(event.key === "Home" ? 0 : SERVICES.length - 1);
+                  }
+                }}
               >
-                {service || "Choose your service"}
-              </span>
-              <ChevronDown
-                size={17}
-                aria-hidden="true"
-                className={open ? styles.chevronOpen : undefined}
-              />
-            </button>
-            {open && (
-              <div
-                id="service-options"
-                role="listbox"
-                aria-labelledby="contact-service-label"
-                className={styles.pickerMenu}
-              >
-                {SERVICES.map((item, index) => (
-                  <div
-                    id={`service-option-${index}`}
-                    key={item}
-                    role="option"
-                    aria-selected={service === item}
-                    data-active={cursor === index}
-                    className={styles.pickerOption}
-                    onPointerMove={() => setCursor(index)}
-                    onMouseDown={(event) => event.preventDefault()}
-                    onClick={() => choose(item)}
-                  >
-                    {item}
-                    {service === item && <Check size={16} aria-hidden="true" />}
-                  </div>
-                ))}
-              </div>
-            )}
+                <span
+                  id="contact-service-value"
+                  className={service ? undefined : styles.pickerPlaceholder}
+                >
+                  {service || "Choose a service"}
+                </span>
+                <ChevronDown
+                  size={17}
+                  aria-hidden="true"
+                  className={open ? styles.chevronOpen : undefined}
+                />
+              </button>
+              {open && (
+                <div
+                  id="service-options"
+                  role="listbox"
+                  aria-label="Services"
+                  className={styles.pickerMenu}
+                >
+                  {SERVICES.map((item, index) => (
+                    <div
+                      id={`service-option-${index}`}
+                      key={item}
+                      role="option"
+                      aria-selected={service === item}
+                      data-active={cursor === index}
+                      className={styles.pickerOption}
+                      onPointerMove={() => setCursor(index)}
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => choose(item)}
+                    >
+                      {item}
+                      {service === item && <Check size={16} aria-hidden="true" />}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-          {error && (
-            <span id="service-error" className={styles.fieldError} role="alert">
-              Please choose a service.
-            </span>
-          )}
         </div>
-        <div className={styles.field}>
-          <label htmlFor="contact-message">Your message</label>
+        {error && (
+          <span id="service-error" className={styles.fieldError} role="alert">
+            Please choose a service.
+          </span>
+        )}
+        <div className={styles.ideaField}>
+          <label htmlFor="contact-message" className={styles.lineLabel}>Tell me about your project</label>
           <textarea
             id="contact-message"
             name="message"
-            rows={4}
-            placeholder="A little about your project, goals, or opportunity…"
+            rows={2}
+            placeholder="What are you building, and when do you need it?"
             required
             maxLength={4000}
+            className={styles.ideaInput}
           />
         </div>
         <div className={styles.formBottom}>
-          <p>I’ll reply directly to your email.</p>
+          <p>I&rsquo;ll reply directly to your email.</p>
           <button type="submit" disabled={sending}>
             {sending ? "Sending…" : "Send message"}{" "}
             <ArrowUpRight size={18} aria-hidden="true" />

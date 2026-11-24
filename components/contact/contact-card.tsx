@@ -6,6 +6,7 @@ import { profile } from "@/lib/profile";
 import { SectionHeader } from "@/components/ui/section-header";
 import { BigEmail } from "./big-email";
 import { ContactForm } from "./contact-form";
+import { MagneticGroup } from "./magnetic-group";
 import { FooterWordmark } from "./footer-wordmark";
 import styles from "./contact.module.css";
 
@@ -21,17 +22,16 @@ export function ContactCard() {
             note={<>A new website, a better interface,<br />or a place on your team.</>}
           />
           <BigEmail email={profile.email} />
+          {/* The form as one sentence, then the quieter details in a single row underneath. */}
           <div className={styles.layout}>
-            <div className={styles.introduction}>
-              <h3 className={styles.conversationHeading}>Prefer a form?</h3>
-              <p className={styles.description}>Tell me a little about what you&rsquo;re working on, and I&rsquo;ll reply directly to your inbox.</p>
-              <div className={styles.details}><span><MapPin size={14} aria-hidden="true" />{profile.location}</span><a href={profile.phoneHref}><Phone size={14} aria-hidden="true" />{profile.phone}</a></div>
-              <div className={styles.contactSocials}>
-                <SocialLinks whatsapp />
-                <span>Find me elsewhere</span>
-              </div>
-            </div>
             <ContactForm />
+            <div className={styles.detailsRow}>
+              <div className={styles.details}><span><MapPin size={14} aria-hidden="true" />{profile.location}</span><a href={profile.phoneHref}><Phone size={14} aria-hidden="true" />{profile.phone}</a></div>
+              <MagneticGroup className={styles.contactSocials}>
+                <span>Find me elsewhere</span>
+                <SocialLinks whatsapp />
+              </MagneticGroup>
+            </div>
           </div>
         </div>
       </section>

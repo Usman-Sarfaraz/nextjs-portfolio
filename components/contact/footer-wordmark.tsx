@@ -7,11 +7,11 @@ import styles from "./contact.module.css";
 
 export function FooterWordmark() {
   const reducedMotion = useReducedMotion();
-  const ref = useRef<HTMLAnchorElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <a ref={ref} href="#home" aria-label="Usman Sarfraz, back to home" className={styles.footerSignature}>
+    <div ref={ref} role="img" aria-label="Usman Sarfraz" className={styles.footerSignature}>
       {["usman", "sarfraz."].map((word, wordIndex) => (
         <span key={word} className={styles.signatureWord} aria-hidden="true">
           {Array.from(word).map((letter, index) => (
@@ -28,6 +28,6 @@ export function FooterWordmark() {
           ))}
         </span>
       ))}
-    </a>
+    </div>
   );
 }
