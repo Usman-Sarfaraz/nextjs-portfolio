@@ -1,51 +1,83 @@
-.section { --section-label-color: #a7f3d0; --why-accent: #a7f3d0; --why-surface: transparent; --why-text: #f4f6f2; width: 100%; padding: 88px 0; background: #123b2f; color: var(--why-text); scroll-margin-top: 100px; }
+/* Dark emerald band. The shared header reads these tokens, so redefining them here turns it light-on-dark. */
+.section {
+  --foreground: #f4f6f2;
+  --accent: #a7f3d0;
+  --accent-shine: #ffffff;
+  --text-secondary: rgb(244 246 242 / 68%);
+  --section-rule: rgb(244 246 242 / 14%);
+  width: 100%;
+  padding: 88px 0;
+  overflow: hidden;
+  background: #123b2f;
+  color: var(--foreground);
+  scroll-margin-top: 100px;
+}
 :global(.dark) .section { background: #10281f; }
-.header { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; padding-bottom: 32px; margin-bottom: 20px; border-bottom: 1px solid color-mix(in srgb, var(--why-text) 12%, transparent); }
-.label { margin: 0; }
-.heading { margin: 0; text-align: left; font-family: var(--font-outfit), sans-serif; font-size: var(--section-heading-size); font-weight: 400; line-height: var(--section-heading-leading); letter-spacing: var(--section-heading-tracking); }
-.heading :global(.shiny-text) { padding-bottom: .12em; margin-bottom: -.12em; }
-.layout { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: start; gap: 80px; }
-.manifesto { position: sticky; top: 110px; padding: 8px 0; overflow: hidden; isolation: isolate; border-radius: 0; background: var(--why-surface); }
-.statement { margin: 12px 0 60px; font-family: var(--font-outfit), sans-serif; font-size: clamp(56px, 6.7vw, 96px); font-weight: 400; line-height: .88; letter-spacing: -.055em; }
-.statement > span { color: var(--why-accent); font-family: var(--font-fraunces), Georgia, serif; font-style: italic; letter-spacing: -.06em; }
-.manifestoCopy { margin: 0; font-size: 13px; line-height: 1.8; opacity: .75; }
-.signature { display: flex; align-items: center; gap: 12px; margin-top: 42px; padding-top: 22px; }
-.monogram { font-family: var(--font-outfit), sans-serif; color: var(--why-accent); font-size: 30px; letter-spacing: -.08em; }
-.signature > div { display: flex; flex-direction: column; gap: 5px; font-size: 12px; }
-.signature > div > span:last-child { font-size: 10px; opacity: .7; }
-.principle { position: relative; isolation: isolate; padding: 26px 16px; margin-inline: -16px; border-radius: 0; border-bottom: 1px solid color-mix(in srgb, var(--why-text) 12%, transparent); color: var(--why-text); transition: color 250ms; }
-.principle::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: #f1f4f2; transform: scaleX(0); transform-origin: left; transition: transform 450ms cubic-bezier(.22, 1, .36, 1); }
-.principle:first-child { padding-top: 6px; }
-.principleTitle { margin: 0; font-family: var(--font-outfit), sans-serif; font-size: clamp(20px, 2.2vw, 27px); font-weight: 400; line-height: 1.25; letter-spacing: -.025em; }
-.trigger { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; transition: color 250ms; }
-.trigger:hover, .principle[data-expanded="true"] .trigger { color: var(--why-accent); }
-.toggle { display: grid; place-items: center; flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--why-text) 15%, transparent); transition: background 300ms, border-color 300ms; }
-.toggle svg { transition: transform 450ms cubic-bezier(.22,1,.36,1); }
-.principle[data-expanded="true"] .toggle { background: var(--why-accent); border-color: var(--why-accent); color: var(--why-toggle-ink, #123b2f); }
-.principle[data-expanded="true"] .toggle svg { transform: rotate(45deg); }
-.summary { margin: 10px 50px 0 0; font-size: 12px; line-height: 1.6; opacity: .7; }
-.reveal { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 500ms cubic-bezier(.22,1,.36,1), opacity 350ms; }
-.principle[data-expanded="true"] .reveal { grid-template-rows: 1fr; opacity: 1; }
+
+.inner { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 64px; }
+/* The first marquee row already draws a full-width line, so the header drops its own. */
+.section header { border-bottom: 0; }
+
+/* ---- Velocity marquee rows: full bleed, edge to edge ---- */
+.rows { margin: 48px 0 0; padding: 0; list-style: none; }
+.row { position: relative; border-bottom: 1px solid var(--section-rule); outline: none; cursor: default; }
+.row:first-child { border-top: 1px solid var(--section-rule); }
+.row:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+
+.marquee { overflow: hidden; padding: 14px 0 20px; }
+.track { display: flex; width: max-content; will-change: transform; }
+.phrase { display: inline-flex; align-items: center; flex: none; padding-right: .5em; font-family: var(--font-heading); font-size: clamp(44px, 6.2vw, 100px); font-weight: 400; line-height: 1; letter-spacing: -.045em; white-space: nowrap; color: var(--foreground); transition: color 500ms; }
+/* Every other row is outlined, so the rows read as alternating rhythm rather than a wall of type. */
+.row[data-outline] .phrase { color: transparent; -webkit-text-stroke: 1px rgb(244 246 242 / 55%); transition: color 500ms, -webkit-text-stroke-color 500ms; }
+.sep { flex: none; width: .16em; height: .16em; margin-left: .5em; border-radius: 50%; background: var(--accent); }
+
+/* Hover or focus: the row turns emerald and its explanation opens underneath. */
+.row[data-hover] .phrase { color: var(--accent); }
+.row[data-outline][data-hover] .phrase { color: var(--accent); -webkit-text-stroke-color: transparent; }
+
+.reveal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 600ms cubic-bezier(.22, 1, .36, 1); }
+.row[data-hover] .reveal { grid-template-rows: 1fr; }
 .revealInner { min-height: 0; overflow: hidden; }
-.description { max-width: 48ch; margin: 22px 0 0; font-size: 14px; line-height: 1.85; color: color-mix(in srgb, var(--why-text) 70%, transparent); }
-.note { margin: 20px 0 0; color: var(--why-accent); font-size: 11px; line-height: 1.8; }
-.experienceLink { display: inline-flex; align-items: center; gap: 12px; margin-top: 28px; font-size: 12px; text-decoration: none; color: var(--why-accent); }
+.detail { display: grid; grid-template-columns: 140px minmax(0, 1fr); grid-template-areas: "tag text" ". notes"; align-items: start; gap: 14px 32px; max-width: 1440px; margin: 0 auto; padding: 6px 64px 26px; opacity: 0; transform: translateY(10px); transition: opacity 400ms, transform 600ms cubic-bezier(.22, 1, .36, 1); }
+.row[data-hover] .detail { opacity: 1; transform: none; transition-delay: 120ms; }
+.tag { grid-area: tag; display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; color: var(--accent); }
+.tagDot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.description { grid-area: text; max-width: 62ch; margin: 0; font-size: 16px; line-height: 1.7; color: var(--text-secondary); }
+/* Pills sit under the description, so they never get squeezed into a narrow column. */
+.notes { grid-area: notes; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.notes li { white-space: nowrap; padding: 5px 11px; border: 1px solid var(--section-rule); border-radius: 999px; font-size: 12px; line-height: 1.4; color: var(--text-secondary); }
+
+.experienceLink { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 28px; font-size: 13px; text-decoration: none; color: var(--accent); }
 .experienceLink svg { transition: transform 300ms; }
 .experienceLink:hover svg { transform: translate(3px, -3px); }
-.trigger:focus-visible, .experienceLink:focus-visible { outline: 2px solid var(--why-accent); outline-offset: 6px; border-radius: 0; }
-@media (max-width: 1023px) { .layout { gap: 40px; padding-inline: 32px; } .manifesto { padding: 8px 0; } .statement { font-size: 52px; } }
-@media (max-width: 767px) { .section { padding: 48px 0; } .header { gap: 18px; padding-bottom: 24px; margin-bottom: 20px; } .heading { text-align: left; } .layout { grid-template-columns: 1fr; gap: 34px; padding: 0 24px; } .manifesto { position: relative; top: auto; padding: 0 0 32px; border-bottom: 1px solid rgb(255 255 255 / .2); } .statement { font-size: clamp(48px, 12vw, 68px); margin-top: 8px; } .signature { margin-top: 30px; } .principleTitle { font-size: 23px; } }
-@media (prefers-reduced-motion: reduce) { .principle, .principle::before, .reveal, .trigger, .toggle, .toggle svg, .experienceLink svg { transition: none; } .experienceLink:hover svg { transform: none; } }
+.experienceLink:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 4px; }
 
-.watermark { position: absolute; right: 22px; bottom: 8px; z-index: -1; pointer-events: none; user-select: none; font-family: var(--font-outfit), sans-serif; font-size: clamp(100px, 12vw, 160px); font-weight: 600; line-height: 1; letter-spacing: -.08em; color: var(--why-accent); opacity: .07; }
-@media (max-width: 767px) { .watermark { right: 18px; bottom: 10px; font-size: 120px; } }
+@media (max-width: 1023px) {
+  .inner { padding-inline: 32px; }
+  .detail { grid-template-columns: minmax(0, 1fr); grid-template-areas: "tag" "text" "notes"; gap: 12px; padding-inline: 32px; }
+}
+@media (max-width: 767px) {
+  .section { padding: 56px 0; }
+  .inner { padding-inline: 24px; }
+  .detail { padding-inline: 24px; }
+  .phrase { font-size: clamp(40px, 12vw, 64px); }
+}
 
-@media (max-width: 767px) { .principles { order: 2; } .manifesto { order: 1; } }
+/* Touch screens have no hover, so every explanation stays open under its row. */
+@media (hover: none) {
+  .reveal { grid-template-rows: 1fr; }
+  .detail { opacity: 1; transform: none; }
+}
 
-.principleText { flex: 1; }
-.experienceLink { min-height: 44px; }
-@media (max-width: 767px) { .principleTitle { font-size: 21px; } }
+/* Reduced motion: rows stand still and every explanation is shown. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { grid-template-rows: 1fr; transition: none; }
+  .detail { opacity: 1; transform: none; transition: none; }
+  .phrase, .experienceLink svg { transition: none; }
+}
 
-.principle:has(.trigger:focus-visible) { --why-text: #123b2f; --why-accent: #065f46; --why-toggle-ink: #fff; }
-.principle:has(.trigger:focus-visible)::before { transform: scaleX(1); }
-@media (hover: hover) and (pointer: fine) { .principle:hover { --why-text: #123b2f; --why-accent: #065f46; --why-toggle-ink: #fff; } .principle:hover::before { transform: scaleX(1); } }
+/* Wide desktops: badges move to the right of the description, on one line. */
+@media (min-width: 1280px) {
+  .detail { grid-template-columns: 140px minmax(0, 62ch) minmax(0, 1fr); grid-template-areas: "tag text notes"; }
+  .notes { justify-content: flex-end; }
+}
