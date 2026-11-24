@@ -6,7 +6,7 @@
   --text-secondary: rgb(244 246 242 / 68%);
   --section-rule: rgb(244 246 242 / 14%);
   width: 100%;
-  padding: 88px 0;
+  padding: 88px 0 48px;
   overflow: hidden;
   background: #123b2f;
   color: var(--foreground);
