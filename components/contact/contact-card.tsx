@@ -1,8 +1,10 @@
 import ShinyText from "@/components/react-bits/ShinyText";
 import Image from "next/image";
-import { ArrowUpRight, MapPin, Mail, Phone, ArrowUp, Instagram } from "lucide-react";
+import { MapPin, Mail, Phone, ArrowUp, Instagram } from "lucide-react";
 import { TitleReveal } from "@/components/ui/title-reveal";
 import { profile } from "@/lib/profile";
+import { SectionHeader } from "@/components/ui/section-header";
+import { BigEmail } from "./big-email";
 import { ContactForm } from "./contact-form";
 import { FooterWordmark } from "./footer-wordmark";
 import styles from "./contact.module.css";
@@ -13,18 +15,16 @@ export function ContactCard() {
     <div className={styles.section}>
       <section className={styles.frame} aria-labelledby="contact-heading">
         <div className={styles.card}>
-          <header className={styles.closingHeader}>
-            <p className={`section-label ${styles.label}`}>05 / Have a project in mind?</p>
-            <div className={styles.closingTitleRow}>
-              <h2 id="contact-heading" className={styles.heading}><TitleReveal>Your next idea.<br />Let’s make it <em><ShinyText text="real." speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" /></em></TitleReveal></h2>
-              <a href={`mailto:${profile.email}`} className={styles.bigArrow} aria-label="Email Usman about your project"><ArrowUpRight aria-hidden="true" /></a>
-            </div>
-          </header>
+          <SectionHeader
+            id="contact-heading"
+            title={<TitleReveal>Let&rsquo;s <em><ShinyText text="talk." speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" /></em></TitleReveal>}
+            note={<>A new website, a better interface,<br />or a place on your team.</>}
+          />
+          <BigEmail email={profile.email} />
           <div className={styles.layout}>
             <div className={styles.introduction}>
-              <h3 className={styles.conversationHeading}>Good work starts<br />with a conversation.</h3>
-              <p className={styles.description}>A new website, a better interface, or a place on your team. Tell me what you’re working on.</p>
-              <a href={`mailto:${profile.email}`} className={styles.email}>{profile.email}<ArrowUpRight size={19} aria-hidden="true" /></a>
+              <h3 className={styles.conversationHeading}>Prefer a form?</h3>
+              <p className={styles.description}>Tell me a little about what you&rsquo;re working on, and I&rsquo;ll reply directly to your inbox.</p>
               <div className={styles.details}><span><MapPin size={14} aria-hidden="true" />{profile.location}</span><a href={profile.phoneHref}><Phone size={14} aria-hidden="true" />{profile.phone}</a></div>
               <div className={styles.contactSocials}>
                 <SocialLinks whatsapp />

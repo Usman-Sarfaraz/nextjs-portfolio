@@ -1,6 +1,6 @@
 .section { --contact-accent: var(--accent); width: 100%; max-width: 1440px; margin: 0 auto; padding: 64px 64px 0; color: var(--foreground); }
 :global(.dark) .section { --contact-accent: #6ee7b7; --contact-shine: #ffffff; }
-.frame { border-top: 1px solid var(--section-rule); padding-top: 24px; }
+.frame { padding-top: 0; }
 .card { position: relative; overflow: hidden; border-radius: 0; background: var(--background); }
 .flow { position: absolute; inset: 0 50% 0 0; opacity: .12; pointer-events: none; mask-image: linear-gradient(110deg, #000, transparent 65%); }
 :global(.dark) .flow { opacity: .14; }
@@ -136,3 +136,31 @@
 .footerBottom a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 @media (max-width: 1023px) { .footerBottom, .footerSignature { padding-inline: 32px; } }
 @media (max-width: 767px) { .footerBottom, .footerSignature { padding-inline: 24px; } .footerBottom { font-size: 10px; } }
+
+/* ---- Big email finale: the address (a mail link) with a copy button on the same row ---- */
+.bigEmailWrap { display: flex; align-items: center; justify-content: space-between; gap: 16px 32px; padding: 40px 0 48px; }
+.bigEmail { min-width: 0; color: var(--foreground); text-decoration: none; }
+.section .bigEmail:hover { text-decoration: none; }
+.bigEmail:focus-visible { outline: 2px solid var(--contact-accent); outline-offset: 8px; border-radius: 8px; }
+.bigEmailText { display: flex; flex-wrap: wrap; font-family: var(--font-heading); font-size: clamp(20px, 4.4vw, 68px); font-weight: 400; line-height: 1.05; letter-spacing: -.045em; }
+.bigEmailText > span { display: inline-block; transition: color 400ms; }
+/* Hover: a wave runs through the letters and they turn emerald. */
+@media (hover: hover) and (pointer: fine) {
+  .bigEmail:hover .bigEmailText > span { color: var(--contact-accent); animation: email-wave 900ms cubic-bezier(.22, 1, .36, 1) calc(var(--i) * 18ms) both; }
+}
+@keyframes email-wave { 0% { transform: none; } 35% { transform: translateY(-.14em); } 70% { transform: translateY(.03em); } 100% { transform: none; } }
+
+.copyButton { flex: none; display: inline-flex; align-items: center; height: 52px; padding: 0 22px; overflow: hidden; border: 1px solid var(--section-rule); border-radius: 999px; background: var(--background); color: var(--foreground); font-size: 14px; cursor: pointer; transition: background 300ms, border-color 300ms, color 300ms; }
+.copyButton:hover { border-color: var(--contact-accent); color: var(--contact-accent); }
+.copyButton[data-copied] { background: var(--contact-accent); border-color: var(--contact-accent); color: var(--background); }
+.copyButton:focus-visible { outline: 2px solid var(--contact-accent); outline-offset: 4px; }
+/* The label flips up to "Copied", then back. */
+.copyWindow { display: block; height: 20px; overflow: hidden; }
+.copyFlip { display: flex; flex-direction: column; transition: transform 500ms cubic-bezier(.22, 1, .36, 1); }
+.copyFlip > span { display: inline-flex; align-items: center; gap: 8px; height: 20px; white-space: nowrap; }
+.copyButton[data-copied] .copyFlip { transform: translateY(-20px); }
+@media (max-width: 640px) { .bigEmailWrap { flex-direction: column; align-items: flex-start; } }
+@media (prefers-reduced-motion: reduce) {
+  .bigEmail:hover .bigEmailText > span { animation: none; }
+  .copyFlip, .copyButton { transition: none; }
+}
