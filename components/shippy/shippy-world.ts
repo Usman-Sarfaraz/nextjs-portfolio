@@ -24,9 +24,19 @@ export type World = {
 export const GRAVITY_PER_STEP = 0.001 * (1000 / 60) ** 2;
 export const LAUNCH_POWER = 0.23;
 
+/** Mirrors the footer's side padding (.footerSignature in contact.module.css), so the scene lines up with the wordmark. */
+function pageGutter(width: number): number {
+  if (width < 768) return 24;
+  if (width < 1024) return 32;
+  return Math.max(64, (width - 1440) / 2 + 64);
+}
+
 export function buildWorld(M: Matter, width: number, height: number): World {
   const { Engine, Bodies, Composite } = M;
-  const scale = Math.min(1, Math.max(0.58, width / 1000));
+  // The stage is full bleed, but the slingshot and table sit inside the content area.
+  const gutter = pageGutter(width);
+  const inner = width - gutter * 2;
+  const scale = Math.min(1, Math.max(0.58, inner / 1000));
   const engine = Engine.create();
   engine.positionIterations = 10;
 
@@ -37,7 +47,7 @@ export function buildWorld(M: Matter, width: number, height: number): World {
     Bodies.rectangle(-wall / 2, height / 2, wall, height * 4, { isStatic: true }),
   ]);
 
-  const table = { x: width * 0.76, width: 230 * scale, height: 96 * scale, y: 0 };
+  const table = { x: gutter + inner * 0.76, width: 230 * scale, height: 96 * scale, y: 0 };
   table.y = floorY - table.height / 2;
   Composite.add(
     engine.world,
@@ -63,7 +73,7 @@ export function buildWorld(M: Matter, width: number, height: number): World {
   Composite.add(engine.world, blocks.map((block) => block.body));
 
   const shippySize = 42 * scale;
-  const anchor = { x: Math.max(70, width * 0.15), y: floorY - 150 * scale };
+  const anchor = { x: gutter + Math.max(70, inner * 0.15), y: floorY - 150 * scale };
   const shippy = Bodies.rectangle(anchor.x, anchor.y, shippySize, shippySize, {
     chamfer: { radius: 9 * scale },
     density: 0.006,

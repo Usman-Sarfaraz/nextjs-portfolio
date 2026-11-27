@@ -1,9 +1,10 @@
 "use client";
 
 import type MatterType from "matter-js";
-import { RotateCcw } from "lucide-react";
+import { MoveLeft, RotateCcw } from "lucide-react";
 import { useInView } from "motion/react";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from "react";
+import { useReducedMotion } from "@/lib/motion";
 import { BACKLOG, GRAVITY_PER_STEP, LAUNCH_POWER, buildWorld, type World } from "./shippy-world";
 import styles from "./shippy.module.css";
 
@@ -12,6 +13,9 @@ type Layout = Pick<World, "anchor" | "table" | "scale" | "shippySize"> & { block
 
 const DOTS = 8;
 const STEP_MS = 1000 / 60;
+/** The one-time pull-back demo: a short pause, then about two seconds of pulling back and settling. */
+const DEMO_DELAY = 45;
+const DEMO_FRAMES = 120;
 
 export function ShippyGame(): ReactNode {
   const stageRef = useRef<HTMLDivElement>(null);
@@ -31,9 +35,13 @@ export function ShippyGame(): ReactNode {
   const seen = useInView(stageRef, { once: true, amount: 0.15 });
   const inView = useInView(stageRef, { amount: 0.05 });
   const inViewRef = useRef(inView);
+  const reduced = useReducedMotion();
+  const reducedRef = useRef(reduced);
+  const demoDoneRef = useRef(false);
   useEffect(() => {
     inViewRef.current = inView;
-  }, [inView]);
+    reducedRef.current = reduced;
+  }, [inView, reduced]);
 
   const changePhase = useCallback((next: Phase) => {
     phaseRef.current = next;
@@ -100,6 +108,7 @@ export function ShippyGame(): ReactNode {
       let flight = 0;
       let resting = 0;
       let remaining = BACKLOG.length;
+      let demoFrame = 0;
 
       const tick = (): void => {
         raf = requestAnimationFrame(tick);
@@ -116,8 +125,31 @@ export function ShippyGame(): ReactNode {
         if (shippyRef.current) {
           shippyRef.current.style.transform = `translate3d(${shippy.position.x - half}px, ${shippy.position.y - half}px, 0) rotate(${shippy.angle}rad)`;
         }
+        // First view only: Shippy acts out one pull-back so visitors see it can be dragged.
+        let demoing = false;
+        if (!demoDoneRef.current && phaseRef.current === "aim") {
+          if (reducedRef.current) {
+            demoDoneRef.current = true;
+          } else {
+            demoFrame += 1;
+            const t = (demoFrame - DEMO_DELAY) / DEMO_FRAMES;
+            if (t >= 1) {
+              demoDoneRef.current = true;
+              M.Body.setPosition(shippy, anchor);
+              showDots(null);
+            } else if (t > 0) {
+              demoing = true;
+              const pull = Math.sin(Math.PI * t) ** 2;
+              const dx = -0.8 * world.maxPull * pull;
+              const dy = 0.42 * world.maxPull * pull;
+              M.Body.setPosition(shippy, { x: anchor.x + dx, y: anchor.y + dy });
+              showDots(pull > 0.2 ? { x: -dx * LAUNCH_POWER, y: -dy * LAUNCH_POWER } : null);
+            }
+          }
+        }
+
         // The bands only stretch while Shippy is pulled back; at rest they would cross its face.
-        const aiming = phaseRef.current === "drag";
+        const aiming = phaseRef.current === "drag" || demoing;
         bandRefs.current.forEach((band) => {
           if (!band) return;
           band.style.visibility = aiming ? "visible" : "hidden";
@@ -163,15 +195,25 @@ export function ShippyGame(): ReactNode {
       if (world && matterRef.current) matterRef.current.Engine.clear(world.engine);
       worldRef.current = null;
     };
-  }, [seen, round]);
+  }, [seen, round, showDots]);
 
   const localPoint = (event: PointerEvent<HTMLDivElement>) => {
     const box = stageRef.current?.getBoundingClientRect();
     return { x: event.clientX - (box?.left ?? 0), y: event.clientY - (box?.top ?? 0) };
   };
 
+  // Any real interaction ends the pull-back demo and returns Shippy to the sling.
+  const stopDemo = () => {
+    const world = worldRef.current;
+    if (demoDoneRef.current || !world || !matterRef.current) return;
+    demoDoneRef.current = true;
+    matterRef.current.Body.setPosition(world.shippy, world.anchor);
+    showDots(null);
+  };
+
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (phaseRef.current !== "aim") return;
+    stopDemo();
     event.currentTarget.setPointerCapture(event.pointerId);
     changePhase("drag");
   };
@@ -207,6 +249,7 @@ export function ShippyGame(): ReactNode {
   const launchAimed = () => {
     const world = worldRef.current;
     if (!world || phaseRef.current !== "aim") return;
+    stopDemo();
     const onTable = world.blocks.filter(({ body }) => body.position.y <= world.tableTop + 4);
     const target = onTable.reduce<(typeof onTable)[number] | undefined>((low, block) => (!low || block.body.position.y > low.body.position.y ? block : low), undefined);
     const goal = target ? target.body.position : { x: world.table.x, y: world.tableTop - 40 * world.scale };
@@ -279,6 +322,12 @@ export function ShippyGame(): ReactNode {
             <svg className={styles.sling} aria-hidden="true">
               <line ref={(el) => { bandRefs.current[1] = el; }} className={styles.band} x1={layout.anchor.x + fork} y1={layout.anchor.y - 4} x2={layout.anchor.x} y2={layout.anchor.y} />
             </svg>
+            {shots === 0 && (
+              <p className={styles.hint} style={{ left: layout.anchor.x, top: layout.anchor.y - layout.shippySize / 2 - 14 }} aria-hidden="true">
+                <MoveLeft size={14} strokeWidth={2} aria-hidden="true" />
+                Pull back, let go
+              </p>
+            )}
           </>
         )}
         {won && (
@@ -287,9 +336,11 @@ export function ShippyGame(): ReactNode {
             <p>Every block cleared in {shots} {shots === 1 ? "shot" : "shots"}.</p>
           </div>
         )}
-        <button type="button" className={styles.reset} aria-label="Reset the tower" onClick={() => setRound((value) => value + 1)}>
-          <RotateCcw size={16} strokeWidth={2.25} aria-hidden="true" />
-        </button>
+        {layout && left < BACKLOG.length && (
+          <button type="button" className={styles.reset} style={{ left: layout.table.x, top: layout.table.y }} aria-label="Reset the tower" onClick={() => setRound((value) => value + 1)}>
+            <RotateCcw size={16} strokeWidth={2.25} aria-hidden="true" />
+          </button>
+        )}
         <p className="sr-only" aria-live="polite">
           {shots === 0 ? "" : won ? `Stack tested. Every block cleared in ${shots} shots.` : `${left} of ${BACKLOG.length} blocks left.`}
         </p>

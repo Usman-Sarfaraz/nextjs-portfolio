@@ -16,7 +16,8 @@
   width: 100%;
   /* Overlap the wordmark band by 1px so no sub-pixel seam shows between them. */
   margin-top: -1px;
-  padding: 1px max(64px, calc((100% - 1440px) / 2 + 64px)) 24px;
+  /* Full bleed: the scene spans the whole screen width. */
+  padding: 1px 0 24px;
   background: var(--shippy-surface);
   color: var(--shippy-text);
 }
@@ -127,6 +128,27 @@
   height: 100%;
 }
 
+/* Sits just above Shippy until the first shot. */
+.hint {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--shippy-muted);
+  font-size: 13px;
+  white-space: nowrap;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+
+@keyframes shippy-reset-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
 .won {
   position: absolute;
   top: 84px;
@@ -151,9 +173,10 @@
 }
 
 .reset {
+  /* Centred inside the table the tower stands on; left and top come from the layout. */
   position: absolute;
-  bottom: 24px;
-  left: 0;
+  transform: translate(-50%, -50%);
+  animation: shippy-reset-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -181,17 +204,7 @@
   border-radius: 10px;
 }
 
-@media (max-width: 1023px) {
-  .game {
-    padding-inline: 32px;
-  }
-}
-
 @media (max-width: 767px) {
-  .game {
-    padding-inline: 24px;
-  }
-
   .stage {
     height: 270px;
   }
@@ -205,5 +218,6 @@
 @media (prefers-reduced-motion: reduce) {
   .reset {
     transition: none;
+    animation: none;
   }
 }
