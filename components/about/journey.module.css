@@ -6,6 +6,8 @@
   --ink-soft: #5b6560;
   --cloth: #065f46;
   --foil: #a7f3d0;
+  --foil-shine: #ffffff;
+  --cover-ink: #ecfdf5;
   margin-top: 8px;
 }
 :global(.dark) .journey { --paper: #111613; --paper-edge: #1c2420; --ink: #eef3ef; --ink-soft: #a3ada7; }
@@ -64,7 +66,8 @@
 .points li { position: relative; padding-left: 16px; font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); }
 .points li::before { content: ""; position: absolute; left: 0; top: .75em; width: 6px; height: 1px; background: var(--accent); }
 .tools { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 0; padding: 0; list-style: none; }
-.tools li { padding: 4px 10px; border: 1px solid var(--paper-edge); border-radius: 999px; font-size: 12px; line-height: 1.4; }
+/* Tool badges: the cover's emerald cloth with white text. --cloth stays deep in dark mode too, so contrast holds. */
+.tools li { padding: 4px 10px; border-radius: 999px; background: var(--cloth); color: var(--cover-ink); font-size: 12px; line-height: 1.4; }
 .cta { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 10px; font-size: 14px; color: var(--accent); text-decoration: none; }
 
 /* ---- Cover: emerald cloth with a foil-stamped title ---- */
@@ -82,8 +85,9 @@
 .coverFrame { display: flex; flex-direction: column; height: 100%; padding: clamp(22px, 2.6vw, 36px); border: 1px solid rgb(167 243 208 / 35%); border-radius: 6px; }
 .coverEyebrow, .coverFoot { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
 .coverFoot { margin-top: auto; }
-.coverTitle { margin: auto 0 0; font-family: var(--font-heading); font-size: clamp(54px, 6vw, 96px); font-weight: 400; line-height: .92; letter-spacing: -.05em; color: #ecfdf5; }
-.coverTitle span { display: block; font-family: var(--font-serif); font-style: italic; color: var(--foil); }
+.coverTitle { margin: auto 0 0; font-family: var(--font-heading); font-size: clamp(54px, 6vw, 96px); font-weight: 400; line-height: .92; letter-spacing: -.05em; color: var(--cover-ink); }
+/* "Usman" carries the foil shine; "Sarfraz." is printed in plain white below it. */
+.coverSurname { display: block; font-family: var(--font-serif); font-style: italic; color: var(--cover-ink); }
 
 .hint { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--text-secondary); }
 
@@ -104,6 +108,17 @@
 .pocketPage { justify-content: flex-start; height: auto; min-height: 100%; padding: 26px 24px 24px; border-radius: 0; }
 .pocketPage .year { margin-bottom: 18px; font-size: clamp(64px, 20vw, 96px); }
 .pocketPage .yearPlace { margin-top: 6px; }
+/* Compact on phones: the book is as tall as its tallest page, so tighter pages make a shorter book. */
+.pocketPage { padding: 20px 20px 18px; }
+.pocketPage .year { margin-bottom: 10px; font-size: clamp(52px, 15vw, 72px); }
+.pocketPage .title { margin-top: 8px; font-size: 21px; }
+.pocketPage .points { gap: 6px; margin-top: 12px; }
+.pocketPage .points li { line-height: 1.55; }
+.pocketPage .tools { gap: 5px; margin-top: 12px; }
+.pocketPage .tools li { padding: 3px 9px; font-size: 11.5px; }
+.pocketPage .cta { margin-top: 4px; }
+.pocketFront .coverFrame { padding: 20px; }
+.pocketFront .coverTitle { font-size: clamp(64px, 19vw, 88px); }
 .pocketControls { display: flex; align-items: center; gap: 18px; }
 .pocketButton { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--section-rule); border-radius: 50%; background: var(--background); color: var(--foreground); cursor: pointer; transition: opacity 200ms, border-color 200ms; }
 .pocketButton:disabled { opacity: .35; cursor: default; }

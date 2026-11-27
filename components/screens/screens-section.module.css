@@ -51,7 +51,7 @@
   align-items: center;
   column-gap: clamp(20px, 2.4vw, 40px);
   width: 100%;
-  margin: 28px 0 0;
+  margin: 0;
   font-family: var(--font-heading);
   font-size: clamp(40px, 4.4vw, 76px);
   font-weight: 400;
@@ -135,9 +135,10 @@
 .wrap { box-sizing: border-box; width: var(--L); margin: 0 auto; padding: 0 2.5em; }
 .page[data-layout="tablet"] .wrap { padding: 0 2em; }
 .page[data-layout="phone"] .wrap { padding: 0 1.25em; }
-/* Inside the hero card, keep clear of its edge: the card's margin plus its own padding. */
-.page:not([data-layout="desktop"]) .heroCard .wrap { padding: 0 3.25em; }
-.page[data-layout="phone"] .heroCard .wrap { padding: 0 2.25em; }
+/* Inside the hero card, keep clear of its edge (the card's margin plus its own padding); the nav lines up with it.
+   Inline padding only, so the hero keeps its top padding. */
+.page:not([data-layout="desktop"]) :is(.heroCard, .nav) .wrap { padding-inline: 3.25em; }
+.page[data-layout="phone"] :is(.heroCard, .nav) .wrap { padding-inline: 2.25em; }
 
 .nav .wrap { display: flex; align-items: center; gap: 2em; height: 5.5em; }
 .brand { width: 7em; height: 1.1em; border-radius: .3em; background: var(--sc-ink); }
@@ -147,10 +148,9 @@
 .burger { display: none; flex-direction: column; gap: .45em; }
 .burger i { width: 1.75em; height: .22em; border-radius: 1em; background: var(--sc-ink); }
 .page:not([data-layout="desktop"]) .links { display: none; }
-.page[data-layout="tablet"] .cta { margin-left: auto; }
-.page:not([data-layout="desktop"]) .burger { display: flex; }
-.page[data-layout="phone"] .cta { display: none; }
-.page[data-layout="phone"] .burger { margin-left: auto; }
+/* Below desktop the links and the button fold into the menu, as on the real site: just the name and a menu icon. */
+.page:not([data-layout="desktop"]) .cta { display: none; }
+.page:not([data-layout="desktop"]) .burger { display: flex; margin-left: auto; }
 
 /* The hero card hugs the window, not the page: its background is clipped to the visible width, minus a margin. */
 .heroCard { position: relative; isolation: isolate; }
@@ -176,7 +176,8 @@
 .portrait { position: relative; height: 100%; min-width: 0; }
 .portraitImg { object-fit: contain; object-position: center bottom; }
 
-.page:not([data-layout="desktop"]) .hero { grid-template-columns: minmax(0, 1fr); height: auto; padding: 3em 0 0; gap: 2em; }
+.page:not([data-layout="desktop"]) .hero { grid-template-columns: minmax(0, 1fr); height: auto; padding-top: 3.5em; gap: 2.5em; }
+.page[data-layout="phone"] .hero { padding-top: 2.75em; gap: 2em; }
 .page:not([data-layout="desktop"]) .portrait { height: 20em; }
 .page[data-layout="tablet"] .h { height: 2.7em; }
 .page[data-layout="phone"] .h { height: 2.1em; }
@@ -200,17 +201,25 @@
 }
 
 /* ---- Below 1024: a slightly smaller window so the words still fit beside it ---- */
+@media (max-width: 1199px) and (min-width: 768px) {
+  /* Narrower window and words, so "product" never runs off the left edge between 768 and 1200. */
+  .title { --fw: min(44vw, calc((100svh - 300px) * 1.6)); font-size: clamp(32px, 4.2vw, 76px); }
+}
+
 @media (max-width: 1023px) {
   .section[data-mode="scroll"] .stage { padding: 96px 32px 32px; }
 }
 
 /* ---- Phones: the words sit above and below the window, which fills the column ---- */
 @media (max-width: 767px) {
-  /* Scaled so the phone state is a readable size; the desktop state is wider than a phone, as it should be. */
-  .section { overflow-x: clip; }
-  .frame { justify-self: center; }
+  /* Each preset gets its own scale so the visible window always fits the column: desktop spans it as a short,
+     wide window; tablet is narrower; phone is a tall slim one. The frame's row keeps the phone's height, so the
+     text and buttons below never jump when the preset changes. */
+  .section { --avail: calc(100vw - 48px); --phone-w: min(var(--avail) * .5, 170px); overflow-x: clip; }
+  .frame { justify-self: center; align-self: center; }
   .title {
-    --fw: min(calc((100vw - 48px) * 1.9), 980px);
+    --fw: min(var(--avail), 560px);
+    grid-template-rows: auto calc(var(--phone-w) * 1440 / 390 / 1.6) auto;
     grid-template-columns: minmax(0, 1fr);
     justify-items: center;
     row-gap: 20px;
@@ -219,6 +228,13 @@
   }
   .word { width: auto; }
   .wordStart, .wordEnd { justify-self: center; text-align: center; transform: none; }
+  .section[data-preset="tablet"] .title { --fw: calc(min(var(--avail) * .8, 300px) * 1440 / 768); }
+  .section[data-preset="phone"] .title { --fw: calc(var(--phone-w) * 1440 / 390); }
+  /* The size snaps to the new preset and the page fades in, rather than sliding past the screen edges. */
+  .section .edge, .section .window, .section .heroCard::before { transition: none; }
+  .window { animation: frame-in 450ms cubic-bezier(.22, 1, .36, 1); }
   .readout { bottom: 10px; font-size: 11px; }
   .control { padding: 0 16px; }
 }
+
+@keyframes frame-in { from { opacity: 0; transform: scale(.97); } }

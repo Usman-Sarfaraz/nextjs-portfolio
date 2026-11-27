@@ -109,7 +109,10 @@ export function Cover() {
     <div className={styles.cover}>
       <div className={styles.coverFrame}>
         <p className={styles.coverEyebrow}>Frontend Developer</p>
-        <p className={styles.coverTitle}>Usman<span>Sarfraz.</span></p>
+        <p className={styles.coverTitle}>
+          <ShinyText text="Usman" speed={2.5} delay={1} color="var(--foil)" shineColor="var(--foil-shine)" className="heading-shine" />
+          <span className={styles.coverSurname}>Sarfraz.</span>
+        </p>
         <p className={styles.coverFoot}>Career notes · 2019 to now</p>
       </div>
     </div>

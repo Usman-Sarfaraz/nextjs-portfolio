@@ -3,10 +3,16 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useCallback, useEffect, useRef, useState } from "react";
+import ShinyText from "@/components/react-bits/ShinyText";
 import { ReflowPage } from "./reflow-page";
 import styles from "./screens-section.module.css";
 
 type Layout = "desktop" | "tablet" | "phone";
+
+// The two key words share the emerald shine used on the other section headings.
+const Shiny = ({ text }: { text: string }) => (
+  <ShinyText text={text} speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" />
+);
 
 const MAX_W = 1440;
 const MIN_W = 390;
@@ -76,17 +82,17 @@ export function ScreensSection() {
   };
 
   return (
-    <section ref={root} className={styles.section} aria-labelledby="screens-title">
+    <section ref={root} className={styles.section} aria-labelledby="screens-title" data-preset={layout}>
       <div className={styles.stage}>
-        <p className="section-label">Responsive by default</p>
         <h2 id="screens-title" className={styles.title}>
-          <span className={`${styles.word} ${styles.wordStart}`}>One product</span>
+          <span className={`${styles.word} ${styles.wordStart}`}>One <Shiny text="product" /></span>
           <span className={styles.frame} aria-hidden="true">
             <span className={styles.edge} />
-            <span className={styles.window}><ReflowPage layout={layout} /></span>
+            {/* Keyed by layout so phones replay the fade-in on each preset (the animation only exists on phones). */}
+            <span key={layout} className={styles.window}><ReflowPage layout={layout} /></span>
             <span ref={readout} className={styles.readout}>{MAX_W}px</span>
           </span>
-          <span className={`${styles.word} ${styles.wordEnd}`}>every <span className={styles.nowrap}>screen<span className={styles.dot} /></span></span>
+          <span className={`${styles.word} ${styles.wordEnd}`}>every <span className={styles.nowrap}><Shiny text="screen" /><span className={styles.dot} /></span></span>
         </h2>
         <div className={styles.foot}>
           <p className={styles.note}>The same page at any width: the menu folds, the hero stacks and the projects drop to one column.</p>
