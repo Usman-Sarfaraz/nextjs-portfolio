@@ -1,0 +1,209 @@
+/* Shippy lives in the footer's dark emerald band, right under the usman sarfraz wordmark. */
+.game {
+  --shippy-surface: #123b2f;
+  --shippy-ink: #a7f3d0;
+  --shippy-text: #f4f6f2;
+  --shippy-muted: rgb(244 246 242 / 68%);
+  --shippy-rule: rgb(167 243 208 / 18%);
+  --shippy-table: rgb(167 243 208 / 14%);
+  --shippy-body: #34d399;
+  --shippy-face: #0d2e24;
+  --shippy-eye: #ffffff;
+  --shippy-pupil: #0d2e24;
+  --shippy-band: rgb(167 243 208 / 60%);
+  --shippy-block: #ffffff;
+
+  width: 100%;
+  /* Overlap the wordmark band by 1px so no sub-pixel seam shows between them. */
+  margin-top: -1px;
+  padding: 1px max(64px, calc((100% - 1440px) / 2 + 64px)) 24px;
+  background: var(--shippy-surface);
+  color: var(--shippy-text);
+}
+
+:global(.dark) .game {
+  --shippy-surface: #10281f;
+}
+
+.stage {
+  position: relative;
+  height: 320px;
+  /* Clip blocks that fly off the sides, but let Shippy's arc rise above the stage into the wordmark band. */
+  overflow-x: clip;
+  overflow-y: visible;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.floor {
+  position: absolute;
+  inset: auto 0 0;
+  height: 12px;
+  border-top: 1px solid var(--shippy-rule);
+}
+
+.table {
+  position: absolute;
+  border-radius: 10px 10px 0 0;
+  background: var(--shippy-table);
+}
+
+.sling {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.post {
+  fill: none;
+  stroke: var(--shippy-ink);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.band {
+  stroke: var(--shippy-band);
+  stroke-width: 3;
+  stroke-linecap: round;
+  visibility: hidden;
+}
+
+.dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  margin: -3px;
+  border-radius: 50%;
+  background: var(--shippy-ink);
+  opacity: 0.55;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--shippy-ink);
+  border-radius: 6px;
+  background: var(--shippy-block);
+  color: var(--shippy-surface);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.shippy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: grab;
+  touch-action: none;
+  will-change: transform;
+}
+
+.shippy[data-phase="drag"] {
+  cursor: grabbing;
+}
+
+.shippy[data-phase="fly"] {
+  cursor: default;
+}
+
+.shippy svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.won {
+  position: absolute;
+  top: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--shippy-muted);
+  font-size: 15px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.won p {
+  margin: 0;
+}
+
+.wonTitle {
+  color: var(--shippy-ink);
+  font-family: var(--font-heading);
+  font-size: clamp(40px, 5vw, 72px);
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.reset {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgb(244 246 242 / 22%);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--shippy-text);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reset:hover {
+  background: rgb(244 246 242 / 8%);
+}
+
+.reset:focus-visible,
+.shippy:focus-visible {
+  outline: 2px solid var(--shippy-ink);
+  outline-offset: 3px;
+}
+
+.shippy:focus-visible {
+  border-radius: 10px;
+}
+
+@media (max-width: 1023px) {
+  .game {
+    padding-inline: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  .game {
+    padding-inline: 24px;
+  }
+
+  .stage {
+    height: 270px;
+  }
+
+  .won {
+    top: 48px;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reset {
+    transition: none;
+  }
+}

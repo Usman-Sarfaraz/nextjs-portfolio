@@ -8,6 +8,7 @@ import { BigEmail } from "./big-email";
 import { ContactForm } from "./contact-form";
 import { MagneticGroup } from "./magnetic-group";
 import { FooterWordmark } from "./footer-wordmark";
+import { ShippyGame } from "@/components/shippy/shippy-game";
 import styles from "./contact.module.css";
 
 export function ContactCard() {
@@ -39,6 +40,7 @@ export function ContactCard() {
       <footer className={styles.footer}>
         <div className={styles.footerBottom}><span>© {new Date().getFullYear()} Usman Sarfraz</span><span>Built with Next.js & care.</span><a href="#home">Back to top <ArrowUp size={14} aria-hidden="true" /></a></div>
         <FooterWordmark />
+        <ShippyGame />
       </footer>
     </>
   );
