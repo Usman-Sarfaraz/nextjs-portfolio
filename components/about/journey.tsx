@@ -179,9 +179,13 @@ export function Journey() {
       <div ref={rail} className={styles.rail} data-static={reducedMotion || undefined}>
         <div className={styles.stage}>
           <div ref={book} className={styles.book}>
+            {/* The binding: the back board and the cloth spine (the front board turns with the cover leaf). Purely visual. */}
+            <div className={`${styles.board} ${styles.boardBack}`} aria-hidden="true" />
+            <div className={styles.spine} aria-hidden="true" />
             <div className={styles.base}><DetailPage chapter={CHAPTERS[2]!} /></div>
             {LEAVES.map((leaf, index) => (
               <div key={index} data-leaf className={styles.leaf}>
+                {index === 0 && <div className={`${styles.board} ${styles.coverInside}`} aria-hidden="true" />}
                 <div className={`${styles.face} ${styles.front}`}>{leaf.front}<span className={styles.shade} aria-hidden="true" /></div>
                 <div className={`${styles.face} ${styles.back}`}>{leaf.back}<span className={styles.shade} aria-hidden="true" /></div>
               </div>

@@ -61,9 +61,73 @@
 .right::before, .pocketPage::before { right: .02em; bottom: -.05em; }
 
 /* A soft gutter shadow along the spine. */
-.left { border-radius: 10px 0 0 10px; box-shadow: inset -26px 0 30px -24px rgb(0 0 0 / 22%); }
-.right { border-radius: 0 10px 10px 0; box-shadow: inset 26px 0 30px -24px rgb(0 0 0 / 22%); }
-.base .right { box-shadow: inset 26px 0 30px -24px rgb(0 0 0 / 22%), 0 30px 60px -30px rgb(0 0 0 / 35%); }
+.left { border-radius: 4px 0 0 4px; isolation: isolate; }
+.right { border-radius: 0 4px 4px 0; }
+
+/* Paper curvature. Into the spine: a deep crease, a soft fall-off, then a faint highlight where the sheet curves
+   up out of the gutter. At the outer edge the page bends down, so it darkens a touch. Mirrored on the left. */
+.left::after, .right::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--to-spine),
+      rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 3%) 3%, rgb(0 0 0 / 0%) 9%,
+      rgb(0 0 0 / 0%) 78%, var(--sheen) 87%, rgb(0 0 0 / 5%) 93%, rgb(0 0 0 / 16%) 98.5%, rgb(0 0 0 / 30%) 100%);
+}
+.journey { --sheen: rgb(255 255 255 / 35%); }
+/* On dark paper a white highlight glows, so it stays barely there. */
+:global(.dark) .journey { --sheen: rgb(255 255 255 / 3%); }
+.left { --to-spine: 90deg; }
+.right { --to-spine: 270deg; }
+.flat .left::after, .flat .right::after { display: none; }
+
+/* ---- Binding: hardcover boards, the cloth spine and the edge of the page block ---- */
+.board {
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  width: calc(var(--page-w) + 10px);
+  background:
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 3%) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 5%) 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, #0a7a5a, var(--cloth) 55%, #04412f);
+  transform: translateZ(-2px);
+  pointer-events: none;
+}
+.boardBack { left: 50%; border-radius: 2px 10px 10px 2px; box-shadow: 0 40px 70px -36px rgb(0 0 0 / 50%); }
+/* The front board turns with the cover: a board-sized plate on the back of the first leaf, visible only once the
+   cover lands on the left. It sits just behind the inside page, so its edge frames that page like a real cover. */
+.coverInside {
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: 0;
+  right: -10px;
+  width: auto;
+  border-radius: 2px 10px 10px 2px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: rotateY(180deg) translateZ(-1px);
+}
+/* The spine's cloth shows above and below the pages, darker where it folds. */
+.spine {
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: 50%;
+  width: 22px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #04412f, #0a6b4f 45%, #04412f);
+  opacity: calc(1 - var(--shift));
+  transform: translateX(-50%) translateZ(-1px);
+  pointer-events: none;
+}
+/* Page block edges: thin alternating lines along the outer and bottom edges read as a stack of sheets. */
+.base { border-radius: 0 4px 4px 0; box-shadow: 1px 1px 0 var(--paper-edge), 2px 2px 0 var(--paper), 3px 3px 0 var(--paper-edge), 4px 3px 0 var(--paper), 5px 4px 0 var(--paper-edge); }
+
 .running { margin: 0; font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
 .right .running { text-align: right; }
 
