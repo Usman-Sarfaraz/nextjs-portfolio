@@ -40,6 +40,26 @@
 
 /* ---- Pages ---- */
 .page { position: relative; display: flex; flex-direction: column; height: 100%; padding: clamp(24px, 3vw, 44px); background: var(--paper); color: var(--ink); }
+/* "US." watermark on the detail pages, very light emerald, bleeding off the corner so it reads as a stamp in the
+   paper rather than a label. Isolation lets it sit above the paper but below the text. */
+.right, .pocketPage { isolation: isolate; overflow: hidden; container-type: inline-size; }
+.right::before, .pocketPage::before {
+  content: "US." / "";
+  position: absolute;
+  z-index: -1;
+  font-family: var(--font-heading);
+  font-size: 52cqi;
+  font-weight: 500;
+  line-height: .8;
+  letter-spacing: -.07em;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--accent) 7%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+/* Bottom-right: the emptiest part of every page. The bottom of the letters is cropped; the full stop stays whole. */
+.right::before, .pocketPage::before { right: .02em; bottom: -.05em; }
+
 /* A soft gutter shadow along the spine. */
 .left { border-radius: 10px 0 0 10px; box-shadow: inset -26px 0 30px -24px rgb(0 0 0 / 22%); }
 .right { border-radius: 0 10px 10px 0; box-shadow: inset 26px 0 30px -24px rgb(0 0 0 / 22%); }
