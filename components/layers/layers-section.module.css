@@ -112,6 +112,8 @@
   .section { height: 340svh; }
   .stage { padding: 96px 24px 40px; }
   .label { font-size: 11px; line-height: 1.5; }
+  .body { padding-bottom: 48px; row-gap: 24px; }
+  .list { display: flex; flex-direction: column; gap: 12px; }
   .word { font-size: clamp(36px, min(13.5vw, 9svh), 72px); }
 }
 
