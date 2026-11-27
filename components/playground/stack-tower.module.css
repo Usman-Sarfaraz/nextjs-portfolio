@@ -1,0 +1,117 @@
+.stage {
+  --tower-block: #ffffff;
+  --tower-ink: #162022;
+  --tower-base: #afb5b6;
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  outline: none;
+  touch-action: manipulation;
+}
+
+:global(.dark) .stage {
+  --tower-block: #1e2925;
+  --tower-ink: #f3f6f4;
+  --tower-base: #333b3e;
+}
+
+.stage[data-playing="true"] {
+  cursor: pointer;
+}
+
+.stage:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  border-radius: inherit;
+}
+
+.world {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  will-change: transform;
+}
+
+.base {
+  position: absolute;
+  left: 50%;
+  height: 400px;
+  border-radius: 12px 12px 0 0;
+  background: var(--tower-base);
+}
+
+.ground {
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--tower-ink) 12%, transparent);
+}
+
+.block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--accent);
+  border-radius: 7px;
+  background: var(--tower-block);
+  color: var(--tower-ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.mover {
+  border-style: dashed;
+  transition: opacity 0.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mover {
+    transition: none;
+  }
+}
+
+/* ---- Height counter and perfect-drop pops ---- */
+/* A large, faint counter behind the tower, so the sliding block can pass over it. */
+.hud {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  z-index: 0;
+  display: grid;
+  justify-items: center;
+  margin: 0;
+  color: color-mix(in srgb, var(--tower-ink) 16%, transparent);
+  font-family: var(--font-heading);
+  font-size: clamp(72px, 12vw, 140px);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.hud span {
+  margin-top: 6px;
+  color: color-mix(in srgb, var(--tower-ink) 40%, transparent);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.pop {
+  position: absolute;
+  z-index: 4;
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}

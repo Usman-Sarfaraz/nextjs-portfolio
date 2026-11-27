@@ -283,6 +283,9 @@ html[data-theme-anim="1"]::view-transition-new(root) {
   margin-bottom: -20px;
   z-index: 60;
 }
+/* Pages with a solid bar (no hero card) pin it flush to the top from the first frame. */
+.hero-navigation-anchor[data-solid] { top: 0; }
+.hero-navigation-anchor[data-solid] .hero-navigation { top: 0; }
 .hero-navigation {
   position: absolute;
   top: 20px;
@@ -318,7 +321,12 @@ html[data-theme-anim="1"]::view-transition-new(root) {
 .hero-navigation__actions { position: relative; grid-column: 2; grid-row: 1; display: flex; align-items: center; gap: 8px; }
 .hero-navigation__links { position: relative; grid-column: 1 / -1; grid-row: 2; display: flex; align-items: center; gap: 20px; font-size: 13px; }
 .hero-navigation[data-expanded="true"] { width: calc(100% - 24px); padding: 14px 20px; }
-.hero-navigation[data-expanded="true"] .hero-navigation__notch { width: 100%; height: 100%; box-shadow: 0 8px 24px rgb(0 0 0 / 0.1); }
+.hero-navigation[data-expanded="true"] .hero-navigation__notch { width: 100%; height: 100%; box-shadow: 0 0 0 1px var(--border), 0 12px 32px -14px rgb(0 0 0 / 0.22); }
+/* On the solid bar the white "Let's talk" button would vanish, so it becomes a dark pill. */
+.hero-navigation[data-expanded="true"] .hero-navigation__actions > a { background: #162022; color: #fff; }
+.hero-navigation[data-expanded="true"] .hero-navigation__actions > a:hover { background: var(--accent); color: #fff; }
+.dark .hero-navigation[data-expanded="true"] .hero-navigation__actions > a { background: #f4f6f2; color: #0a0a0a; }
+.dark .hero-navigation[data-expanded="true"] .hero-navigation__actions > a:hover { background: #6ee7b7; color: #062e24; }
 @media (max-width: 1023px) {
   .hero-navigation:not([data-expanded="true"]) .hero-navigation__notch { left: 0; transform: none; width: 160px; }
   .hero-navigation:not([data-expanded="true"]) .hero-navigation__brand { margin-left: 12px; }

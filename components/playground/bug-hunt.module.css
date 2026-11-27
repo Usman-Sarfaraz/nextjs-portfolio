@@ -1,0 +1,206 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  outline: none;
+  touch-action: manipulation;
+}
+
+.stage[data-playing="true"] {
+  cursor: pointer;
+}
+
+.stage:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  border-radius: inherit;
+}
+
+.bug {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--pg-bug);
+  visibility: hidden;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.bug[data-kind="gold"] {
+  color: var(--pg-gold);
+}
+
+.bug[data-kind="wasp"] {
+  color: var(--pg-wasp);
+}
+
+.stripes {
+  display: none;
+}
+
+.bug[data-kind="wasp"] .stripes {
+  display: inline;
+}
+
+.bug svg {
+  width: 22px;
+  height: 22px;
+}
+
+.frog {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  width: 78px;
+  height: 68px;
+  margin-left: -39px;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+
+.frog svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pupils {
+  transition: transform 0.1s ease-out;
+}
+
+.tongue {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 7px;
+  margin-top: -3.5px;
+  border-radius: 4px;
+  background: var(--pg-tongue);
+  transform-origin: 0 50%;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.tongue::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -7px;
+  width: 15px;
+  height: 15px;
+  margin-top: -7.5px;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.pop {
+  position: absolute;
+  z-index: 5;
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 500;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.popBad {
+  color: var(--pg-wasp);
+}
+
+/* ---- Time left, along the top of the stage ---- */
+.timeTrack {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 3;
+  height: 4px;
+  background: color-mix(in srgb, var(--pg-stage-ink) 8%, transparent);
+}
+
+.timeBar {
+  height: 100%;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  transition: background-color 0.3s;
+}
+
+.timeBar[data-urgent="true"] {
+  background: var(--pg-wasp);
+}
+
+.combo {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 4;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--pg-on-accent);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  animation: combo-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes combo-in {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* ---- The key on the start screen ---- */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin: 4px 0;
+  padding: 0;
+  color: var(--pg-stage-ink);
+  font-size: 14px;
+  list-style: none;
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend span {
+  width: 12px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--pg-bug);
+}
+
+.legend span[data-kind="gold"] {
+  background: var(--pg-gold);
+}
+
+.legend span[data-kind="wasp"] {
+  background: repeating-linear-gradient(180deg, var(--pg-wasp) 0 3px, #fff 3px 4.5px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .combo {
+    animation: none;
+  }
+
+  .timeBar {
+    transition: none;
+  }
+
+  .pupils {
+    transition: none;
+  }
+}

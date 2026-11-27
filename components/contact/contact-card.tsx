@@ -38,9 +38,12 @@ export function ContactCard() {
       </section>
     </div>
       <footer className={styles.footer}>
-        <div className={styles.footerBottom}><span>© {new Date().getFullYear()} Usman Sarfraz</span><span>Built with Next.js & care.</span><a href="#home">Back to top <ArrowUp size={14} aria-hidden="true" /></a></div>
+        <ShippyGame
+          cornerLink={{ href: "/playground", lead: "Liked that?", label: "More games in the playground" }}
+          footerStart={<span>© {new Date().getFullYear()} Usman Sarfraz</span>}
+          footerEnd={<a href="#home">Back to top <ArrowUp size={14} aria-hidden="true" /></a>}
+        />
         <FooterWordmark />
-        <ShippyGame />
       </footer>
     </>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { NavThemeToggle } from "@/components/layout/nav";
 import { profile } from "@/lib/profile";
@@ -8,14 +8,17 @@ import styles from "./hero-navigation.module.css";
 import ShinyText from "@/components/react-bits/ShinyText";
 import StaggeredMenu from "@/components/react-bits/StaggeredMenu";
 
-const mobileItems = [
-  { label: "About", link: "#intro", ariaLabel: "About Usman" },
-  { label: "Work", link: "#projects", ariaLabel: "View selected work" },
-  { label: "Services", link: "#services", ariaLabel: "Explore services" },
-  { label: "Experience", link: "#about", ariaLabel: "View experience and expertise" },
+const sections = [
+  { label: "About", hash: "#intro", ariaLabel: "About Usman" },
+  { label: "Work", hash: "#projects", ariaLabel: "View selected work" },
+  { label: "Services", hash: "#services", ariaLabel: "Explore services" },
+  { label: "Experience", hash: "#about", ariaLabel: "View experience and expertise" },
 ];
 
-export function HeroNavigation() {
+/** `base` prefixes the section anchors, so other pages ("/playground") link back to the home page sections. */
+/** `solid` keeps the scrolled look (the white bar) from the top, for pages without the hero card. */
+export function HeroNavigation({ base = "", solid = false }: { base?: string; solid?: boolean }) {
+  const mobileItems = sections.map(({ label, hash, ariaLabel }) => ({ label, link: `${base}${hash}`, ariaLabel }));
   const [expanded, setExpanded] = useState(false);
   const brand = <><ShinyText text="Usman" speed={2.5} delay={1} color="var(--brand-text)" shineColor="var(--brand-shine)" className={styles.brandText ?? ""} /> Sarfraz<span className="opacity-50">.</span></>;
 
@@ -27,8 +30,8 @@ export function HeroNavigation() {
   }, []);
 
   return (
-    <header className={`hero-navigation-anchor ${styles.anchor}`}>
-      <div className={`hero-navigation ${styles.navigation}`} data-expanded={expanded}>
+    <header className={`hero-navigation-anchor ${styles.anchor}`} data-solid={solid || undefined}>
+      <div className={`hero-navigation ${styles.navigation}`} data-expanded={solid || expanded}>
         <div className={`hero-navigation__notch ${styles.notch}`} aria-hidden="true">
           <svg className="hero-navigation__corner hero-navigation__corner--left" width="20" height="20" viewBox="0 0 20 20">
             <path d="M0 0H20V20C20 8.954 11.046 0 0 0Z" />
@@ -38,15 +41,14 @@ export function HeroNavigation() {
           </svg>
         </div>
         <nav aria-label="Primary" className="hero-navigation__links">
-          <a className="focus-ring rounded-md hover:opacity-60" href="#intro">About</a>
-          <span aria-hidden="true" className="h-4 w-px bg-current/20" />
-          <a className="focus-ring rounded-md hover:opacity-60" href="#projects">Work</a>
-          <span aria-hidden="true" className="h-4 w-px bg-current/20" />
-          <a className="focus-ring rounded-md hover:opacity-60" href="#services">Services</a>
-          <span aria-hidden="true" className="h-4 w-px bg-current/20" />
-          <a className="focus-ring rounded-md hover:opacity-60" href="#about">Experience</a>
+          {sections.map(({ label, hash }, index) => (
+            <Fragment key={hash}>
+              {index > 0 && <span aria-hidden="true" className="h-4 w-px bg-current/20" />}
+              <a className="focus-ring rounded-md hover:opacity-60" href={`${base}${hash}`}>{label}</a>
+            </Fragment>
+          ))}
         </nav>
-        <a href="#home" className="hero-navigation__brand focus-ring rounded-md whitespace-nowrap font-semibold tracking-tight">
+        <a href={base ? base : "#home"} className="hero-navigation__brand focus-ring rounded-md whitespace-nowrap font-semibold tracking-tight">
           {brand}
         </a>
         <div className="hero-navigation__actions">

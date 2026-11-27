@@ -17,7 +17,7 @@
   /* Overlap the wordmark band by 1px so no sub-pixel seam shows between them. */
   margin-top: -1px;
   /* Full bleed: the scene spans the whole screen width. */
-  padding: 1px 0 24px;
+  padding: 73px 0 4px;
   background: var(--shippy-surface);
   color: var(--shippy-text);
 }
@@ -219,5 +219,220 @@
   .reset {
     transition: none;
     animation: none;
+  }
+}
+
+/* ---- Card variant: fills a playground card in the site's gray and emerald ---- */
+.game.card {
+  --shippy-surface: transparent;
+  --shippy-ink: #162022;
+  --shippy-text: #162022;
+  --shippy-muted: #555e59;
+  --shippy-rule: #d6dcd8;
+  --shippy-table: #afb5b6;
+  --shippy-body: #065f46;
+  --shippy-face: #a7f3d0;
+  --shippy-eye: #ffffff;
+  --shippy-pupil: #062e24;
+  --shippy-band: #555e59;
+  --shippy-block: #ffffff;
+
+  height: 100%;
+  margin-top: 0;
+  padding: 0;
+}
+
+:global(.dark) .game.card {
+  --shippy-ink: #a7f3d0;
+  --shippy-text: #f3f6f4;
+  --shippy-muted: rgb(243 246 244 / 65%);
+  --shippy-rule: rgb(255 255 255 / 10%);
+  --shippy-table: #333b3e;
+  --shippy-body: #34d399;
+  --shippy-face: #062e24;
+  --shippy-band: #9aa39f;
+  --shippy-block: #1e2925;
+}
+
+.card .stage {
+  height: 100%;
+}
+
+.card .block {
+  color: var(--shippy-text);
+}
+
+/* ---- Flight trail and hit pops ---- */
+.trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  margin: -5px;
+  border-radius: 50%;
+  background: var(--shippy-body);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.pop {
+  position: absolute;
+  z-index: 5;
+  color: var(--shippy-body);
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 500;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+/* ---- Fort pieces: upright pillars, labelled planks and the bugs to clear ---- */
+.pillar {
+  border-radius: 4px;
+}
+
+.plank {
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+}
+
+.bug {
+  border: 0;
+  border-radius: 50%;
+  background: var(--shippy-bug-bg, #fde68a);
+  color: var(--shippy-bug, #162022);
+}
+
+.bug svg {
+  width: 72%;
+  height: 72%;
+}
+
+:global(.dark) .game.card .bug {
+  --shippy-bug-bg: #f6c453;
+  --shippy-bug: #1a1405;
+}
+
+/* ---- Footer: copyright, playground link, and back to top below the floor ---- */
+.footerRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 64px;
+}
+
+.footerDetail {
+  color: var(--shippy-muted);
+  font-size: 11px;
+}
+
+.footerEnd {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.footerDetail a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  color: inherit;
+}
+
+.footerDetail a:focus-visible {
+  outline: 2px solid var(--shippy-ink);
+  outline-offset: 4px;
+}
+
+.cornerLink {
+  grid-column: 2;
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--shippy-ink);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  animation: shippy-corner-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.cornerLead {
+  color: var(--shippy-muted);
+  font-weight: 400;
+}
+
+.cornerLink svg {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cornerLink:hover .cornerLabel {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.cornerLink:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.cornerLink:focus-visible {
+  outline: 2px solid var(--shippy-ink);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+@keyframes shippy-corner-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (max-width: 1023px) {
+  .footerRow {
+    padding-inline: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  .footerRow {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    padding-inline: 24px;
+    gap: 0 12px;
+  }
+
+  .footerEnd {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .cornerLink {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: 13px;
+  }
+
+  .cornerLead {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cornerLink,
+  .cornerLink svg {
+    animation: none;
+    transition: none;
+  }
+
+  .cornerLink:hover svg {
+    transform: none;
   }
 }

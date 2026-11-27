@@ -133,6 +133,7 @@
 .footerSignature:focus-visible { outline: 2px solid var(--wordmark-ink); outline-offset: -8px; }
 :global(.dark) .footerSignature { --wordmark-surface: #10281f; }
 .footerBottom a { min-height: 44px; }
+.footerLinks { display: inline-flex; align-items: center; gap: 24px; }
 .footerBottom a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 @media (max-width: 1023px) { .footerBottom, .footerSignature { padding-inline: 32px; } }
 @media (max-width: 767px) { .footerBottom, .footerSignature { padding-inline: 24px; } .footerBottom { font-size: 10px; } }

@@ -1,0 +1,491 @@
+/* The playground page: the games in one shared card shell, in the site's gray and emerald. */
+.page {
+  --pg-stage: #e0e3e3;
+  --pg-stage-ink: #162022;
+  --pg-overlay: rgb(224 227 227 / 90%);
+  --pg-on-accent: #ffffff;
+  --pg-frog: #065f46;
+  --pg-frog-belly: #34d399;
+  --pg-tongue: #f472b6;
+  --pg-bug: #162022;
+  --pg-gold: #b7791f;
+  --pg-wasp: #dc2626;
+  --pg-ink: #162022;
+  --pg-table: #afb5b6;
+  --pg-block: #ffffff;
+
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 144px 64px 96px;
+  color: var(--foreground);
+}
+
+:global(.dark) .page {
+  --pg-stage: #161c1a;
+  --pg-stage-ink: #f3f6f4;
+  --pg-overlay: rgb(22 28 26 / 90%);
+  --pg-on-accent: #062e24;
+  --pg-frog: #34d399;
+  --pg-frog-belly: #a7f3d0;
+  --pg-bug: #e7ece9;
+  --pg-gold: #f6c453;
+  --pg-wasp: #f87171;
+  --pg-ink: #e7ece9;
+  --pg-table: #333b3e;
+  --pg-block: #1e2925;
+}
+
+/* ---- Header ---- */
+.hero {
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--section-rule);
+}
+
+.heroTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(56px, 10vw, 156px);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  overflow-wrap: break-word;
+}
+
+.heroTitle em {
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+.heroMeta {
+  margin-top: 32px;
+}
+
+.heroLead {
+  max-width: 52ch;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: clamp(16px, 1.3vw, 19px);
+  line-height: 1.6;
+}
+
+/* ---- Preview cards: one per game ---- */
+.previews {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--section-rule);
+  border-radius: 24px;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: border-color 0.25s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preview:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  transform: translateY(-3px);
+}
+
+.preview:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.previewArt {
+  display: grid;
+  place-items: center;
+  height: 150px;
+  background: var(--pg-stage);
+}
+
+.previewArt svg {
+  width: min(78%, 240px);
+  height: auto;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preview:hover .previewArt svg {
+  transform: scale(1.05);
+}
+
+.previewBody {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px 22px;
+}
+
+.previewIndex {
+  color: var(--accent);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.previewTitle {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.previewText {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.previewArrow {
+  position: absolute;
+  right: 18px;
+  bottom: 22px;
+  color: var(--accent);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preview:hover .previewArrow {
+  transform: translate(2px, 2px);
+}
+
+/* ---- One game ---- */
+.game {
+  margin-top: 96px;
+  scroll-margin-top: 110px;
+}
+
+.gameHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "title stats" "how stats";
+  align-items: end;
+  gap: 10px 48px;
+  margin-bottom: 20px;
+}
+
+.gameTitleRow {
+  grid-area: title;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.gameIndex {
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.gameTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(34px, 4.2vw, 60px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.howTo {
+  grid-area: how;
+  max-width: 56ch;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.stats {
+  grid-area: stats;
+  display: flex;
+  gap: 28px;
+  margin: 0;
+}
+
+.stat dt {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.stat dd {
+  margin: 2px 0 0;
+  font-family: var(--font-heading);
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.frame {
+  position: relative;
+  height: clamp(380px, 58svh, 540px);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--foreground) 6%, transparent);
+  border-radius: 28px;
+  background: var(--pg-stage);
+  color: var(--pg-stage-ink);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---- Buttons ---- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid color-mix(in srgb, var(--foreground) 14%, transparent);
+  border-radius: 999px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.button:hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--background));
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.primary {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--pg-on-accent);
+}
+
+.primary:hover {
+  background: color-mix(in srgb, var(--accent) 86%, var(--foreground));
+}
+
+/* ---- Start and end screens over a stage ---- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  padding: 24px;
+  background: var(--pg-overlay);
+  text-align: center;
+}
+
+.overlayTitle {
+  margin: 0;
+  color: var(--pg-stage-ink);
+  font-family: var(--font-heading);
+  font-size: clamp(34px, 5vw, 56px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.overlayText {
+  max-width: 40ch;
+  margin: 0 0 8px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.overlayText strong {
+  color: var(--pg-stage-ink);
+  font-weight: 600;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ---- Closing ---- */
+.closing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 128px;
+  padding-top: 40px;
+  border-top: 1px solid var(--section-rule);
+}
+
+.closingTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.closingTitle em {
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+@media (max-width: 1023px) {
+  .page {
+    padding-inline: 32px;
+  }
+
+  .gameHead {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "title" "how" "stats";
+  }
+
+  .previews {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .preview {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .previewArt {
+    flex: 0 0 160px;
+    height: auto;
+    min-height: 120px;
+  }
+}
+
+@media (max-width: 767px) {
+  .page {
+    padding: 112px 24px 64px;
+  }
+
+  .game {
+    margin-top: 72px;
+  }
+
+  .frame {
+    height: clamp(360px, 62svh, 460px);
+    border-radius: 22px;
+  }
+
+  .stats {
+    gap: 22px;
+  }
+
+  .stat dd {
+    font-size: 24px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .buttons > * {
+    flex: 1;
+  }
+
+  .closing {
+    margin-top: 88px;
+  }
+
+  .previewArt {
+    flex-basis: 112px;
+  }
+
+  .previewBody {
+    padding: 14px 44px 16px 16px;
+  }
+
+  .previewTitle {
+    font-size: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .preview,
+  .previewArt svg,
+  .previewArrow {
+    transition: none;
+  }
+
+  .preview:hover,
+  .preview:hover .previewArt svg,
+  .preview:hover .previewArrow {
+    transform: none;
+  }
+
+  .button:active {
+    transform: none;
+  }
+}
+
+/* ---- Stars for the slingshot ---- */
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--pg-gold);
+}
+
+.stars svg[data-on="false"] {
+  color: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+.levelButton {
+  flex-direction: column;
+  gap: 1px;
+  min-width: 56px;
+  padding: 4px 12px;
+  line-height: 1;
+}
+
+.levelButton.primary .stars {
+  color: inherit;
+}
