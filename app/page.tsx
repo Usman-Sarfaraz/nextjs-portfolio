@@ -8,6 +8,7 @@ import { HeroNavigation } from "@/components/hero/hero-navigation";
 import { WhyMe } from "@/components/why-me/why-me";
 import { Services } from "@/components/services/services";
 import { Projects } from "@/components/projects/projects";
+import { ScreensSection } from "@/components/screens/screens-section";
 import { profile } from "@/lib/profile";
 import { createMetadata, siteConfig } from "@/lib/metadata";
 import type { Metadata } from "next";
@@ -40,6 +41,7 @@ export default function HomePage(): ReactNode {
         <div><IntroSection /><LayersSection /></div>
         <section id="projects" className="scroll-mt-24"><Projects withHeadline /></section>
         <Services />
+        <ScreensSection />
         <WhyMe />
         <AboutSection />
         <section id="contact" className="scroll-mt-24"><ContactCard /></section>

@@ -1,0 +1,224 @@
+/* Hallmark · v2.0.0 · run: in-system, DESIGN.md locked · scope: section · signature: this site's own homepage reflowing from desktop to phone between the two halves of the headline */
+/* critique: one idea, set big; the frame narrows with clip-path and the words slide with transform, so nothing animates width; the page inside snaps at real breakpoints */
+/* Hallmark · waive 26b · the Desktop, Tablet and Phone buttons · every width of the same page is always available, so none is ever disabled */
+
+.section {
+  /* Width of the preview window, in virtual px of a 1440-wide page. Written by the component. */
+  --w: 1440;
+  --sc-page: var(--background);
+  --sc-rule: var(--section-rule);
+  --sc-ink: var(--foreground);
+  --sc-muted: var(--text-secondary);
+  --sc-accent: var(--accent);
+  --sc-card: var(--surface);
+  --sc-media: color-mix(in srgb, var(--accent) 16%, var(--surface));
+  /* The real hero's card colours, so the wireframe reads as this site. */
+  --sc-hero: var(--hero-card);
+  --sc-hero-glow: var(--hero-glow);
+  --sc-bar: var(--hero-ink);
+  --sc-chip: var(--hero-chip);
+  position: relative;
+  color: var(--sc-ink);
+}
+
+/* Scroll mode: a tall section with a sticky full-screen stage, like the layers section. */
+.section[data-mode="scroll"] { height: 300svh; }
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 64px 24px;
+}
+
+.section[data-mode="scroll"] .stage {
+  position: sticky;
+  top: 0;
+  justify-content: center;
+  height: 100svh;
+  padding: 96px 64px 40px;
+}
+
+/* ---- Headline: the window sits between its two halves ---- */
+.title {
+  /* On-screen width of the full 1440 window, and how far each side is cut in at the current width. */
+  --fw: min(50vw, calc((100svh - 300px) * 1.6), 860px);
+  --shift: calc(var(--fw) * (1 - var(--w) / 1440) / 2);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: clamp(20px, 2.4vw, 40px);
+  width: 100%;
+  margin: 28px 0 0;
+  font-family: var(--font-heading);
+  font-size: clamp(40px, 4.4vw, 76px);
+  font-weight: 400;
+  line-height: .95;
+  letter-spacing: var(--section-heading-tracking);
+}
+
+.word { width: min-content; min-width: 0; overflow-wrap: break-word; }
+.wordStart { justify-self: end; text-align: right; transform: translateX(var(--shift)); }
+.wordEnd { justify-self: start; transform: translateX(calc(var(--shift) * -1)); }
+.nowrap { white-space: nowrap; }
+.dot { display: inline-block; width: .16em; height: .16em; margin-left: .04em; border-radius: 50%; background: var(--sc-accent); }
+
+.frame {
+  position: relative;
+  display: block;
+  width: var(--fw);
+  height: calc(var(--fw) / 1.6);
+  /* 1em inside the frame is 16 virtual px, so the wireframe can be drawn at real sizes. */
+  font-size: calc(var(--fw) / 90);
+  line-height: 1;
+  letter-spacing: normal;
+  /* The corners round off as the window approaches a phone. */
+  --r: calc(10px + 18px * (1440 - var(--w)) / 1050);
+}
+
+/* Two clipped layers: the outer one draws the 1px edge, the inner one holds the page. */
+.edge, .window { position: absolute; inset: 0; }
+.edge { background: var(--sc-rule); clip-path: inset(0 var(--shift) round var(--r)); }
+.window { overflow: hidden; background: var(--sc-page); clip-path: inset(1px calc(var(--shift) + 1px) round calc(var(--r) - 1px)); }
+
+.readout {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--sc-ink);
+  color: var(--sc-page);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+/* Buttons rather than scroll drive the window here, so let it ease between widths. */
+.section:not([data-mode="scroll"]) .edge,
+.section:not([data-mode="scroll"]) .window { transition: clip-path 800ms cubic-bezier(.22, 1, .36, 1); }
+.section:not([data-mode="scroll"]) .word { transition: transform 800ms cubic-bezier(.22, 1, .36, 1); }
+.section:not([data-mode="scroll"]) .heroCard::before { transition: clip-path 800ms cubic-bezier(.22, 1, .36, 1); }
+
+.foot { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 28px; text-align: center; }
+.note { max-width: 46ch; margin: 0; font-size: 15px; line-height: 1.6; color: var(--sc-muted); }
+
+.controls { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--sc-rule); border-radius: 999px; }
+.control {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sc-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 250ms ease, color 250ms ease;
+}
+.control:hover { color: var(--sc-ink); }
+.control:active { transform: scale(.97); }
+.control:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 2px; transition: none; }
+.control[aria-pressed="true"] { background: var(--sc-ink); color: var(--sc-page); }
+
+/* ---- The wireframe page ---- */
+.page { --L: 64em; position: absolute; top: 0; left: 0; width: 90em; height: 100%; }
+.page[data-layout="tablet"] { --L: 40em; }
+.page[data-layout="phone"] { --L: 24.375em; }
+.page i, .page b { display: block; }
+
+/* Content keeps to the breakpoint's width, centred in the 1440 page. */
+.wrap { box-sizing: border-box; width: var(--L); margin: 0 auto; padding: 0 2.5em; }
+.page[data-layout="tablet"] .wrap { padding: 0 2em; }
+.page[data-layout="phone"] .wrap { padding: 0 1.25em; }
+/* Inside the hero card, keep clear of its edge: the card's margin plus its own padding. */
+.page:not([data-layout="desktop"]) .heroCard .wrap { padding: 0 3.25em; }
+.page[data-layout="phone"] .heroCard .wrap { padding: 0 2.25em; }
+
+.nav .wrap { display: flex; align-items: center; gap: 2em; height: 5.5em; }
+.brand { width: 7em; height: 1.1em; border-radius: .3em; background: var(--sc-ink); }
+.links { display: flex; gap: 2em; margin-left: auto; }
+.links i { width: 4em; height: .55em; border-radius: 1em; background: var(--sc-muted); opacity: .6; }
+.cta { width: 8em; height: 2.75em; border-radius: 2em; background: var(--sc-ink); }
+.burger { display: none; flex-direction: column; gap: .45em; }
+.burger i { width: 1.75em; height: .22em; border-radius: 1em; background: var(--sc-ink); }
+.page:not([data-layout="desktop"]) .links { display: none; }
+.page[data-layout="tablet"] .cta { margin-left: auto; }
+.page:not([data-layout="desktop"]) .burger { display: flex; }
+.page[data-layout="phone"] .cta { display: none; }
+.page[data-layout="phone"] .burger { margin-left: auto; }
+
+/* The hero card hugs the window, not the page: its background is clipped to the visible width, minus a margin. */
+.heroCard { position: relative; isolation: isolate; }
+.heroCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse at 85% 50%, var(--sc-hero-glow) 0%, transparent 65%), var(--sc-hero);
+  clip-path: inset(0 calc((90em - var(--w) * .0625em) / 2 + 1.25em) round 2.5em);
+}
+.page[data-layout="phone"] .heroCard::before { clip-path: inset(0 calc((90em - var(--w) * .0625em) / 2 + .75em) round 2em); }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); align-items: center; gap: 2.5em; height: 32em; }
+.copy { display: flex; flex-direction: column; gap: .9em; min-width: 0; }
+.h { height: 3.1em; border-radius: .4em; background: var(--sc-bar); }
+.hAccent { background: var(--sc-accent); }
+.lede { display: flex; flex-direction: column; gap: .6em; margin-top: 1em; }
+.lede i { height: .7em; border-radius: 1em; background: var(--sc-bar); opacity: .4; }
+.actions { display: flex; gap: .8em; margin-top: 1.4em; }
+.actions i { width: 9em; height: 3.2em; border-radius: 2em; background: var(--sc-chip); }
+.actions i + i { width: 8em; background: transparent; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sc-bar) 25%, transparent); }
+.portrait { position: relative; height: 100%; min-width: 0; }
+.portraitImg { object-fit: contain; object-position: center bottom; }
+
+.page:not([data-layout="desktop"]) .hero { grid-template-columns: minmax(0, 1fr); height: auto; padding: 3em 0 0; gap: 2em; }
+.page:not([data-layout="desktop"]) .portrait { height: 20em; }
+.page[data-layout="tablet"] .h { height: 2.7em; }
+.page[data-layout="phone"] .h { height: 2.1em; }
+.page[data-layout="phone"] .copy { gap: .7em; }
+.page[data-layout="phone"] .portrait { height: 15em; }
+.page[data-layout="phone"] .actions i { width: 7.5em; height: 2.9em; }
+.page[data-layout="phone"] .actions i + i { width: 6.5em; }
+
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25em; padding-top: 2em; }
+.page[data-layout="tablet"] .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.page[data-layout="phone"] .cards { grid-template-columns: minmax(0, 1fr); padding-top: 1.25em; }
+.card { display: flex; flex-direction: column; gap: .7em; padding: 1em; border-radius: 1.25em; background: var(--sc-card); }
+.card b { height: 12em; border-radius: .8em; background: var(--sc-media); }
+.card i { height: .7em; border-radius: 1em; background: var(--sc-ink); opacity: .5; }
+.card i + i { opacity: .25; }
+
+/* Reduced motion: the buttons switch widths at once (scroll mode is never set up for these visitors). */
+@media (prefers-reduced-motion: reduce) {
+  .edge, .window, .word, .heroCard::before, .control { transition: none !important; }
+  .control:active { transform: none; }
+}
+
+/* ---- Below 1024: a slightly smaller window so the words still fit beside it ---- */
+@media (max-width: 1023px) {
+  .section[data-mode="scroll"] .stage { padding: 96px 32px 32px; }
+}
+
+/* ---- Phones: the words sit above and below the window, which fills the column ---- */
+@media (max-width: 767px) {
+  /* Scaled so the phone state is a readable size; the desktop state is wider than a phone, as it should be. */
+  .section { overflow-x: clip; }
+  .frame { justify-self: center; }
+  .title {
+    --fw: min(calc((100vw - 48px) * 1.9), 980px);
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    row-gap: 20px;
+    font-size: clamp(40px, 12vw, 64px);
+    text-align: center;
+  }
+  .word { width: auto; }
+  .wordStart, .wordEnd { justify-self: center; text-align: center; transform: none; }
+  .readout { bottom: 10px; font-size: 11px; }
+  .control { padding: 0 16px; }
+}

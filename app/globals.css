@@ -16,6 +16,11 @@
   --surface: #e0e3e3;
   --text-secondary: #555e59;
   --section-rule: #d6dcd8;
+  /* The hero card's colours, shared with the wireframe of it in the screens section. */
+  --hero-card: #afb5b6;
+  --hero-glow: #e0e3e3;
+  --hero-ink: #162022;
+  --hero-chip: #ffffff;
   --section-heading-size: clamp(36px, 4.5vw, 64px);
   --section-heading-leading: 1.08;
   --section-heading-tracking: -.045em;
@@ -40,6 +45,10 @@
   --surface: #202624;
   --text-secondary: #b0b9b4;
   --section-rule: #303a34;
+  --hero-card: #333b3e;
+  --hero-glow: #687174;
+  --hero-ink: #ffffff;
+  --hero-chip: rgb(255 255 255 / 22%);
 }
 
 @theme inline {
