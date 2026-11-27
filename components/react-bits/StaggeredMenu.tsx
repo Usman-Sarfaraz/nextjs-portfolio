@@ -2,6 +2,7 @@
 
 // Adapted for the portfolio from https://reactbits.dev/components/staggered-menu.
 import { gsap } from "gsap";
+import Link from "next/link";
 import { createPortal } from "react-dom";
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { Plus } from "lucide-react";
@@ -14,11 +15,13 @@ export interface StaggeredMenuItem {
   ariaLabel: string;
 }
 
-export default function StaggeredMenu({ items, logo, children }: {
+export default function StaggeredMenu({ items, logo, logoHref = "#home", children }: {
   items: StaggeredMenuItem[];
   logo: ReactNode;
+  logoHref?: string;
   children?: ReactNode;
 }) {
+  const LogoLink = logoHref.startsWith("/") ? Link : "a";
   const [open, setOpen] = useState(false);
   const reducedMotion = useReducedMotion();
   const id = useId();
@@ -128,7 +131,7 @@ export default function StaggeredMenu({ items, logo, children }: {
           <div data-menu-layer className={`${styles.layer} ${styles.layerFirst}`} aria-hidden="true" />
           <div data-menu-layer className={`${styles.layer} ${styles.layerSecond}`} aria-hidden="true" />
             <div className={styles.header}>
-              <a href="#home" className="focus-ring rounded-md font-semibold tracking-tight" onClick={close}>{logo}</a>
+              <LogoLink href={logoHref} className="focus-ring rounded-md font-semibold tracking-tight" onClick={close}>{logo}</LogoLink>
               <button className={`${styles.toggle} focus-ring`} type="button" aria-label="Close menu" onClick={close}>
                 <span className={styles.textWrap} aria-hidden="true"><span ref={menuText} className={styles.textInner}>{["Menu", "Close", "Menu", "Close", "Close"].map((text, index) => <span key={index}>{text}</span>)}</span></span>
                 <span ref={menuIcon} aria-hidden="true"><Plus size={20} /></span>
@@ -136,11 +139,12 @@ export default function StaggeredMenu({ items, logo, children }: {
             </div>
           <div ref={panel} id={id} data-menu-panel className={styles.panel}>
             <nav aria-label="Mobile navigation" className={styles.links}>
-              {items.map((item, index) => (
-                <a key={item.link} href={item.link} aria-label={item.ariaLabel} className={`${styles.item} focus-ring`} onClick={close}>
+              {items.map((item, index) => {
+                const ItemLink = item.link.startsWith("/") ? Link : "a";
+                return <ItemLink key={item.link} href={item.link} aria-label={item.ariaLabel} className={`${styles.item} focus-ring`} onClick={close}>
                   <span data-menu-label>{item.label}</span><sup data-menu-number>{String(index + 1).padStart(2, "0")}</sup>
-                </a>
-              ))}
+                </ItemLink>;
+              })}
             </nav>
             <div data-menu-footer className={styles.footer}>{children}</div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import type MatterType from "matter-js";
+import Link from "next/link";
 import { ArrowUpRight, MoveLeft, RotateCcw } from "lucide-react";
 import { useInView } from "motion/react";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from "react";
@@ -122,7 +123,7 @@ export function ShippyGame({ level = 0, variant = "footer", gutter, demo = true,
       matterRef.current = M;
       const width = stage.clientWidth;
       const height = stage.clientHeight;
-      const world = buildWorld(M, width, height, { level, gutter });
+      const world = buildWorld(M, width, height, { level, gutter, tableHeight: variant === "footer" && width < 768 ? 72 : 96 });
       worldRef.current = world;
       phaseRef.current = "aim";
       setPhase("aim");
@@ -289,7 +290,7 @@ export function ShippyGame({ level = 0, variant = "footer", gutter, demo = true,
       if (world && matterRef.current) matterRef.current.Engine.clear(world.engine);
       worldRef.current = null;
     };
-  }, [seen, round, showDots, level, gutter]);
+  }, [seen, round, showDots, level, gutter, variant]);
 
   const localPoint = (event: PointerEvent<HTMLDivElement>) => {
     const box = stageRef.current?.getBoundingClientRect();
@@ -472,12 +473,11 @@ export function ShippyGame({ level = 0, variant = "footer", gutter, demo = true,
         <div className={styles.footerRow}>
           <div className={styles.footerDetail}>{footerStart}</div>
           {cornerLink && seen && (
-            // A full page load on purpose: the home page's GSAP pinning and smooth scroll are set up per load.
-            <a className={styles.cornerLink} href={cornerLink.href}>
+            <Link className={styles.cornerLink} href={cornerLink.href}>
               {cornerLink.lead && <span className={styles.cornerLead}>{cornerLink.lead}</span>}
               <span className={styles.cornerLabel}>{cornerLink.label}</span>
               <ArrowUpRight size={15} aria-hidden="true" />
-            </a>
+            </Link>
           )}
           <div className={`${styles.footerDetail} ${styles.footerEnd}`}>{footerEnd}</div>
         </div>

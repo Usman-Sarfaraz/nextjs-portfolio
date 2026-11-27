@@ -142,7 +142,7 @@ function pageGutter(width: number): number {
   return Math.max(64, (width - 1440) / 2 + 64);
 }
 
-export function buildWorld(M: Matter, width: number, height: number, options: { level?: number | undefined; gutter?: number | undefined } = {}): World {
+export function buildWorld(M: Matter, width: number, height: number, options: { level?: number | undefined; gutter?: number | undefined; tableHeight?: number } = {}): World {
   const { Engine, Bodies, Composite } = M;
   const level = LEVELS[options.level ?? 0] ?? LEVELS[0]!;
   // The footer stage is full bleed with the scene inside the content area; cards pass their own gutter.
@@ -162,7 +162,7 @@ export function buildWorld(M: Matter, width: number, height: number, options: { 
   const blockHeight = 34 * scale;
   const gap = 2 * scale;
   const widthOf = (label: string) => (label.length * 7.4 + 34) * scale;
-  const tableHeight = 96 * scale;
+  const tableHeight = (options.tableHeight ?? 96) * scale;
   const tableTop = floorY - tableHeight;
   const tables: Rect[] = [];
   const blocks: Block[] = [];

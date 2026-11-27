@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
+import ShinyText from "@/components/react-bits/ShinyText";
 import { HeroNavigation } from "@/components/hero/hero-navigation";
 import { FooterWordmark } from "@/components/contact/footer-wordmark";
 import { BugHunt } from "@/components/playground/bug-hunt";
@@ -23,7 +25,7 @@ export default function PlaygroundPage(): ReactNode {
       <main id="main-content" className={styles.page}>
         <header className={styles.hero}>
           <h1 className={styles.heroTitle}>
-            The <em>playground.</em>
+            The <em><ShinyText text="playground." speed={2.5} delay={1} color="var(--accent)" shineColor="var(--accent-shine)" className="heading-shine" /></em>
           </h1>
           <div className={styles.heroMeta}>
             <p className={styles.heroLead}>
@@ -42,11 +44,9 @@ export default function PlaygroundPage(): ReactNode {
           <h2 id="playground-closing" className={styles.closingTitle}>
             Enjoyed that? <em>Let&rsquo;s build yours.</em>
           </h2>
-          {/* A full page load on purpose: the home page sets up its GSAP pinning and smooth scroll on load. */}
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-          <a href="/#contact" className={`${styles.button} ${styles.primary}`}>
+          <Link href="/#contact" className={`${styles.button} ${styles.primary}`}>
             Start a conversation <ArrowUpRight size={16} aria-hidden="true" />
-          </a>
+          </Link>
         </section>
       </main>
       <FooterWordmark />

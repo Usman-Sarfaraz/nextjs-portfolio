@@ -351,7 +351,7 @@ export function Stack(): ReactNode {
 function ChipPill({ chip }: { chip: Chip }): ReactNode {
   return (
     <div
-      className="dark:ring-1 dark:ring-white/15 inline-flex items-center gap-2 p-1 pr-2 text-[15px] font-medium tracking-tight sm:text-[16px]"
+      className="dark:ring-1 dark:ring-white/15 inline-flex items-center gap-1.5 p-1 pr-2 text-[13px] font-medium tracking-tight md:gap-2 md:text-[16px]"
       style={{
         backgroundColor: chip.bg,
         color: chip.fg,
@@ -359,7 +359,7 @@ function ChipPill({ chip }: { chip: Chip }): ReactNode {
       }}
     >
       <span
-        className="inline-flex h-8 w-8 items-center justify-center bg-white/95"
+        className="inline-flex h-7 w-7 items-center justify-center bg-white/95 md:h-8 md:w-8"
         style={{ borderRadius: `${ICON_RADIUS}px` }}
         aria-hidden="true"
       >
@@ -368,7 +368,7 @@ function ChipPill({ chip }: { chip: Chip }): ReactNode {
           alt=""
           width={18}
           height={18}
-          className="h-5 w-5"
+          className="h-4 w-4 md:h-5 md:w-5"
           draggable={false}
         />
       </span>

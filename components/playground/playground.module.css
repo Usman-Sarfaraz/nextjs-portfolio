@@ -58,6 +58,11 @@
   font-weight: 400;
 }
 
+.heroTitle :global(.heading-shine) {
+  padding-bottom: .3em;
+  margin-bottom: -.3em;
+}
+
 .heroMeta {
   margin-top: 32px;
 }

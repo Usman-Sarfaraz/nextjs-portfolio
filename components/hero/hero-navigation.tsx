@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useState } from "react";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { NavThemeToggle } from "@/components/layout/nav";
 import { profile } from "@/lib/profile";
@@ -18,6 +19,7 @@ const sections = [
 /** `base` prefixes the section anchors, so other pages ("/playground") link back to the home page sections. */
 /** `solid` keeps the scrolled look (the white bar) from the top, for pages without the hero card. */
 export function HeroNavigation({ base = "", solid = false }: { base?: string; solid?: boolean }) {
+  const NavigationLink = base ? Link : "a";
   const mobileItems = sections.map(({ label, hash, ariaLabel }) => ({ label, link: `${base}${hash}`, ariaLabel }));
   const [expanded, setExpanded] = useState(false);
   const brand = <><ShinyText text="Usman" speed={2.5} delay={1} color="var(--brand-text)" shineColor="var(--brand-shine)" className={styles.brandText ?? ""} /> Sarfraz<span className="opacity-50">.</span></>;
@@ -44,13 +46,13 @@ export function HeroNavigation({ base = "", solid = false }: { base?: string; so
           {sections.map(({ label, hash }, index) => (
             <Fragment key={hash}>
               {index > 0 && <span aria-hidden="true" className="h-4 w-px bg-current/20" />}
-              <a className="focus-ring rounded-md hover:opacity-60" href={`${base}${hash}`}>{label}</a>
+              <NavigationLink className="focus-ring rounded-md hover:opacity-60" href={`${base}${hash}`}>{label}</NavigationLink>
             </Fragment>
           ))}
         </nav>
-        <a href={base ? base : "#home"} className="hero-navigation__brand focus-ring rounded-md whitespace-nowrap font-semibold tracking-tight">
+        <NavigationLink href={base ? base : "#home"} className="hero-navigation__brand focus-ring rounded-md whitespace-nowrap font-semibold tracking-tight">
           {brand}
-        </a>
+        </NavigationLink>
         <div className="hero-navigation__actions">
           <NavThemeToggle />
           <a href={`mailto:${profile.email}`} className="focus-ring group inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-xs font-medium text-black transition-all duration-300 hover:bg-[#162022] hover:text-white hover:shadow-xl motion-safe:hover:-translate-y-1 motion-safe:active:scale-95 motion-reduce:transition-none sm:px-5 sm:py-3 sm:text-sm">
@@ -58,7 +60,7 @@ export function HeroNavigation({ base = "", solid = false }: { base?: string; so
           </a>
         </div>
         <div className={styles.mobileMenu}>
-          <StaggeredMenu items={mobileItems} logo={brand}>
+          <StaggeredMenu items={mobileItems} logo={brand} logoHref={base || "#home"}>
             <a href={`mailto:${profile.email}`} className="focus-ring group inline-flex items-center gap-3 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background transition-all duration-300 hover:bg-[#162022] hover:text-white hover:shadow-xl motion-safe:hover:-translate-y-1 motion-safe:active:scale-95 motion-reduce:transition-none">
               Let&rsquo;s talk <ArrowUpRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 motion-safe:group-hover:translate-x-1 motion-safe:group-hover:-translate-y-1 motion-reduce:transition-none" />
             </a>

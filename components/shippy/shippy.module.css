@@ -205,8 +205,28 @@
 }
 
 @media (max-width: 767px) {
-  .stage {
-    height: 270px;
+  .game:not(.card) {
+    padding-top: 49px;
+  }
+
+  .game:not(.card) .stage {
+    height: 230px;
+  }
+
+  .game:not(.card) .reset {
+    width: 32px;
+    height: 32px;
+  }
+
+  .game:not(.card) .reset::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+  }
+
+  .game:not(.card) .reset svg {
+    width: 14px;
+    height: 14px;
   }
 
   .won {
