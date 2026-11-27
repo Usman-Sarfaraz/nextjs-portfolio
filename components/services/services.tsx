@@ -202,6 +202,7 @@ export function Services() {
             <li key={type} className={styles.panel} data-open={isOpen || undefined} onMouseEnter={() => hoverOpen(index)} onMouseLeave={hoverCancel}>
               <h3 id={`service-${type}`} className={styles.panelHead}>
                 <button type="button" className={styles.panelButton} onClick={() => setActive(index)} onFocus={() => setActive(index)} aria-expanded={isOpen} aria-controls={`service-body-${type}`}>
+                  <span className={styles.closedTitle} aria-hidden="true">{lead}</span>
                   <span className={styles.panelTitle}><span className={styles.titleLead}>{lead}</span> <span className={styles.titleDetail}>{detail}</span></span>
                   <span className={styles.panelIcon} aria-hidden="true"><Plus size={20} strokeWidth={1.5} /></span>
                 </button>

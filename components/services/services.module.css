@@ -2,32 +2,34 @@
 
 /* ---- Accordion: the open panel grows wide, the others stay narrow tabs with a vertical title. ---- */
 .panels { display: flex; gap: 12px; height: clamp(460px, 64svh, 580px); margin: 48px 0 0; padding: 0; list-style: none; }
-.panel { --body-w: min(720px, calc((min(100vw, 1440px) - 128px) * .6)); position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; border: 1px solid var(--section-rule); border-radius: 12px; transition: flex-grow 750ms cubic-bezier(.22, 1, .36, 1), background 500ms, border-color 500ms; }
+.panel { --body-w: calc((min(100vw, 1440px) - 152px) * 3.4 / 5.4); position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; border: 1px solid var(--section-rule); border-radius: 12px; transition: flex-grow 600ms cubic-bezier(.22, 1, .36, 1), background 500ms, border-color 500ms; }
 .panel[data-open] { flex-grow: 3.4; border-color: transparent; background: var(--accent-soft); }
 
 .panelHead { margin: 0; font: inherit; }
 /* Closed: the whole tab is the button; the title reads bottom to top along the left edge. */
 .panelButton { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; padding: 28px; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
 .panelButton:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; border-radius: 12px; }
-.panelTitle { order: 2; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; font-family: var(--font-heading); font-size: clamp(32px, 3vw, 44px); font-weight: 400; line-height: 1; letter-spacing: -.04em; color: var(--text-secondary); transition: opacity 300ms; }
+.panelTitle { position: absolute; top: 32px; left: 36px; width: calc(var(--body-w) - 132px); font-family: var(--font-heading); font-size: clamp(36px, 3.6vw, 56px); font-weight: 400; line-height: 1; letter-spacing: -.04em; color: var(--foreground); opacity: 0; transform: translateY(8px); transition: opacity 150ms, transform 300ms cubic-bezier(.22, 1, .36, 1); }
+.closedTitle { position: absolute; bottom: 28px; left: 28px; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; font-family: var(--font-heading); font-size: clamp(32px, 3vw, 44px); font-weight: 400; line-height: 1; letter-spacing: -.04em; color: var(--text-secondary); transition: opacity 150ms; }
 .titleDetail { opacity: .7; }
-.panelIcon { order: 1; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--section-rule); border-radius: 50%; transition: transform 600ms cubic-bezier(.22, 1, .36, 1), background 400ms, border-color 400ms, color 400ms; }
-@media (hover: hover) and (pointer: fine) { .panel:not([data-open]):hover .panelTitle { color: var(--foreground); } }
+.panelIcon { position: absolute; top: 28px; left: 28px; order: 1; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--section-rule); border-radius: 50%; transition: left 600ms cubic-bezier(.22, 1, .36, 1), top 600ms cubic-bezier(.22, 1, .36, 1), transform 600ms cubic-bezier(.22, 1, .36, 1), background 400ms, border-color 400ms, color 400ms; }
+@media (hover: hover) and (pointer: fine) { .panel:not([data-open]):hover .closedTitle { color: var(--foreground); } }
 
 /* Open: the title turns horizontal at the top and the details fade in below it. */
 .panel[data-open] .panelButton { bottom: auto; cursor: default; padding: 32px 36px; }
-.panel[data-open] .panelTitle { writing-mode: horizontal-tb; transform: none; font-size: clamp(36px, 3.6vw, 56px); color: var(--foreground); order: 1; }
+.panel[data-open] .panelTitle { opacity: 1; transform: none; transition-delay: 180ms; }
+.panel[data-open] .closedTitle { opacity: 0; }
 .panel[data-open] .titleLead { color: var(--accent); }
-.panel[data-open] .panelIcon { position: absolute; top: 32px; right: 36px; transform: rotate(45deg); background: var(--accent); border-color: var(--accent); color: var(--background); }
+.panel[data-open] .panelIcon { top: 32px; left: calc(100% - 80px); transform: rotate(45deg); background: var(--accent); border-color: var(--accent); color: var(--background); }
 
-.panelBody { position: absolute; left: 36px; right: 36px; bottom: 36px; min-width: calc(var(--body-w) - 72px); opacity: 0; visibility: hidden; transform: translateY(16px); transition: opacity 300ms, transform 600ms cubic-bezier(.22, 1, .36, 1), visibility 0s 300ms; }
+.panelBody { position: absolute; left: 36px; bottom: 36px; width: calc(var(--body-w) - 72px); opacity: 0; visibility: hidden; transform: translateY(16px); transition: opacity 300ms, transform 600ms cubic-bezier(.22, 1, .36, 1), visibility 0s 300ms; }
 .panel[data-open] .panelBody { opacity: 1; visibility: visible; transform: none; transition: opacity 500ms 250ms, transform 700ms 250ms cubic-bezier(.22, 1, .36, 1), visibility 0s; }
 .panelGrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: end; }
 
 .panelCopy { display: flex; flex-direction: column; align-items: flex-start; }
 .description { max-width: 40ch; margin: 0; font-size: 15px; line-height: 1.7; color: var(--text-secondary); }
 .capabilities { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 20px; padding: 0; list-style: none; }
-.capabilities li { padding: 6px 12px; border: 1px solid var(--section-rule); border-radius: 999px; font-size: 12px; line-height: 1.4; background: var(--background); }
+.capabilities li { padding: 6px 12px; border: 1px solid #065f46; border-radius: 999px; font-size: 12px; line-height: 1.4; background: #065f46; color: #fff; }
 .serviceLink { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--foreground); font-size: 14px; text-decoration: none; }
 .serviceLink svg { transition: transform 250ms; }
 .serviceLink:hover { color: var(--accent); }
@@ -122,10 +124,11 @@
   .panels { flex-direction: column; height: auto; gap: 12px; margin-top: 32px; }
   .panel, .panel[data-open] { flex: none; }
   .panelButton, .panel[data-open] .panelButton { position: static; width: 100%; flex-direction: row; align-items: center; gap: 16px; padding: 24px 24px; cursor: pointer; }
-  .panelTitle, .panel[data-open] .panelTitle { order: 1; flex: 1; writing-mode: horizontal-tb; transform: none; font-size: clamp(28px, 5.4vw, 44px); }
+  .closedTitle { display: none; }
+  .panelTitle, .panel[data-open] .panelTitle { position: static; width: auto; opacity: 1; transition: none; order: 1; flex: 1; writing-mode: horizontal-tb; transform: none; font-size: clamp(28px, 5.4vw, 44px); }
   .panel[data-open] .panelTitle { color: var(--foreground); }
   .panelIcon, .panel[data-open] .panelIcon { position: static; order: 2; flex: none; }
-  .panelBody, .panel[data-open] .panelBody { position: static; min-width: 0; display: grid; grid-template-rows: 0fr; opacity: 1; visibility: visible; transform: none; transition: grid-template-rows 600ms cubic-bezier(.22, 1, .36, 1); }
+  .panelBody, .panel[data-open] .panelBody { position: static; width: auto; min-width: 0; display: grid; grid-template-rows: 0fr; opacity: 1; visibility: visible; transform: none; transition: grid-template-rows 600ms cubic-bezier(.22, 1, .36, 1); }
   .panel[data-open] .panelBody { grid-template-rows: 1fr; }
   .panelInner { min-height: 0; overflow: hidden; }
   .panelGrid { padding: 0 24px 24px; opacity: 0; transition: opacity 300ms; }
@@ -138,12 +141,11 @@
   .panelTitle .titleDetail { display: block; font-size: .6em; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .panel, .panelTitle, .panelIcon, .panelBody, .panel[data-open] .panelBody, .panelGrid, .panel[data-open] .panelGrid, .serviceLink svg { transition: none; }
+  .panel, .panelTitle, .closedTitle, .panelIcon, .panelBody, .panel[data-open] .panelBody, .panelGrid, .panel[data-open] .panelGrid, .serviceLink svg { transition: none; }
   .kpi, .kpiLive::before, .dashChart i, .dashLine, .flowNode, .flowPacket, .flowLog li { animation: none !important; opacity: 1 !important; transform: none; stroke-dashoffset: 0; }
 }
 
-/* Closed tabs show only the short name, so the vertical title always fits the panel. */
-@media (min-width: 1024px) { .panel:not([data-open]) .titleDetail { display: none; } }
+
 
 /* Reduced motion: each visual rests on one clear frame. */
 @media (prefers-reduced-motion: reduce) {
